@@ -56,12 +56,10 @@ function perfil(){
 }
 /**Fin Perfil **/
 
-/** Prueba **/
-function prueba(){
+/** Búsqueda **/
+function busqueda(){
 
-
-
-  var table = $('#example').DataTable( {
+  var table = $('#resultado').DataTable( {
     responsive: true,
     "language": {
       "decimal":        "",
@@ -86,4 +84,4 @@ function prueba(){
     }); 
 }
 
-/** **/
+/**Fin Búsqueda **/

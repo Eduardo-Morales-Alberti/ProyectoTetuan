@@ -1,6 +1,6 @@
 ﻿.sinborde{
-    border:none;
-    box-shadow:none;
+	border:none;
+	box-shadow:none;
 }
 .conborde{
 	border: 1px solid #e1e2e3;
@@ -11,7 +11,7 @@
 }
 
 .centrarbtn {
-    margin-top: 25px;
+	margin-top: 25px;
 }
 
 .elEmp{
@@ -64,10 +64,11 @@ textarea{
 }
 
 .flecham {
-    float: right;
-    margin-right: 30px;
+	float: right;
+	margin-right: 30px;
 }
 
 .t-responsive td, th{
 	padding: 5px;
+	min-width: 80px;
 }
