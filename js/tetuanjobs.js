@@ -56,9 +56,16 @@ function perfil(){
 }
 /**Fin Perfil **/
 
-/** Búsqueda **/
-function busqueda(){
+/** Búsqueda de ofertas **/
+function busquedaofer(){
 
+ 
+}
+
+/**Fin Búsqueda de ofertas **/
+/**Filtro de usuarios**/
+
+function filtrous(){
   var table = $('#resultado').DataTable( {
     responsive: true,
     "language": {
@@ -81,7 +88,7 @@ function busqueda(){
         "previous":   "Anterior"
       }
     }
-    }); 
+  });
 }
 
-/**Fin Búsqueda **/
+/**Filtro de usuarios**/

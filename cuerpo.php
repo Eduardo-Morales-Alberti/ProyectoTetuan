@@ -162,23 +162,22 @@ if(!isset($page)){
                                 <li>
                                     <a href="#" title="Empresas" data-toggle="collapse-next" class="has-submenu">
                                         <em class="fa fa-building-o"></em>
-                                        <span class="item-text">Empresas</span>
-                                        <em class="fa fa-arrow-circle-down flecham"></em> 
-                                        
+                                        <span class="item-text">Empresas</span>                                        
                                     </a>   
                                     <ul class="nav collapse out">
                                         <li>
-                                            <a href="filtro_empresas.php" title="Buscar" data-toggle="" class="no-submenu subitem">
-                                                <em class="fa fa-search"></em>
-                                                <span class="item-text">Buscar empresa</span>
-                                            </a>
-                                        </li>
-                                        <li>
                                             <a href="ficha_empresas.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
-                                                <em class="fa fa-plus"></em>
+                                            
                                                 <span class="item-text">Nueva empresa</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="filtro_empresas.php" title="Buscar" data-toggle="" class="no-submenu subitem">
+                                                
+                                                <span class="item-text">Buscar empresa</span>
+                                            </a>
+                                        </li>
+                                        
                                     </ul>            
                                 </li>
                                 <!---->
@@ -187,21 +186,21 @@ if(!isset($page)){
                                     <a href="#" title="Empresas" data-toggle="collapse-next" class="has-submenu">
                                         <em class="fa fa-newspaper-o"></em>
                                         <span class="item-text">Puestos</span>
-                                        <em class="fa fa-arrow-circle-down flecham"></em> 
                                     </a>   
                                     <ul class="nav collapse out">
                                         <li>
-                                            <a href="filtro_puestos.php" title="Buscar" data-toggle="" class="no-submenu subitem">
-                                                <em class="fa fa-search"></em>
-                                                <span class="item-text">Buscar puesto</span>
+                                            <a href="ficha_puestos.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
+                                            
+                                                <span class="item-text">Nuevo puesto</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="ficha_puestos.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
-                                                <em class="fa fa-plus"></em>
-                                                <span class="item-text">Nueva puesto</span>
+                                            <a href="filtro_puestos.php" title="Buscar" data-toggle="" class="no-submenu subitem">
+                                             
+                                                <span class="item-text">Buscar puesto</span>
                                             </a>
                                         </li>
+                                        
                                     </ul> 
                                 </li>
                                 <!---->

@@ -301,439 +301,440 @@ $page["modal"][2] = ob_get_clean();
 ob_start();
 ?>
 
-<h1>PERFIL</h1>
-<div class="panel sinborde">    
-    <!--<input type="hidden" name="key" value="<%=usuario.Key%>" />-->
-    <input type="hidden" id="idtokken" name="idtokken" value="numero tokken" >
-    <!--Panel Datos Personales -->
-    <form>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Datos personales</h4> 
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" class="form-control " id="nombre" name="nombre" value="" autofocus="autofocus" required="required" >
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Apellidos</label>
-                            <input type="text" class="form-control" id="apellidos" name="apellidos" value="">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido" />
-                        </div>
-                    </div> 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <input type="tel" class="form-control" id="telefono" name="telefono" value="" >
-                        </div>
-                    </div>  
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label>Dirección</label>
-                            <input type="direccion" class="form-control" id="direccion" name="direccion" value="" >
-                        </div>
-                    </div>                  
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Fotografía de perfil</label><br>
-                            <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
-                            <input type="file" id="fotop" name="fotop" style="display:none">                        
-                            <input type="button" class="btn btn-primary" id="mostrarf" name="mostrarf" value="Mostrar fotografía">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Subir Currículum Vitae</label><br>
-                            <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
-                            <input type="file" id="cv" name="cv" style="display:none"> 
-                            <input type="button" class="btn btn-primary" id="mostrarcv" name="mostrarcv" value="Mostrar CV">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Descripción personal</label><br>
-                            <textarea class="form-control" rows="5" name="descpersonal">
-
-                            </textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <input type="submit" id="guardar" name="guardar" value="Guardar" class="btn btn-green">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <!-- Fin panel Datos Personales -->
-    <!-- Panel Actualizar Contraseña -->
-    <form>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Cambiar Contraseña</h4> 
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Contraseña actual</label>
-                            <input type="text" class="form-control" id="contr" name="contr" value="" required="required" >
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Nueva contraseña</label>
-                            <input type="text" class="form-control" id="ncontr" name="ncontr" value="" required="required">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Confirma la contraseña</label>
-                            <input type="text" class="form-control" id="ccontr" name="ccontr" value="" required="required">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <input type="submit" id="modificar" name="modificar" class="btn btn-green" value="Renovar">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form> 
-    <!-- Fin panel Actualizar Contraseña -->
-    <!-- Experiencia -->        
+<h1>Perfil</h1>
+<!--<input type="hidden" name="key" value="<%=usuario.Key%>" />-->
+<input type="hidden" id="idtokken" name="idtokken" value="numero tokken" >
+<!--Panel Datos Personales -->
+<form>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Experiencia</h4> 
+            <h4>Datos personales</h4> 
         </div>
         <div class="panel-body">
-            <div class="row">                        
-                <div class="col-md-8"><h4>Título del puesto<br>
-                    <small>Nombre de la empresa</small></h4>
-                </div>
-                <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-                <div class="col-md-12">
-                    <p>   
-                        Esta es la descripción del puesto de trabajo.
-
-                    </p>
-                </div>
-                <div class="col-md-12 pie-acciones">
-                    <form>
-                        <input type="hidden" name="ided" value="85135454">
-                        <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                    </form>
-                </div>
-            </div>
-            <hr>
-            <div class="row">                        
-                <div class="col-md-8"><h4>Título del puesto<br>
-                    <small>Nombre de otra empresa</small></h4>
-                </div>
-                <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-                <div class="col-md-12">
-                    <p>   
-                        Esta es la descripción del puesto de trabajo.
-
-                    </p>
-                </div>
-                <div class="col-md-12 pie-acciones">
-                    <form>
-                        <input type="hidden" name="ided" value="85135454">
-                        <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                    </form>
-                </div> 
-            </div>
-        </div>
-        <div class="panel-footer">
             <div class="row">
-                <div class="col-md-12 text-right">
-                    <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control " id="nombre" name="nombre" value="" autofocus="autofocus" required="required" >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" value="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido" />
+                    </div>
+                </div> 
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" value="" >
+                    </div>
+                </div>  
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Dirección</label>
+                        <input type="direccion" class="form-control" id="direccion" name="direccion" value="" >
+                    </div>
+                </div>                  
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Fotografía de perfil</label><br>
+                        <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
+                        <input type="file" id="fotop" name="fotop" style="display:none">                        
+                        <input type="button" class="btn btn-primary" id="mostrarf" name="mostrarf" value="Mostrar fotografía">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Subir Currículum Vitae</label><br>
+                        <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
+                        <input type="file" id="cv" name="cv" style="display:none"> 
+                        <input type="button" class="btn btn-primary" id="mostrarcv" name="mostrarcv" value="Mostrar CV">
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Fin de Experiencia -->
-    <!-- Educación -->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Educación</h4> 
-        </div>
-        <div class="panel-body">
-            <div class="row">                        
+            <div class="row">
                 <div class="col-md-8">
-                    <h4>Desarrollo de aplicaciones web <br>
-                        <small>Instituto Ies Tetuan</small><br>
-                        <small>Grado superior</small>
-                    </h4>
-                </div>
-                <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-                <div class="col-md-12">
-                    <p>   
-                        Esta es la descripción de la educación.
-                    </p>
+                    <div class="form-group">
+                        <label>Descripción personal</label><br>
+                        <textarea class="form-control" rows="5" name="descpersonal">
 
-                </div>
-
-                <div class="col-md-12 pie-acciones">
-                    <form>
-                        <input type="hidden" name="ided" value="85135454">
-                        <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                    </form>
-                </div>
-
-            </div>
-            <hr>
-            <div class="row">                        
-                <div class="col-md-8">
-                    <h4>Programación en Java <br>
-                        <small>CoreNetworks</small><br>
-                        <small>Curso</small>
-                    </h4>
-                </div>
-                <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-                <div class="col-md-12">
-                    <p>   
-                        Esta es la descripción de la educación.
-
-                    </p>
-                </div> 
-                <div class="col-md-12 pie-acciones">
-                    <form>
-                        <input type="hidden" name="ided" value="85135454">
-                        <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                    </form>
+                        </textarea>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
+                    <input type="submit" id="guardar" name="guardar" value="Guardar" class="btn btn-green">
                 </div>
             </div>
         </div>
     </div>
-    <!-- Educación -->
-    <!-- Skills -->
-    <form>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Skills</h4> 
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">                            
-                            <label>Agregar una etiqueta existente</label> <br>
-                            <div class="input-group">
-                                <select class="form-control" name="etiqueta">
-                                    <option value="php">php</option>
-                                    <option value="php">java</option>
-                                    <option value="php">html</option>
-                                    <option value="php">css</option>
-                                </select>
-                                <span class="input-group-btn">
-                                    <input class="btn btn-success" name="ageex" type="button" value="Agregar etiqueta">
-                                </span>
-                            </div>
-                        </div>                        
-                    </div>            
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Agregar una nueva etiqueta</label> 
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="etiqueta">
-                                <span class="input-group-btn">
-                                    <input class="btn btn-success" name="agreet" type="button" value="Agregar etiqueta">
-                                </span>
-                            </div>                           
-                        </div>                        
-                    </div>                    
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Tus etiquetas</label> 
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-lg-12 conborde etiquetas">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-3 form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox" name="php" value="php">
-                                        </span>
-                                        <input type="text" class="form-control" value="php" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-lg-3 form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox" name="javascript" value="javascript" >
-                                        </span>
-                                        <input type="text" class="form-control" value="javascript" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-lg-3 form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox" name="html" value="html">
-                                        </span>
-                                        <input type="text" class="form-control" value="html" disabled="disabled">
-                                    </div>
-                                </div>                           
-                                <div class="col-md-4 col-lg-3 form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox" name="css" value="css">
-                                        </span>
-                                        <input type="text" class="form-control" value="css" disabled="disabled">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                                 
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <input type="submit"  class="btn btn-danger" name="eliminarskills" value="Eliminar selección">
-                        <input type="submit"  class="btn btn-green" name="guardarskills" value="Guardar Skills">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <!-- Fin Skills -->
-    <!-- Idiomas -->
+</form>
+<!-- Fin panel Datos Personales -->
+<!-- Panel Actualizar Contraseña -->
+<form>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Idiomas</h4> 
-        </div>
-        <div class="panel-body">
-            <div class="row">                        
-                <div class="col-xs-4">
-                    <h4>Idioma</h4>
-                </div>                 
-                <div class="col-xs-4">
-                    <h4>Hablado</h4>
-
-                </div>
-                <div class="col-xs-4">
-                    <h4>Escrito</h4>
-
-                </div>
-            </div>
-            <div class="row idiomas">                        
-                <div class="col-xs-4">
-                    Inglés
-                </div>                 
-                <div class="col-xs-4">
-                    Intermedio
-
-                </div>
-                <div class="col-xs-4">
-                    Alto
-
-                </div>               
-                <div class="col-xs-12 pie-acciones">
-                    <form>
-                        <input type="hidden" name="ididio" value="85135454">
-                        <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
-                    </form>
-                </div>
-
-            </div>
-            <div class="row idiomas" >                        
-                <div class="col-xs-4">
-                    Francés
-                </div>                 
-                <div class="col-xs-4">
-                    Bajo
-
-                </div>
-                <div class="col-xs-4">
-                    Intermedio
-                </div>               
-                <div class="col-xs-12 pie-acciones">
-                    <form>
-                        <input type="hidden" name="ididio" value="85135454">
-                        <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
-                    </form>
-                </div>
-
-            </div>
-        </div>
-        <div class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin Idiomas -->
-    <!-- Carnet de conducir -->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Otra información</h4> 
+            <h4>Cambiar Contraseña</h4> 
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group"> 
-                        <input type="checkbox" name="carnet" > Tengo carnet de conducir.
-                    </div>                        
-                </div> 
-            </div>             
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Contraseña actual</label>
+                        <input type="text" class="form-control" id="contr" name="contr" value="" required="required" >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Nueva contraseña</label>
+                        <input type="text" class="form-control" id="ncontr" name="ncontr" value="" required="required">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Confirma la contraseña</label>
+                        <input type="text" class="form-control" id="ccontr" name="ccontr" value="" required="required">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <input type="submit"  class="btn btn-green" name="guardarcarnet" value="Guardar">
+                    <input type="submit" id="modificar" name="modificar" class="btn btn-green" value="Renovar">
                 </div>
             </div>
         </div>
-    </div>    
-    <!-- Fin carnet de conducir -->
-    <!-- Eliminar cuenta -->
-    <div class="panel panel-danger">
-        <div class="panel-heading text-right">
-            <button type="button" class="btn btn-danger">Eliminar cuenta</button>
+    </div>
+</form> 
+<!-- Fin panel Actualizar Contraseña -->
+<!-- Experiencia -->        
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Experiencia</h4> 
+    </div>
+    <div class="panel-body">
+        <div class="row">                        
+            <div class="col-md-8"><h4>Título del puesto<br>
+                <small>Nombre de la empresa</small></h4>
+            </div>
+            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
+            <div class="col-md-12">
+                <p>   
+                    Esta es la descripción del puesto de trabajo.
+
+                </p>
+            </div>
+            <div class="col-md-12 pie-acciones">
+                <form>
+                    <input type="hidden" name="ided" value="85135454">
+                    <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="row">                        
+            <div class="col-md-8"><h4>Título del puesto<br>
+                <small>Nombre de otra empresa</small></h4>
+            </div>
+            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
+            <div class="col-md-12">
+                <p>   
+                    Esta es la descripción del puesto de trabajo.
+
+                </p>
+            </div>
+            <div class="col-md-12 pie-acciones">
+                <form>
+                    <input type="hidden" name="ided" value="85135454">
+                    <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
+                </form>
+            </div> 
         </div>
     </div>
-    <!-- Fin eliminar cuenta-->
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Fin de Experiencia -->
+<!-- Educación -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Educación</h4> 
+    </div>
+    <div class="panel-body">
+        <div class="row">                        
+            <div class="col-md-8">
+                <h4>Desarrollo de aplicaciones web <br>
+                    <small>Instituto Ies Tetuan</small><br>
+                    <small>Grado superior</small>
+                </h4>
+            </div>
+            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
+            <div class="col-md-12">
+                <p>   
+                    Esta es la descripción de la educación.
+                </p>
+
+            </div>
+
+            <div class="col-md-12 pie-acciones">
+                <form>
+                    <input type="hidden" name="ided" value="85135454">
+                    <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+                </form>
+            </div>
+
+        </div>
+        <hr>
+        <div class="row">                        
+            <div class="col-md-8">
+                <h4>Programación en Java <br>
+                    <small>CoreNetworks</small><br>
+                    <small>Curso</small>
+                </h4>
+            </div>
+            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
+            <div class="col-md-12">
+                <p>   
+                    Esta es la descripción de la educación.
+
+                </p>
+            </div> 
+            <div class="col-md-12 pie-acciones">
+                <form>
+                    <input type="hidden" name="ided" value="85135454">
+                    <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Educación -->
+<!-- Skills -->
+<form>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Skills</h4> 
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">                            
+                        <label>Agregar una etiqueta existente</label> <br>
+                        <div class="input-group">
+                            <select class="form-control" name="etiqueta">
+                                <option value="php">php</option>
+                                <option value="php">java</option>
+                                <option value="php">html</option>
+                                <option value="php">css</option>
+                            </select>
+                            <span class="input-group-btn">
+                                <input class="btn btn-success" name="ageex" type="button" value="Agregar etiqueta">
+                            </span>
+                        </div>
+                    </div>                        
+                </div>            
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Agregar una nueva etiqueta</label> 
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="etiqueta">
+                            <span class="input-group-btn">
+                                <input class="btn btn-success" name="agreet" type="button" value="Agregar etiqueta">
+                            </span>
+                        </div>                           
+                    </div>                        
+                </div>                    
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Tus etiquetas</label> 
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-lg-12 conborde etiquetas">
+                        <div class="row">
+                            <div class="col-md-4 col-lg-3 form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" name="php" value="php">
+                                    </span>
+                                    <input type="text" class="form-control" value="php" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-3 form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" name="javascript" value="javascript" >
+                                    </span>
+                                    <input type="text" class="form-control" value="javascript" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-3 form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" name="html" value="html">
+                                    </span>
+                                    <input type="text" class="form-control" value="html" disabled="disabled">
+                                </div>
+                            </div>                           
+                            <div class="col-md-4 col-lg-3 form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" name="css" value="css">
+                                    </span>
+                                    <input type="text" class="form-control" value="css" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                                 
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <input type="submit"  class="btn btn-danger" name="eliminarskills" value="Eliminar selección">
+                    <input type="submit"  class="btn btn-green" name="guardarskills" value="Guardar Skills">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Fin Skills -->
+<!-- Idiomas -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Idiomas</h4> 
+    </div>
+    <div class="panel-body">
+        <div class="row">                        
+            <div class="col-xs-4">
+                <h4>Idioma</h4>
+            </div>                 
+            <div class="col-xs-4">
+                <h4>Hablado</h4>
+
+            </div>
+            <div class="col-xs-4">
+                <h4>Escrito</h4>
+
+            </div>
+        </div>
+        <div class="row idiomas">                        
+            <div class="col-xs-4">
+                Inglés
+            </div>                 
+            <div class="col-xs-4">
+                Intermedio
+
+            </div>
+            <div class="col-xs-4">
+                Alto
+
+            </div>               
+            <div class="col-xs-12 pie-acciones">
+                <form>
+                    <input type="hidden" name="ididio" value="85135454">
+                    <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
+                </form>
+            </div>
+
+        </div>
+        <div class="row idiomas" >                        
+            <div class="col-xs-4">
+                Francés
+            </div>                 
+            <div class="col-xs-4">
+                Bajo
+
+            </div>
+            <div class="col-xs-4">
+                Intermedio
+            </div>               
+            <div class="col-xs-12 pie-acciones">
+                <form>
+                    <input type="hidden" name="ididio" value="85135454">
+                    <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Idiomas -->
+<!-- Carnet de conducir -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Otra información</h4> 
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input type="checkbox" name="carnet" value="carnet">
+                    </span>
+                    <input type="text" class="form-control" value="Tengo carnet de conducir" disabled="disabled">
+                </div>                        
+            </div> 
+        </div>             
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <input type="submit"  class="btn btn-green" name="guardarcarnet" value="Guardar">
+            </div>
+        </div>
+    </div>
+</div>    
+<!-- Fin carnet de conducir -->
+<!-- Eliminar cuenta -->
+<div class="panel panel-danger">
+    <div class="panel-heading text-right">
+        <button type="button" class="btn btn-danger">Eliminar cuenta</button>
+    </div>
+</div>
+<!-- Fin eliminar cuenta-->
 
 <?php 
 /** Guardamos el buffer del cuerpo del perfil **/
