@@ -187,7 +187,19 @@ function perfil(){
 
 /** Búsqueda de ofertas **/
 function busquedaofer(){
+  /** Opcion requisitos **/
+  var elementosreq = new Array();
 
+  var btnex = document.getElementById("ageex");
+  btnex.addEventListener("click", function(){
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3")
+  });
+
+  var btnelimex = document.getElementById("elimrequisito");
+  btnelimex.addEventListener("click", function(){
+    elementosreq = eliminarTag("etiquetas", "divetiquetas",elementosreq)
+  });
+  /** Fin Opcion requisitos **/
 
 }
 

@@ -76,70 +76,72 @@ ob_start();?>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Requisitos</label>
-                <div class="input-group">
-                    <select class="form-control" name="etiqueta">
-                        <option value="php">php</option>
-                        <option value="php">java</option>
-                        <option value="php">html</option>
-                        <option value="php">css</option>
-                    </select>
-                    <span class="input-group-btn">
-                        <input class="btn btn-success" name="ageex" type="button" value="Agregar requisito">
-                    </span>
-                </div>               
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label>Etiquetas</label>
+                    <div class="input-group">
+                        <select class="form-control" id="etiquetas" name="etiqueta">
+                            <option value="nada">Ninguna</option>
+                            <option value="php">php</option>
+                            <option value="java">java</option>
+                            <option value="html">html</option>
+                            <option value="css">css</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
+                        </span>
+                    </div>               
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 form-group">                    
-            <div class="col-lg-12 conborde etiquetas">
-                <div class="row">
-                    <div class="col-md-4 col-lg-3 form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox" name="php" value="php">
-                            </span>
-                            <input type="text" class="form-control" value="php" disabled="disabled">
+        <div class="row">
+            <div class="col-lg-12 form-group">                    
+                <div class="col-lg-12 conborde etiquetas">
+                    <div class="row" id="divetiquetas">
+                        <div class="col-md-4 col-lg-3 form-group" id="php">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="php" value="php">
+                                </span>
+                                <input type="text" class="form-control" value="php" disabled="disabled">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 col-lg-3 form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox" name="javascript" value="javascript" >
-                            </span>
-                            <input type="text" class="form-control" value="javascript" disabled="disabled">
+                        <div class="col-md-4 col-lg-3 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="javascript" value="javascript" >
+                                </span>
+                                <input type="text" class="form-control" value="javascript" disabled="disabled">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 col-lg-3 form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox" name="html" value="html">
-                            </span>
-                            <input type="text" class="form-control" value="html" disabled="disabled">
+                        <div class="col-md-4 col-lg-3 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="html" value="html">
+                                </span>
+                                <input type="text" class="form-control" value="html" disabled="disabled">
+                            </div>
+                        </div>                           
+                        <div class="col-md-4 col-lg-3 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="css" value="css">
+                                </span>
+                                <input type="text" class="form-control" value="css" disabled="disabled">
+                            </div>
                         </div>
-                    </div>                           
-                    <div class="col-md-4 col-lg-3 form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox" name="css" value="css">
-                            </span>
-                            <input type="text" class="form-control" value="css" disabled="disabled">
-                        </div>
-                    </div>
-                </div>  
-            </div>                    
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <input type="button" class="btn btn-danger" name="elimfiltro" value="Eliminar selección">
+                    </div>  
+                </div>
+
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="button" class="btn btn-danger" id="elimrequisito" name="elimrequisito" value="Eliminar selección">
+                </div>
+            </div>
+        </div>
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
