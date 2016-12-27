@@ -311,7 +311,7 @@ ob_start();
 <form>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Datos personales</h4> 
+            <h4>Información del perfil</h4> 
         </div>
         <div class="panel-body">
             <div class="row">
@@ -370,12 +370,25 @@ ob_start();
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Descripción personal</label><br>
+                        <label>Descripción personal</label>
                         <textarea class="form-control" rows="5" name="descpersonal">
 
                         </textarea>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Carnet de conducir</label>
+                        <div class="input-group">  
+                            <span class="input-group-addon">
+                                <input type="checkbox" name="carnet" value="carnet">
+                            </span>
+                            <input type="text" class="form-control" value="Tengo carnet de conducir" disabled="disabled">
+                        </div>
+                    </div>                        
+                </div> 
             </div>
         </div>
         <div class="panel-footer">
@@ -707,32 +720,7 @@ ob_start();
     </div>
 </div>
 <!-- Fin Idiomas -->
-<!-- Carnet de conducir -->
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Otra información</h4> 
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <input type="checkbox" name="carnet" value="carnet">
-                    </span>
-                    <input type="text" class="form-control" value="Tengo carnet de conducir" disabled="disabled">
-                </div>                        
-            </div> 
-        </div>             
-    </div>
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-md-12 text-right">
-                <input type="submit"  class="btn btn-green" name="guardarcarnet" value="Guardar">
-            </div>
-        </div>
-    </div>
-</div>    
-<!-- Fin carnet de conducir -->
+
 <!-- Eliminar cuenta -->
 <div class="panel panel-danger">
     <div class="panel-heading text-right">
