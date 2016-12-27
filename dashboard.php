@@ -74,7 +74,7 @@ ob_start();
         <!-- Fin de Usuarios-->
         <!-- Empresas -->
         <div class="panel sinborde col-md-4" id="panel-anim-zoomOut1">
-            <a href="ficha_empresa.php?Id=nuevo" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
+            <a href="ficha_empresas.php?Id=nuevo" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
