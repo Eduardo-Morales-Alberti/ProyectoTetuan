@@ -157,7 +157,7 @@ ob_start();?>
 <div class="panel-footer">
     <div class="row">
        <div class="col-md-12 text-right">
-          <input type="submit" class="btn btn-danger" name="limpiarfiltros" value="Limpiar filtros">
+          <input type="button" class="btn btn-warning" name="limpiarfiltros" value="Limpiar filtros">
           <input type="submit" class="btn btn-green" name="buscarofertas" value="Buscar ofertas">
       </div>
   </div>

@@ -5,7 +5,7 @@ $_SESSION["tipo"] = "administrador";
 
 ob_start();?>
 <script type="text/javascript">
-filtro_puestos();
+filtropuestos();
 
 </script>
 <?php
@@ -42,18 +42,19 @@ ob_start();
             </div>
         </div>          
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label>Etiquetas</label>
                     <div class="input-group">
-                        <select class="form-control" name="etiqueta">
+                        <select class="form-control" id="etiquetas" name="etiqueta">
+                            <option value="nada">Ninguna</option>
                             <option value="php">php</option>
-                            <option value="php">java</option>
-                            <option value="php">html</option>
-                            <option value="php">css</option>
+                            <option value="java">java</option>
+                            <option value="html">html</option>
+                            <option value="css">css</option>
                         </select>
                         <span class="input-group-btn">
-                            <input class="btn btn-success" name="ageex" type="button" value="Agregar etiqueta">
+                            <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
                         </span>
                     </div>               
                 </div>
@@ -62,8 +63,8 @@ ob_start();
         <div class="row">
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 form-group">
+                    <div class="row" id="divetiquetas">
+                        <div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="php" value="php">
@@ -103,7 +104,7 @@ ob_start();
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <input type="button" class="btn btn-danger" name="elimrequisito" value="Eliminar selección">
+                    <input type="button" class="btn btn-danger" id="elimrequisito" name="elimrequisito" value="Eliminar selección">
                 </div>
             </div>
         </div>
@@ -164,8 +165,8 @@ ob_start();
     <div class="panel-footer">
         <div class="row">
            <div class="col-md-12 text-right">
-              <input type="submit" class="btn btn-danger" name="limpiar" value="Limpiar filtros">
-              <input type="submit" class="btn btn-green" name="buscarpuesto" value="Buscar puesto">
+              <input type="button" class="btn btn-warning" name="limpiarfiltros" value="Limpiar filtros">
+              <input type="submit" class="btn btn-green" name="buscarpuesto" value="Buscar puestos">
           </div>
       </div>
   </div>    

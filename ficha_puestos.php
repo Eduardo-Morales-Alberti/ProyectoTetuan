@@ -5,7 +5,7 @@ $_SESSION["tipo"] = "administrador";
 
 ob_start();?>
 <script type="text/javascript">
-ficha_puestos();
+fichapuestos();
 
 </script>
 <?php
@@ -50,7 +50,7 @@ ob_start();
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label>Funciones</label><br>
                     <div class="input-group">
@@ -64,28 +64,58 @@ ob_start();
         </div>
         <div class="row">
             <div class="col-lg-12 form-group">                    
-                <div class="col-lg-6 conborde etiquetas">                       
-                    <ul>
-                        <li>Programación y mantenimiento de páginas web</li>
-                        <li>Manejo de Gestores de contenido</li>
-                        <li>Gestión de hosting web y de correo</li>
-                    </ul>                        
+                <div class="col-lg-12 conborde etiquetas">
+                    <div class="row" id="divfunciones">
+                        <div class="col-md-6 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="el" value="Manejo de Gestores de contenido">
+                                </span>
+                                <input type="text" class="form-control" value="Manejo de Gestores de contenido" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="el" value="Programación y mantenimiento de páginas web" >
+                                </span>
+                                <input type="text" class="form-control" value="Programación y mantenimiento de páginas web" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="el" value="Gestión de hosting web y de correo">
+                                </span>
+                                <input type="text" class="form-control" value="Gestión de hosting web y de correo" disabled="disabled">
+                            </div>
+                        </div>       
+                    </div>  
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="button" class="btn btn-danger" id="elimfunc" name="elimfunc" value="Eliminar selección">
                 </div>
             </div>
         </div>            
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label>Etiquetas</label>
                     <div class="input-group">
-                        <select class="form-control" name="etiqueta">
+                        <select class="form-control" id="etiquetas" name="etiqueta">
+                            <option value="nada">Ninguna</option>
                             <option value="php">php</option>
-                            <option value="php">java</option>
-                            <option value="php">html</option>
-                            <option value="php">css</option>
+                            <option value="java">java</option>
+                            <option value="html">html</option>
+                            <option value="css">css</option>
                         </select>
                         <span class="input-group-btn">
-                            <input class="btn btn-success" name="ageex" type="button" value="Agregar etiqueta">
+                            <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
                         </span>
                     </div>               
                 </div>
@@ -94,8 +124,8 @@ ob_start();
         <div class="row">
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
-                    <div class="row">
-                        <div class="col-md-4 col-lg-3 form-group">
+                    <div class="row" id="divetiquetas">
+                        <div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="php" value="php">
@@ -135,24 +165,25 @@ ob_start();
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <input type="button" class="btn btn-danger" name="elimrequisito" value="Eliminar selección">
+                    <input type="button" class="btn btn-danger" id="elimrequisito" name="elimrequisito" value="Eliminar selección">
                 </div>
             </div>
         </div>
         
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label>Idiomas</label>
                     <div class="input-group">
-                        <select class="form-control" name="idioma">
-                            <option value="ing">Inglés</option>
-                            <option value="fr">Francés</option>
-                            <option value="it">Italiano</option>
-                            <option value="jp">Japones</option>
+                        <select class="form-control" id="idiomas" name="idioma">
+                            <option value="nada">Ninguno</option>
+                            <option value="ingles">Inglés</option>
+                            <option value="frances">Francés</option>
+                            <option value="italiano">Italiano</option>
+                            <option value="japones">Japones</option>
                         </select>
                         <span class="input-group-btn">
-                            <input class="btn btn-success" name="ageidi" type="button" value="Agregar idioma">
+                            <input class="btn btn-success" id="ageidi" name="ageidi" type="button" value="Agregar idioma">
                         </span>
                     </div>               
                 </div>
@@ -161,7 +192,7 @@ ob_start();
         <div class="row">
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
-                    <div class="row">
+                    <div class="row" id="dividiomas">
                         <div class="col-md-4 col-lg-3 form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -202,13 +233,13 @@ ob_start();
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <input type="button" class="btn btn-danger" name="elimidi" value="Eliminar selección">
+                    <input type="button" class="btn btn-danger" id="elimidi" name="elimidi" value="Eliminar selección">
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-             <div class="form-group">
+               <div class="form-group">
                 <label>Carnet de conducir</label> <br>
 
                 <div class="input-group">
@@ -276,11 +307,11 @@ ob_start();
 </div>
 <div class="panel-footer">
     <div class="row">
-       <div class="col-md-12 text-right">
-          <input type="submit" class="btn btn-danger" name="limpiar" value="Limpiar">
-          <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
-      </div>
+     <div class="col-md-12 text-right">
+      <input type="submit" class="btn btn-danger" name="limpiar" value="Limpiar">
+      <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
   </div>
+</div>
 </div>    
 
 </div>
