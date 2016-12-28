@@ -76,6 +76,8 @@ function eliminarTag(selctid,divid,elementos){
   /** Obtengo el div donde voy a eliminar la etiqueta**/
   var ele = document.getElementById(divid);
   /** Recorro elementos con los check que he agregado anteriormente**/
+  
+  //var longi = elementos.length;
   for (var i = 0; i < elementos.length; i++) {
     /** Obtengo los elemento checkbox a partir de su id**/
     var checkel = document.getElementById(elementos[i]);
@@ -95,10 +97,12 @@ function eliminarTag(selctid,divid,elementos){
       }  
       /** Elimino el div de la etiqueta**/
       ele.removeChild(divelim);
+      /** Elimino el elemento del array **/
+      elementos.splice(i,1);  
+      i = i-1;
     }  
 
-      /** Elimino el elemento del array **/
-      elementos.splice(i,1);    
+    
   };
   return elementos;
 }
@@ -160,7 +164,6 @@ function perfil(){
   });
   };
   /** Fin Opcion fechas actualmente **/
-
   /** Agregar etiquetas **/
   var elementosreq = new Array();
 
@@ -180,6 +183,7 @@ function perfil(){
   });
 
   /** Fin agregar etiquetas **/
+  
   
 }
 /**Fin Perfil **/
