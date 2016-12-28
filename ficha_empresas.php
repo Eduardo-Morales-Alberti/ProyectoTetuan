@@ -56,15 +56,6 @@ ob_start();
                             <input type="text" class="form-control" name="diremp" value="" >
                         </div>
 					</div>                    
-                    
-				</div>
-				<div class="row">	
-					<div class="col-md-5">
-                        <div class="form-group">
-                            <label>Provincia</label>
-                            <input type="text" class="form-control" name="prov" value="" >
-                        </div>
-					</div> 
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Población</label>
@@ -76,7 +67,7 @@ ob_start();
                             <label>Código Postal</label>
                             <input type="text" class="form-control"name="cpostal" value="" >
                         </div>
-                    </div> 
+                    </div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">

@@ -10,7 +10,6 @@ Se le llama en el cuerpo en las últimas líneas**/
 ob_start();?>
 <script type="text/javascript">
 perfil();
-
 </script>
 <?php
 $page["js"] = ob_get_clean();
@@ -341,14 +340,28 @@ ob_start();
                         <label>Teléfono</label>
                         <input type="tel" class="form-control" id="telefono" name="telefono" value="" >
                     </div>
-                </div>  
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label>Dirección</label>
-                        <input type="direccion" class="form-control" id="direccion" name="direccion" value="" >
-                    </div>
-                </div>                  
+                </div>                   
             </div>
+            <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Provincia</label>
+                            <input type="text" class="form-control" name="poblacion" value="" >
+                        </div>
+                    </div>           
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Población</label>
+                            <input type="text" class="form-control" name="poblacion" value="" >
+                        </div>
+                    </div> 
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Código Postal</label>
+                            <input type="text" class="form-control"name="cpostal" value="" >
+                        </div>
+                    </div>
+                </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
