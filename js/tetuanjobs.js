@@ -77,7 +77,7 @@ function eliminarTag(selctid,divid,elementos){
   var ele = document.getElementById(divid);
   /** Recorro elementos con los check que he agregado anteriormente**/
   for (var i = 0; i < elementos.length; i++) {
-    /** Obtengo los elemento checbox a partir de su id**/
+    /** Obtengo los elemento checkbox a partir de su id**/
     var checkel = document.getElementById(elementos[i]);
     /** Si el checkbox está seleccionado**/
     if(checkel.checked){
@@ -92,14 +92,13 @@ function eliminarTag(selctid,divid,elementos){
         opt.innerHTML = checkel.value;
         /** Agrego el option a mi select **/
         x.appendChild(opt);
-      }      
-
+      }  
       /** Elimino el div de la etiqueta**/
       ele.removeChild(divelim);
-      /** Elimino el elemento del array **/
-      elementos.splice(i,1);
+    }  
 
-    }      
+      /** Elimino el elemento del array **/
+      elementos.splice(i,1);    
   };
   return elementos;
 }
