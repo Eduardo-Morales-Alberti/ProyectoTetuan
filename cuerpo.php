@@ -167,13 +167,13 @@ if(!isset($page)){
                                     <ul class="nav collapse out">
                                         <li>
                                             <a href="ficha_empresas.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
-                                            
+
                                                 <span class="item-text">Nueva empresa</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="filtro_empresas.php" title="Buscar" data-toggle="" class="no-submenu subitem">
-                                                
+
                                                 <span class="item-text">Buscar empresa</span>
                                             </a>
                                         </li>
@@ -190,13 +190,13 @@ if(!isset($page)){
                                     <ul class="nav collapse out">
                                         <li>
                                             <a href="ficha_puestos.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
-                                            
+
                                                 <span class="item-text">Nuevo puesto</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="filtro_puestos.php" title="Buscar" data-toggle="" class="no-submenu subitem">
-                                             
+
                                                 <span class="item-text">Buscar puesto</span>
                                             </a>
                                         </li>
@@ -240,7 +240,34 @@ if(!isset($page)){
                         }
 
                     }
-                    ?>        
+                    ?> 
+                    <!-- Modal mensaje del servidor -->
+                    <div class="modal fade" id="modalmensaje" >
+                        <div class="modal-dialog modal-lg">
+
+                            <!-- Contenido del modal // Un modal es una ventana que se muestra encima del contenido -->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <!-- Este boton sirve para cerrar el modal -->
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <!-- Este es el título de la cabecera del modal -->
+                                    <h4 class="modal-title"><span id="titexp">Aviso</span></h4>
+                                </div>
+
+                                <!-- Este es el cuerpo del modal -->
+                                <div class="modal-body">
+                                    <p><?php echo $_REQUEST["mensaje"]; ?></p>
+                                </div>
+                                <!-- Este es el pie del modal -->
+                                <div class="modal-footer"> 
+                                    <input type="button" class="btn btn-info" data-dismiss="modal" value="Salir">
+                                    <!-- Para cerrar todos los modales con data-dismiss-->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>                        
+
                     <!-- Fin Modal -->
 
                     <!-- jQuery Scripts-->
@@ -262,19 +289,24 @@ if(!isset($page)){
                     <!-- Data Table Scripts-->
                     <script src="js/jquery.dataTables.min.js"></script>
                     <script src="js/dataTables.bootstrap.min.js"></script>
-                    
+
                     <!-- Tabla responsive -->
                     <script src="js/dataTables.responsive.min.js"></script>
-                    
+
 
                     <script src="js/app.js"></script> 
 
                     <!-- Aplicación Scripts-->
                     <script src="js/tetuanjobs.js"></script>
-                    
+
                     <?php
                     if(isset($page["js"])){
                         echo $page["js"];
+                    }
+                    if(isset($_REQUEST["mensaje"])){
+                        echo '<script type="text/javascript">
+                        mensajeModal();
+                        </script>';
                     }
                     ?>   
 

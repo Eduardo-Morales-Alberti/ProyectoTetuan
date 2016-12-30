@@ -28,6 +28,23 @@ function cargarTabla(idtabla){
 
 /** Fin datatable **/
 
+/** Modal mensaje **/
+
+function mensajeModal(){
+  $(document).ready(function(){
+      $("#modalmensaje").modal("show");
+      var a = window.setTimeout(function(){
+        $("#modalmensaje").modal("hide");
+      },4000);
+    });
+
+
+
+
+}
+
+/** Fin Modal mensaje **/
+
 /** Next sibling **/
 function siguienteHermano(x){
   if(x.nextElementSibling){
