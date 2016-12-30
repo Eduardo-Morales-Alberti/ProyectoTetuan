@@ -30,11 +30,11 @@ ob_start();?>
                     <!-- Este es el título de la cabecera del modal -->
                     <h4 class="modal-title"><span id="titexp">Añadir un nuevo puesto de trabajo</span></h4>
                 </div>
-                <form>
-                    <!-- Este es el cuerpo del modal -->
-                    <div class="modal-body">
-                        <!-- Esta es una fila dentro del cuerpo del modal -->
-                        <div class="row">
+
+                <!-- Este es el cuerpo del modal -->
+                <div class="modal-body">
+                    <!-- Esta es una fila dentro del cuerpo del modal -->
+                    <div class="row">
                         <!-- Esta clase ocupa 6 columnas del grid de 12, lo que seria la mitad
                         pero cómo es md sólo se aplicará a una resolución de hasta 992 px-->
                         <div class="col-md-6">
@@ -71,32 +71,25 @@ ob_start();?>
                                     <option value="11">noviembre</option>
                                     <option value="12">diciembre</option>
                                 </select>
-                                <input type="text" class="conborde" name="f1anio" required="required" maxlength="4" size="4" > - 
-                                <span class="actSpan">
-                                    <!-- Este input se enviará si está marcado el checkbox "actualmente"-->
-                                    <input type="hidden" class="actInput" name="actInput" value="">
-                                    actualmente
-                                </span>
-                                <div class="actDiv">
-                                    <select class="conborde" name="f2mes">
-                                        <option value="1">enero</option>
-                                        <option value="2">febrero</option>
-                                        <option value="3">marzo</option>
-                                        <option value="4">abril</option>
-                                        <option value="5">mayo</option>
-                                        <option value="6">junio</option>
-                                        <option value="7">julio</option>
-                                        <option value="8">agosto</option>
-                                        <option value="9">septiembre</option>
-                                        <option value="10">octubre</option>
-                                        <option value="11">noviembre</option>
-                                        <option value="12">diciembre</option>
-                                    </select>
-                                    <input type="text" name="f2anio" class="conborde"  maxlength="4" size="4" >
-                                </div>
-                                <br>
-                                <input type="checkbox" name="actualmente" class="actualmente conborde" >
-                                Trabajo aquí actualmente
+                                <input type="text" class="conborde text-center" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+                                
+                                <select class="conborde selact" name="f2mes">                                        
+                                    <option value="1">enero</option>
+                                    <option value="2">febrero</option>
+                                    <option value="3">marzo</option>
+                                    <option value="4">abril</option>
+                                    <option value="5">mayo</option>
+                                    <option value="6">junio</option>
+                                    <option value="7">julio</option>
+                                    <option value="8">agosto</option>
+                                    <option value="9">septiembre</option>
+                                    <option value="10">octubre</option>
+                                    <option value="11">noviembre</option>
+                                    <option value="12">diciembre</option>
+                                    <option value="0">actualmente</option>
+                                </select>
+                                <input type="text" name="f2anio" class="conborde text-center" placeholder="Año"  maxlength="4" size="4" >
+
                             </div>    
                         </div>                       
                     </div>
@@ -116,31 +109,31 @@ ob_start();?>
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
                     <!-- Para cerrar todos los modales con data-dismiss-->
                 </div>
-            </form>
+
+            </div>
         </div>
     </div>
-</div>
-<?php 
-/** Obtenermos el buffer con todo el html anterior y limpiamos el buffer**/
-$page["modal"][0] = ob_get_clean();
+    <?php 
+    /** Obtenermos el buffer con todo el html anterior y limpiamos el buffer**/
+    $page["modal"][0] = ob_get_clean();
 
 
-/*Fin Modal Experiencia*/
+    /*Fin Modal Experiencia*/
 
-/*Modal Educación*/
+    /*Modal Educación*/
 
-ob_start();
-?>
-<div class="modal fade" id="modaleduc" role="dialog">
-    <div class="modal-dialog modal-lg">
+    ob_start();
+    ?>
+    <div class="modal fade" id="modaleduc" role="dialog">
+        <div class="modal-dialog modal-lg">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Añadir un nuevo estudio</h4>
-            </div>
-            <form>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Añadir un nuevo estudio</h4>
+                </div>
+
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -174,31 +167,25 @@ ob_start();
                                     <option value="11">noviembre</option>
                                     <option value="12">diciembre</option>
                                 </select>
-                                <input type="text" class="conborde" name="f1anio" required="required" maxlength="4" size="4" > - 
-                                <span class="actSpan">
-                                    <input type="hidden" name="actInput" value="">
-                                    actualmente
-                                </span>
-                                <div class="actDiv">
-                                    <select class="conborde" name="f2mes">
-                                        <option value="1">enero</option>
-                                        <option value="2">febrero</option>
-                                        <option value="3">marzo</option>
-                                        <option value="4">abril</option>
-                                        <option value="5">mayo</option>
-                                        <option value="6">junio</option>
-                                        <option value="7">julio</option>
-                                        <option value="8">agosto</option>
-                                        <option value="9">septiembre</option>
-                                        <option value="10">octubre</option>
-                                        <option value="11">noviembre</option>
-                                        <option value="12">diciembre</option>
-                                    </select>
-                                    <input type="text" name="f2anio" class="conborde" maxlength="4" size="4" >
-                                </div>
-                                <br>
-                                <input type="checkbox" name="actualmente" class="actualmente conborde">
-                                Estudio aquí actualmente
+                                <input type="text" class="conborde text-center" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+                                
+                                <select class="conborde selact" name="f2mes">                                        
+                                    <option value="1">enero</option>
+                                    <option value="2">febrero</option>
+                                    <option value="3">marzo</option>
+                                    <option value="4">abril</option>
+                                    <option value="5">mayo</option>
+                                    <option value="6">junio</option>
+                                    <option value="7">julio</option>
+                                    <option value="8">agosto</option>
+                                    <option value="9">septiembre</option>
+                                    <option value="10">octubre</option>
+                                    <option value="11">noviembre</option>
+                                    <option value="12">diciembre</option>
+                                    <option value="0">actualmente</option>
+                                </select>
+                                <input type="text" name="f2anio" class="conborde text-center" placeholder="Año"  maxlength="4" size="4" >
+
                             </div>    
                         </div>  
                         <div class="col-md-6">
@@ -231,28 +218,28 @@ ob_start();
                     <input type="submit" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
                 </div>
-            </form>
+
+            </div>
         </div>
     </div>
-</div>
-<?php
-$page["modal"][1] = ob_get_clean();
+    <?php
+    $page["modal"][1] = ob_get_clean();
 
-/*Fin Modal educ*/
-/* Modal Idioma */
+    /*Fin Modal educ*/
+    /* Modal Idioma */
 
-ob_start();
-?>
-<div class="modal fade" id="modalidioma" role="dialog">
-    <div class="modal-dialog modal-lg">
+    ob_start();
+    ?>
+    <div class="modal fade" id="modalidioma" role="dialog">
+        <div class="modal-dialog modal-lg">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Añadir un nuevo idioma</h4>
-            </div>
-            <form>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Añadir un nuevo idioma</h4>
+                </div>
+
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-5">
@@ -291,23 +278,21 @@ ob_start();
                     <input type="submit" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
                 </div>
-            </form>
+
+            </div>
         </div>
     </div>
-</div>
-<?php
+    <?php
 
-$page["modal"][2] = ob_get_clean();
-/* Fin Modal idioma */
+    $page["modal"][2] = ob_get_clean();
+    /* Fin Modal idioma */
 
-ob_start();
-?>
+    ob_start();
+    ?>
 
-<h1>Perfil</h1>
-<!--<input type="hidden" name="key" value="<%=usuario.Key%>" />-->
-<input type="hidden" id="idtokken" name="idtokken" value="numero tokken" >
-<!--Panel Datos Personales -->
-<form>
+    <h1>Perfil</h1>
+    <!--Panel Datos Personales -->
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4>Información del perfil</h4> 
@@ -343,25 +328,25 @@ ob_start();
                 </div>                   
             </div>
             <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Provincia</label>
-                            <input type="text" class="form-control" name="poblacion" value="" >
-                        </div>
-                    </div>           
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Población</label>
-                            <input type="text" class="form-control" name="poblacion" value="" >
-                        </div>
-                    </div> 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Código Postal</label>
-                            <input type="text" class="form-control"name="cpostal" value="" >
-                        </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Provincia</label>
+                        <input type="text" class="form-control" name="poblacion" value="" >
+                    </div>
+                </div>           
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Población</label>
+                        <input type="text" class="form-control" name="poblacion" value="" >
+                    </div>
+                </div> 
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Código Postal</label>
+                        <input type="text" class="form-control"name="cpostal" value="" >
                     </div>
                 </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -413,10 +398,10 @@ ob_start();
             </div>
         </div>
     </div>
-</form>
-<!-- Fin panel Datos Personales -->
-<!-- Panel Actualizar Contraseña -->
-<form>
+
+    <!-- Fin panel Datos Personales -->
+    <!-- Panel Actualizar Contraseña -->
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4>Cambiar Contraseña</h4> 
@@ -451,59 +436,133 @@ ob_start();
             </div>
         </div>
     </div>
-</form> 
-<!-- Fin panel Actualizar Contraseña -->
-<!-- Experiencia -->        
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Experiencia</h4> 
-    </div>
-    <div class="panel-body">
-        <div class="row">                        
-            <div class="col-md-8"><h4>Título del puesto<br>
-                <small>Nombre de la empresa</small></h4>
-            </div>
-            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-            <div class="col-md-12">
-                <p>   
-                    Esta es la descripción del puesto de trabajo.
 
+    <!-- Fin panel Actualizar Contraseña -->
+    <!-- Experiencia -->        
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Experiencia</h4> 
+        </div>
+        <div class="panel-body">
+            <div class="row">                        
+                <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
+                    <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
+                </div>
+                <div class="col-md-4">
+                    <small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Septiembre">Septiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                    </select>, 
+                    <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+                    <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+                    <span class="mod2"><select class="selact" name="f2mes">                                        
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Septiembre">Septiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                        <option value="actualmente">actualmente</option>
+                    </select>&nbsp;
+                    <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+                </i></small>
+
+
+
+            </div>   
+            <div class="col-md-8">
+                <p>  
+                    <span class="spn">Esta es la descripción del puesto de trabajo.</span>
+                    <textarea class="npt" name="desc" rows="5"></textarea>
                 </p>
             </div>
             <div class="col-md-12 pie-acciones">
-                <form>
-                    <input type="hidden" name="ided" value="85135454">
-                    <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                </form>
+
+                <input type="hidden" name="ided" value="85135454">
+                <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
+                <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
             </div>
         </div>
         <hr>
         <div class="row">                        
-            <div class="col-md-8"><h4>Título del puesto<br>
-                <small>Nombre de otra empresa</small></h4>
+            <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
+                <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
             </div>
-            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-            <div class="col-md-12">
-                <p>   
-                    Esta es la descripción del puesto de trabajo.
+            <div class="col-md-4">
+                <small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+                    <option value="Enero">Enero</option>
+                    <option value="Febrero">Febrero</option>
+                    <option value="Marzo">Marzo</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Mayo">Mayo</option>
+                    <option value="Junio">Junio</option>
+                    <option value="Julio">Julio</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Septiembre">Septiembre</option>
+                    <option value="Octubre">Octubre</option>
+                    <option value="Noviembre">Noviembre</option>
+                    <option value="Diciembre">Diciembre</option>
+                </select>, 
+                <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
 
-                </p>
-            </div>
-            <div class="col-md-12 pie-acciones">
-                <form>
-                    <input type="hidden" name="ided" value="85135454">
-                    <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                </form>
-            </div> 
+                <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+                <span class="mod2"><select class="selact" name="f2mes">                                        
+                    <option value="Enero">Enero</option>
+                    <option value="Febrero">Febrero</option>
+                    <option value="Marzo">Marzo</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Mayo">Mayo</option>
+                    <option value="Junio">Junio</option>
+                    <option value="Julio">Julio</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Septiembre">Septiembre</option>
+                    <option value="Octubre">Octubre</option>
+                    <option value="Noviembre">Noviembre</option>
+                    <option value="Diciembre">Diciembre</option>
+                    <option value="actualmente">actualmente</option>
+                </select>&nbsp;
+                <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+            </i></small>
+
+        </div>   
+        <div class="col-md-8">
+            <p>  
+                <span class="spn">Esta es la descripción del puesto de trabajo.</span>
+                <textarea class="npt" name="desc" rows="5"></textarea>
+            </p>
+        </div>
+        <div class="col-md-12 pie-acciones">
+
+            <input type="hidden" name="ided" value="85135454">
+            <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
+            <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
         </div>
     </div>
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-md-12 text-right">
-                <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
-            </div>
+</div>
+<div class="panel-footer">
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Fin de Experiencia -->
@@ -515,155 +574,238 @@ ob_start();
     <div class="panel-body">
         <div class="row">                        
             <div class="col-md-8">
-                <h4>Desarrollo de aplicaciones web <br>
-                    <small>Instituto Ies Tetuan</small><br>
-                    <small>Grado superior</small>
+                <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt" type="text" value="" name="titeduc"><br>
+                    <small><span class="spn">Instituto Ies Tetuan</span><input class="npt" type="text" value="" name="institucion"></small><br>
+                    <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
+                        <option value="Fp básica">Fp básica</option>
+                        <option value="Grado medio">Grado medio</option>
+                        <option value="Bachillerato">Bachillerato</option>
+                        <option value="Grado superior">Grado superior</option>
+                        <option value="Carrera">Carrera</option>
+                        <option value="Master">Master</option>
+                        <option value="Certificado oficial">Certificado oficial</option>
+                        <option value="otro">otro</option>
+                    </select></small>
                 </h4>
             </div>
-            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-            <div class="col-md-12">
-                <p>   
-                    Esta es la descripción de la educación.
-                </p>
+            <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+                <option value="Enero">Enero</option>
+                <option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+                <option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option>
+                <option value="Diciembre">Diciembre</option>
+            </select>, 
+            <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
 
-            </div>
-
-            <div class="col-md-12 pie-acciones">
-                <form>
-                    <input type="hidden" name="ided" value="85135454">
-                    <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                </form>
-            </div>
+            <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+            <span class="mod2"><select class="selact" name="f2mes">                                        
+                <option value="Enero">Enero</option>
+                <option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+                <option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option>
+                <option value="Diciembre">Diciembre</option>
+                <option value="0">actualmente</option>
+            </select>&nbsp;
+            <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+        </i></small></div>   
+        <div class="col-md-12">
+            <p>   
+                <span class="spn">Esta es la descripción de la educación.</span>
+                <textarea class="npt" name="desc" rows="5"></textarea>  
+            </p>
 
         </div>
-        <hr>
-        <div class="row">                        
-            <div class="col-md-8">
-                <h4>Programación en Java <br>
-                    <small>CoreNetworks</small><br>
-                    <small>Curso</small>
-                </h4>
-            </div>
-            <div class="col-md-4"><small class="femp">Período: <i>Mayo, 2015 - Junio, 2016</i></small></div>   
-            <div class="col-md-12">
-                <p>   
-                    Esta es la descripción de la educación.
+        <div class="col-md-12 pie-acciones">
+            <input type="hidden" name="ided" value="85135454">
+            <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+            <input type="button" name="moded" value="Modificar" class="btn btn-green">
+        </div>
 
-                </p>
-            </div> 
-            <div class="col-md-12 pie-acciones">
-                <form>
-                    <input type="hidden" name="ided" value="85135454">
-                    <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                </form>
+    </div>
+    <hr>
+    <div class="row">                        
+        <div class="col-md-8 ">
+            <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt " type="text" value="" name="titeduc"><br>
+                <small><span class="spn">Instituto Ies Tetuan</span><input class="npt " type="text" value="" name="institucion"></small><br>
+                <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
+                    <option value="Fp básica">Fp básica</option>
+                    <option value="Grado medio">Grado medio</option>
+                    <option value="Bachillerato">Bachillerato</option>
+                    <option value="Grado superior">Grado superior</option>
+                    <option value="Carrera">Carrera</option>
+                    <option value="Master">Master</option>
+                    <option value="Certificado oficial">Certificado oficial</option>
+                    <option value="otro">otro</option>
+                </select></small>
+            </h4>
+        </div>
+        <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+        </select>, 
+        <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+        <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+        <span class="mod2"><select class="selact" name="f2mes">                                        
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+            <option value="0">actualmente</option>
+        </select>&nbsp;
+        <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+    </i></small></div>   
+    <div class="col-md-12">
+        <p>   
+            <span class="spn">Esta es la descripción de la educación.</span>
+            <textarea class="npt" name="desc" rows="5"></textarea>  
+        </p>
+
+    </div>
+    <div class="col-md-12 pie-acciones">
+        <input type="hidden" name="ided" value="85135454">
+        <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+        <input type="button" name="moded" value="Modificar" class="btn btn-green">
+    </div>
+</div>
+</div>
+<div class="panel-footer">
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Educación -->
+<!-- Skills -->
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Skills</h4> 
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Etiquetas</label>
+                    <div class="input-group">
+                        <select class="form-control" id="etiquetas" name="etiqueta">
+                            <option value="nada">Ninguna</option>
+                            <option value="php">php</option>
+                            <option value="java">java</option>
+                            <option value="html">html</option>
+                            <option value="css">css</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
+                        </span>
+                    </div>               
+                </div>
+            </div>           
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Agregar una nueva etiqueta</label> 
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="etiquetasinput" placeholder="etiqueta">
+                        <span class="input-group-btn">
+                            <input class="btn btn-success" id="ageet" name="agreet" type="button" value="Agregar etiqueta">
+                        </span>
+                    </div>                           
+                </div>                        
+            </div>                    
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Tus etiquetas</label> 
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-lg-12 conborde etiquetas">
+                    <div class="row" id="divetiquetas">
+                        <div class="col-md-4 col-lg-3 form-group" id="php">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="php" value="php">
+                                </span>
+                                <input type="text" class="form-control" value="php" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-3 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="javascript" value="javascript" >
+                                </span>
+                                <input type="text" class="form-control" value="javascript" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-3 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="html" value="html">
+                                </span>
+                                <input type="text" class="form-control" value="html" disabled="disabled">
+                            </div>
+                        </div>                           
+                        <div class="col-md-4 col-lg-3 form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="css" value="css">
+                                </span>
+                                <input type="text" class="form-control" value="css" disabled="disabled">
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>                                 
     </div>
     <div class="panel-footer">
         <div class="row">
             <div class="col-md-12 text-right">
-                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
+                <input type="button"  class="btn btn-danger" id="eliminarskills" name="eliminarskills" value="Eliminar selección">
+                <input type="submit"  class="btn btn-green" name="guardarskills" value="Guardar Skills">
             </div>
         </div>
     </div>
 </div>
-<!-- Educación -->
-<!-- Skills -->
-<form>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Skills</h4> 
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Etiquetas</label>
-                        <div class="input-group">
-                            <select class="form-control" id="etiquetas" name="etiqueta">
-                                <option value="nada">Ninguna</option>
-                                <option value="php">php</option>
-                                <option value="java">java</option>
-                                <option value="html">html</option>
-                                <option value="css">css</option>
-                            </select>
-                            <span class="input-group-btn">
-                                <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
-                            </span>
-                        </div>               
-                    </div>
-                </div>           
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Agregar una nueva etiqueta</label> 
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="etiquetasinput" placeholder="etiqueta">
-                            <span class="input-group-btn">
-                                <input class="btn btn-success" id="ageet" name="agreet" type="button" value="Agregar etiqueta">
-                            </span>
-                        </div>                           
-                    </div>                        
-                </div>                    
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Tus etiquetas</label> 
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-lg-12 conborde etiquetas">
-                        <div class="row" id="divetiquetas">
-                            <div class="col-md-4 col-lg-3 form-group" id="php">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <input type="checkbox" name="php" value="php">
-                                    </span>
-                                    <input type="text" class="form-control" value="php" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-lg-3 form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <input type="checkbox" name="javascript" value="javascript" >
-                                    </span>
-                                    <input type="text" class="form-control" value="javascript" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-lg-3 form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <input type="checkbox" name="html" value="html">
-                                    </span>
-                                    <input type="text" class="form-control" value="html" disabled="disabled">
-                                </div>
-                            </div>                           
-                            <div class="col-md-4 col-lg-3 form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <input type="checkbox" name="css" value="css">
-                                    </span>
-                                    <input type="text" class="form-control" value="css" disabled="disabled">
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-            </div>                                 
-        </div>
-        <div class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <input type="button"  class="btn btn-danger" id="eliminarskills" name="eliminarskills" value="Eliminar selección">
-                    <input type="submit"  class="btn btn-green" name="guardarskills" value="Guardar Skills">
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 <!-- Fin Skills -->
 <!-- Idiomas -->
 <div class="panel panel-default">
@@ -686,51 +828,74 @@ ob_start();
         </div>
         <div class="row idiomas">                        
             <div class="col-xs-4">
-                Inglés
+                <span class="spn">Inglés</span><input type="text" class="form-control npt" name="titeduc" value="" required="required" >
             </div>                 
             <div class="col-xs-4">
-                Intermedio
-
+                <span class="spn">Intermedio</span>
+                <select name="nvh" class="npt " >
+                    <option value="Bajo">Bajo</option>
+                    <option value="Intermedio">Intermedio</option>
+                    <option value="Alto">Alto</option>
+                    <option value="Bilingüe">Bilingüe</option>
+                </select>
             </div>
             <div class="col-xs-4">
-                Alto
+               <span class="spn">Alto</span>
+               <select name="nve" class="npt ">
+                <option value="Bajo">Bajo</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Alto">Alto</option>
+                <option value="Bilingüe">Bilingüe</option>
+            </select>
 
-            </div>               
-            <div class="col-xs-12 pie-acciones">
-                <form>
-                    <input type="hidden" name="ididio" value="85135454">
-                    <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
-                </form>
-            </div>
+        </div>               
+        <div class="col-xs-12 pie-acciones">
 
+            <input type="hidden" name="ididio" value="85135454">
+            <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
+            <input type="button" name="modidio" value="Modificar" class="btn btn-green">
         </div>
-        <div class="row idiomas" >                        
-            <div class="col-xs-4">
-                Francés
-            </div>                 
-            <div class="col-xs-4">
-                Bajo
 
-            </div>
-            <div class="col-xs-4">
-                Intermedio
-            </div>               
-            <div class="col-xs-12 pie-acciones">
-                <form>
-                    <input type="hidden" name="ididio" value="85135454">
-                    <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
-                </form>
-            </div>
+    </div>
+    <div class="row idiomas" >                        
+        <div class="col-xs-4">
+            <span class="spn">Inglés</span><input type="text" class="form-control npt" name="titeduc" value="" required="required" >
+        </div>                 
+        <div class="col-xs-4">
+            <span class="spn">Intermedio</span>
+            <select name="nvh" class="npt " >
+                <option value="Bajo">Bajo</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Alto">Alto</option>
+                <option value="Bilingüe">Bilingüe</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+           <span class="spn">Alto</span>
+           <select name="nve" class="npt ">
+            <option value="Bajo">Bajo</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Alto">Alto</option>
+            <option value="Bilingüe">Bilingüe</option>
+        </select>
 
+    </div>               
+    <div class="col-xs-12 pie-acciones">
+        <input type="hidden" name="ididio" value="85135454">
+        <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
+        <input type="button" name="modidio" value="Modificar" class="btn btn-green">
+
+    </div>
+
+</div>
+</div>
+<div class="panel-footer">
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
         </div>
     </div>
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-md-12 text-right">
-                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
-            </div>
-        </div>
-    </div>
+</div>
 </div>
 <!-- Fin Idiomas -->
 

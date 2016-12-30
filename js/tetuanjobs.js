@@ -28,6 +28,34 @@ function cargarTabla(idtabla){
 
 /** Fin datatable **/
 
+/** Next sibling **/
+function siguienteHermano(x){
+  if(x.nextElementSibling){
+    var e = x.nextElementSibling;
+    while(e.nodeName == "#text"){
+      e = e.nextElementSibling;
+    };
+    return e;
+  }
+
+}
+/** Fin Next sibling **/
+function anteriorHermano(x){
+  if(x.previousElementSibling){
+    var e = x.previousElementSibling;
+    while(e.nodeName == "#text"){
+      e = e.previousElementSibling;
+    };
+    return e;
+  }
+
+}
+/** Previous sibling **/
+
+
+
+/** Fin Previous sibling **/
+
 /** Agregar tag **/
 
 function agregarTag(selctid,divid,elementos,col){
@@ -136,33 +164,21 @@ function login(){
 
 /**Fin Login**/
 /**Perfil**/
-var check;
+
 function perfil(){
   /** Opcion fechas actualmente **/
-  check = document.getElementsByClassName("actualmente");
 
-  for (var i = 0; i < check.length; i++) {
-    check[i].addEventListener("click",function(){
-
-     var actSpans = document.getElementsByClassName("actSpan");
-     var actDivs = document.getElementsByClassName("actDiv");
-     var actInputs = document.getElementsByClassName("actInput");
-     if(this.checked){
-      for (var i = 0; i < actDivs.length; i++) {
-        actDivs[i].style.display = "none";
-        actSpans[i].style.display = "inline";   
-      };
-      actInput.value = "actualmente";
-
-    }else{
-      for (var i = 0; i < actDivs.length; i++) {
-        actDivs[i].style.display = "inline";
-        actSpans[i].style.display = "none";   
-      };
-      actInput.value = "";
-    }
-  });
+  var selact = document.getElementsByClassName("selact");
+  for (var i = 0; i < selact.length; i++) {
+    selact[i].addEventListener("change", function(x){
+      if(x.target.value == 0){
+        siguienteHermano(x.target).style.display = "none";
+      }else{
+        siguienteHermano(x.target).style.display = "inline";
+      }
+    });
   };
+
   /** Fin Opcion fechas actualmente **/
   /** Agregar etiquetas **/
   var elementosreq = new Array();
@@ -183,8 +199,51 @@ function perfil(){
   });
 
   /** Fin agregar etiquetas **/
-  
-  
+
+  /** Modificar valores experiencia, educación e idiomas**/
+  var spns = document.getElementsByClassName("spn");
+  var npts = document.getElementsByClassName("npt");
+  for (var i = 0; i < spns.length; i++) {
+    spns[i].addEventListener("click",function(x){
+      /*if(x.target.nextElementSibling.nodeName == "INPUT"
+        || x.target.nextElementSibling.nodeName == "TEXTAREA"){*/
+      siguienteHermano(x.target).value = x.target.innerHTML;
+      /*}*/        
+      siguienteHermano(x.target).style.display = "initial";
+      siguienteHermano(x.target).focus();
+      siguienteHermano(x.target).addEventListener("focusout", function(y){
+        anteriorHermano(y.target).innerHTML = y.target.value;
+        anteriorHermano(y.target).style.display = "initial";
+        y.target.style.display = "none";
+      });
+      x.target.style.display = "none";
+
+    });
+  };
+
+  /** Fin Modificar valores experiencia, educación e idiomas**/
+
+  /** Modificar actualmente**/
+  var divactual = document.getElementsByClassName("mod1");
+
+  for (var i = 0; i < divactual.length; i++) {
+    divactual[i].addEventListener("click", function(x){      
+      var mes = x.target.firstChild.innerHTML;
+      var anio =  x.target.lastChild.innerHTML;
+      x.target.style.display = "none";
+      var mod2 = siguienteHermano(x.target);
+      mod2.style.display = "initial";
+      mod2.firstChild.value = mes;
+      mod2.lastChild.value = anio;
+      mod2.addEventListener("focusout", function(y){
+        siguienteHermano(x.target).style.display = "none";
+        var html = "<span class='oculto'>"+mod2.firstChild.value+"</span>"+mod2.firstChild.value+", "+mod2.lastChild.value+"<span class='oculto'>"+mod2.lastChild.value+"</span>";
+        x.target.innerHTML = html;
+        x.target.style.display = "initial";
+      });
+    });
+  };
+  /** **/
 }
 /**Fin Perfil **/
 
