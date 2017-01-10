@@ -264,7 +264,7 @@ ob_start();
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label>Tipo de contrado</label>
+                <label>Tipo de contrato</label>
                 <select class="form-control" name="contrato">
                     <option value="0">Sin especificar</option>
                     <option value="indef">Indefinido</option>
