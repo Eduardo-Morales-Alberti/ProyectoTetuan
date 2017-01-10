@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,  
   `nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_unicode_ci ,
-  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `telefono` varchar(9) COLLATE utf8_unicode_ci ,
   `provincia` varchar(250) COLLATE utf8_unicode_ci ,
   `cod_postal` int(5) ,
@@ -73,13 +72,13 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
 /** USUARIOS **/
 DROP TABLE IF EXISTS `USUARIOS`;
 CREATE TABLE IF NOT EXISTS `USUARIOS`(
-  `id_us` int(11) UNSIGNED AUTO_INCREMENT,
   `id_usuario` int(11) UNSIGNED,
+  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(20) NOT NULL,
   `tipo_usuario` enum('e','a'),
   `activo` boolean DEFAULT FALSE,
   FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
-  PRIMARY KEY (`id_us`,`id_usuario`)
+  PRIMARY KEY (`email`,`id_usuario`)
  ) ENGINE=InnoDB; 
 
 /** FIN DE USUARIOS **/
