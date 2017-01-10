@@ -1,46 +1,37 @@
-
--- phpMyAdmin SQL Dump
--- version 3.5.2.2
--- http://www.phpmyadmin.net
---
--- Servidor: localhost
--- Tiempo de generación: 09-01-2017 a las 14:26:46
--- Versión del servidor: 10.0.28-MariaDB
--- Versión de PHP: 5.2.17
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de datos: `tetuanjobs`
 --
 
+DROP DATABASE IF EXISTS `tetuanjobs`;
+CREATE DATABASE `tetuanjobs` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 -- --------------------------------------------------------
 
-/** REGISTRO **/
+--
+-- Usuario rutinas: `usertetuan` password `tetuanjobs`
+--
+DROP USER 'usertetuan'@'localhost';
+CREATE USER 'usertetuan'@'localhost' IDENTIFIED BY 'tetuanjobs';
+GRANT EXECUTE ON `tetuanjobs`.* TO 'usertetuan'@'localhost';
+-- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `REGISTRO`
---
-DROP TABLE IF EXISTS `REGISTRO`;
-CREATE TABLE IF NOT EXISTS `REGISTRO` (
+USE tetuanjobs;
+
+/** ADMINISTRADOR **/
+
+DROP TABLE IF EXISTS `ADMINISTRADORES`;
+CREATE TABLE IF NOT EXISTS `ADMINISTRADORES` (
   `id_usuario` int(11) UNSIGNED AUTO_INCREMENT,
   `email` varchar(100) COLLATE utf8_unicode_ci,
-  `alta` boolean DEFAULT FALSE,
-  /* ¿Cómo enlazar con la tabla estudiantes si el administrador tiene un email diferente?*/
-  /*`nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,*/
-  `password` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `tipo_usuario` enum('e','a') COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(25) COLLATE utf8_unicode_ci ,
+  `nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id_usuario`,`email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-/** FIN DE REGISTRO **/
+/** FIN ADMINISTRADOR **/
 
 /** ESTUDIANTE **/
 
@@ -51,7 +42,7 @@ DROP TABLE IF EXISTS `POBLACIONES`;
 CREATE TABLE IF NOT EXISTS `POBLACIONES` (
   `id_poblacion` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `nombre_poblacion` varchar(25) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -60,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `POBLACIONES` (
 --
 DROP TABLE IF EXISTS `ESTUDIANTES`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
-  `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,  
   `nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_unicode_ci ,
   `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -71,40 +62,78 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `cv` varchar(250) ,
   `descripcion` varchar(3000) COLLATE utf8_unicode_ci ,
   `carnet` boolean DEFAULT FALSE,
-  `id_poblacion` int(11),
-  FOREIGN KEY (`id_poblacion`) REFERENCES POBLACIONES(`id_poblacion`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+  `alta` boolean DEFAULT FALSE,
+  `password` varchar(25) COLLATE utf8_unicode_ci ,
+  `id_poblacion` int(11) UNSIGNED,
+  FOREIGN KEY (`id_poblacion`) REFERENCES POBLACIONES(`id_poblacion`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
+
+/** USUARIOS **/
+DROP TABLE IF EXISTS `USUARIOS`;
+CREATE TABLE IF NOT EXISTS `USUARIOS`(
+  `id_us` int(11) UNSIGNED AUTO_INCREMENT,
+  `id_usuario` int(11) UNSIGNED,
+  `password` varchar(20) NOT NULL,
+  `tipo_usuario` enum('e','a'),
+  `activo` boolean DEFAULT FALSE,
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
+  PRIMARY KEY (`id_us`,`id_usuario`)
+ ) ENGINE=InnoDB; 
+
+/** FIN DE USUARIOS **/
+
+/** REGISTRO **/
+
+--
+-- Estructura de tabla para la tabla `REGISTRO`
+--
+/*DROP TABLE IF EXISTS `REGISTRO`;
+CREATE TABLE IF NOT EXISTS `REGISTRO` (
+  `id_registro` int(11) UNSIGNED AUTO_INCREMENT,
+  `id_usuario` int(11),
+  `alta` boolean DEFAULT FALSE,*/
+  /* ¿Cómo enlazar con la tabla estudiantes si el administrador tiene un email diferente?*/
+  /*`nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,*/
+ /* `password` varchar(25) COLLATE utf8_unicode_ci ,*/
+  /*`tipo_usuario` enum('e','a') COLLATE utf8_unicode_ci NOT NULL,*/
+ /* PRIMARY KEY (`id_registro`,`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
+
+/** FIN DE REGISTRO **/
 
 --
 -- Estructura de tabla para la tabla `EXPERIENCIA`
 --
 DROP TABLE IF EXISTS `EXPERIENCIA`;
 CREATE TABLE IF NOT EXISTS `EXPERIENCIA` (
-  `id_experiencia` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `id_experiencia` int(11) UNSIGNED AUTO_INCREMENT,
+  `id_usuario` int(11) UNSIGNED,
   `titulo_puesto` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `nombre_empresa` varchar(200) COLLATE utf8_unicode_ci,
   `f_inicio` date,
   `f_fin` date,
   `actualmente` boolean DEFAULT FALSE,
-  `experiencia_desc` varchar(3000) COLLATE utf8_unicode_ci
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `experiencia_desc` varchar(3000) COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id_experiencia`, `id_usuario`),
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `ESTUDIANTES_EXPERIENCIA`
 --
-DROP TABLE IF EXISTS `ESTUDIANTES_EXPERIENCIA`;
-CREATE TABLE IF NOT EXISTS `ESTUDIANTES_EXPERIENCIA` (
+/*DROP TABLE IF EXISTS `ESTUDIANTES_EXPERIENCIA`;
+CREATE TABLE IF NOT EXISTS `ESTUDIANTES_EXPERIENCIA` (*/
   /* ¿Se permiten primary keys cómo foreign keys?*/
-  `id_usuario` int(11) NOT NULL,
-  `id_experiencia` int(11) NOT NULL,
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
-  FOREIGN KEY (`id_experiencia`) REFERENCES EXPERIENCIA(`id_experiencia`),
+  /*`id_usuario` int(11) UNSIGNED NOT NULL,
+  `id_experiencia` int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_experiencia`) REFERENCES EXPERIENCIA(`id_experiencia`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_usuario`,`id_experiencia`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
 
 -- --------------------------------------------------------
 
@@ -113,30 +142,32 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES_EXPERIENCIA` (
 --
 DROP TABLE IF EXISTS `FORMACION`;
 CREATE TABLE IF NOT EXISTS `FORMACION` (
-  `id_formacion` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `id_formacion` int(11) UNSIGNED AUTO_INCREMENT ,
+  `id_usuario` int(11) UNSIGNED,
   `titulo_formacion` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  /*`institucion` int(11),*/
-  /*`formacion_clasificacion` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_unicode_ci NOT NULL,*/
+  `institucion` int(11),
+  `formacion_clasificacion` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_unicode_ci NOT NULL,
   `tipo_formacion` varchar(50),
   `f_inicio` date ,
   `f_fin` date ,
   `actualmente` boolean DEFAULT FALSE,
-  `formacion_desc` varchar(3000) COLLATE utf8_unicode_ci
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY(`id_formacion`,`id_usuario`),
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `ESTUDIANTES_FORMACION`
 --
-DROP TABLE IF EXISTS `ESTUDIANTES_FORMACION`;
+/*DROP TABLE IF EXISTS `ESTUDIANTES_FORMACION`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES_FORMACION` (
-  `id_formacion` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  FOREIGN KEY (`id_formacion`) REFERENCES FORMACION(`id_formacion`),
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
+  `id_formacion` int(11) UNSIGNED NOT NULL,
+  `id_usuario` int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (`id_formacion`) REFERENCES FORMACION(`id_formacion`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_formacion`,`id_usuario`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
 
 -- --------------------------------------------------------
 
@@ -147,7 +178,7 @@ DROP TABLE IF EXISTS `ETIQUETAS`;
 CREATE TABLE IF NOT EXISTS `ETIQUETAS` (
   `id_etiquetas` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `nombre_etiqueta` varchar(250) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -156,12 +187,12 @@ CREATE TABLE IF NOT EXISTS `ETIQUETAS` (
 --
 DROP TABLE IF EXISTS `ESTUDIANTES_ETIQUETAS`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES_ETIQUETAS` (
-  `id_etiquetas` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  FOREIGN KEY (`id_etiquetas`) REFERENCES ETIQUETAS(`id_etiquetas`),
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
-  PRIMARY KEY (`id_etiquetas`,`id_usuario`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id_etiquetas` int(11) UNSIGNED NOT NULL,
+  `id_usuario` int(11) UNSIGNED NOT NULL,
+  /*PRIMARY KEY (`id_etiquetas`,`id_usuario`),*/
+  FOREIGN KEY (`id_etiquetas`) REFERENCES ETIQUETAS(`id_etiquetas`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -174,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `IDIOMAS` (
   `nombre_idioma` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `hablado` enum('Bajo','Intermedio','Alto','Bilingüe') COLLATE utf8_unicode_ci NOT NULL,
   `escrito` enum('Bajo','Intermedio','Alto','Bilingüe') COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -183,12 +214,12 @@ CREATE TABLE IF NOT EXISTS `IDIOMAS` (
 --
 DROP TABLE IF EXISTS `ESTUDIANTES_IDIOMAS`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES_IDIOMAS` (
-  `id_idioma` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  FOREIGN KEY (`id_idioma`) REFERENCES ESTUDIANTES(`id_idioma`),
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
+  `id_idioma` int(11) UNSIGNED NOT NULL,
+  `id_usuario` int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (`id_idioma`) REFERENCES IDIOMAS(`id_idioma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_idioma`,`id_usuario`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -208,11 +239,11 @@ CREATE TABLE IF NOT EXISTS `EMPRESAS` (
   `telefono` varchar(9) COLLATE utf8_unicode_ci ,
   `direccion` varchar(500) COLLATE utf8_unicode_ci ,
   `provincia` varchar(250) COLLATE utf8_unicode_ci,
-  `id_poblacion` int(11) ,
+  `id_poblacion` int(11) UNSIGNED,
   `persona_contacto` varchar(250) COLLATE utf8_unicode_ci ,
   `empresas_desc` varchar(3000) COLLATE utf8_unicode_ci,
-  FOREIGN KEY (`id_poblacion`) REFERENCES POBLACIONES(`id_poblacion`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  FOREIGN KEY (`id_poblacion`) REFERENCES POBLACIONES(`id_poblacion`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -226,21 +257,17 @@ CREATE TABLE IF NOT EXISTS `EMPRESAS` (
 DROP TABLE IF EXISTS `PUESTOS`;
 CREATE TABLE IF NOT EXISTS `PUESTOS` (
   `id_puesto` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `id_empresa` int(11) NOT NULL,
+  `id_empresa` int(11) UNSIGNED NOT NULL,
   `puesto_nombre` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `puesto_desc` varchar(3000) COLLATE utf8_unicode_ci NOT NULL,
   `puestos_carnet` boolean DEFAULT FALSE,
-  /*`experiencia` enum('Sin experiencia','Al menos un año','Más de un año') COLLATE utf8_unicode_ci NOT NULL,*/
-  `experiencia` varchar(25) COLLATE utf8_unicode_ci,
-  /*`tipo_contrato` enum('Sin determinar','Indefinido','En prácticas','Por obra o servicio') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Sin determinar',
+  `experiencia` enum('Sin experiencia','Al menos un año','Más de un año') COLLATE utf8_unicode_ci NOT NULL,
+  `tipo_contrato` enum('Sin determinar','Indefinido','En prácticas','Por obra o servicio') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Sin determinar',
   `jornada` enum('Sin determinar','Completa','Sólo mañanas','Sólo tardes') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Sin determinar',
-  `titulacion_minima` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_unicode_ci NOT NULL,*/
-  `tipo_contrato` varchar(250) COLLATE utf8_unicode_ci,
-  `jornada` varchar(250) COLLATE utf8_unicode_ci,
-  `titulacion_minima` varchar(250) COLLATE utf8_unicode_ci,
+  `titulacion_minima` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_unicode_ci NOT NULL,
   `f_publicacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`id_empresa`) REFERENCES EMPRESAS(`id_empresa`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  FOREIGN KEY (`id_empresa`) REFERENCES EMPRESAS(`id_empresa`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -251,7 +278,7 @@ DROP TABLE IF EXISTS `FUNCIONES`;
 CREATE TABLE IF NOT EXISTS `FUNCIONES` (
   `id_funcion` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `funcion_desc` varchar(250) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -261,12 +288,12 @@ CREATE TABLE IF NOT EXISTS `FUNCIONES` (
 --
 DROP TABLE IF EXISTS `PUESTOS_FUNCIONES`;
 CREATE TABLE IF NOT EXISTS `PUESTOS_FUNCIONES` (
-  `id_funcion` int(11) NOT NULL,
-  `id_puesto` int(11) NOT NULL,
-  FOREIGN KEY (`id_funcion`) REFERENCES FUNCIONES(`id_funcion`),
-  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`),
+  `id_funcion` int(11) UNSIGNED NOT NULL,
+  `id_puesto` int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (`id_funcion`) REFERENCES FUNCIONES(`id_funcion`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_funcion`,`id_puesto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -277,12 +304,12 @@ CREATE TABLE IF NOT EXISTS `PUESTOS_FUNCIONES` (
 --
 DROP TABLE IF EXISTS `PUESTOS_ETIQUETAS`;
 CREATE TABLE IF NOT EXISTS `PUESTOS_ETIQUETAS` (
-  `id_etiqueta` int(11) NOT NULL,
-  `id_puesto` int(11) NOT NULL,
-  FOREIGN KEY (`id_etiqueta`) REFERENCES ETIQUETAS(`id_etiqueta`),
-  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`),
+  `id_etiqueta` int(11) UNSIGNED NOT NULL,
+  `id_puesto` int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (`id_etiqueta`) REFERENCES ETIQUETAS(`id_etiquetas`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_etiqueta`,`id_puesto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -291,20 +318,15 @@ CREATE TABLE IF NOT EXISTS `PUESTOS_ETIQUETAS` (
 --
 DROP TABLE IF EXISTS `PUESTOS_IDIOMAS`;
 CREATE TABLE IF NOT EXISTS `PUESTOS_IDIOMAS` (
-  `id_puesto` int(11) NOT NULL,
-  `id_idioma` int(11) NOT NULL,
-  FOREIGN KEY (`id_idioma`) REFERENCES IDIOMAS(`id_idioma`),
-  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`),
+  `id_puesto` int(11) UNSIGNED NOT NULL,
+  `id_idioma` int(11) UNSIGNED NOT NULL,
+  FOREIGN KEY (`id_idioma`) REFERENCES IDIOMAS(`id_idioma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_idioma`,`id_puesto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 /** FIN DE PUESTOS **/
 
 
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
