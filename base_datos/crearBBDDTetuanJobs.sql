@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `ESTUDIANTES`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `id_estudiante` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `id_usuario` int(11) UNSIGNED,  
-  `ciclo` enum('DAW','ASIR','TURISMO') NOT NULL;
+  `ciclo` enum('DAW','ASIR','TURISMO') NOT NULL,
   `nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_unicode_ci ,
   `telefono` varchar(9) COLLATE utf8_unicode_ci ,
@@ -63,7 +63,6 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `cv` varchar(250) ,
   `descripcion` varchar(3000) COLLATE utf8_unicode_ci ,
   `carnet` boolean DEFAULT FALSE,
-  `alta` boolean DEFAULT FALSE,
   `id_poblacion` int(11) UNSIGNED,
   FOREIGN KEY (`id_usuario`) REFERENCES USUARIOS(`id_usuario`),
   FOREIGN KEY (`id_poblacion`) REFERENCES POBLACIONES(`id_poblacion`) ON DELETE CASCADE ON UPDATE CASCADE
