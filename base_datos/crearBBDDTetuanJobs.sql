@@ -20,18 +20,18 @@ GRANT EXECUTE ON `tetuanjobs`.* TO 'usertetuan'@'localhost';
 
 USE tetuanjobs;
 
-/** ADMINISTRADOR **/
+/** USUARIOS **/
 
-DROP TABLE IF EXISTS `ADMINISTRADORES`;
-CREATE TABLE IF NOT EXISTS `ADMINISTRADORES` (
-  `id_usuario` int(11) UNSIGNED AUTO_INCREMENT,
-  `email` varchar(100) COLLATE utf8_unicode_ci,
-  `password` varchar(25) COLLATE utf8_unicode_ci ,
-  `nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_usuario`,`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TABLE IF EXISTS `USUARIOS`;
+CREATE TABLE IF NOT EXISTS `USUARIOS`(
+  `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(20),
+  `tipo_usuario` enum('e','a'),
+  `activo` boolean DEFAULT FALSE
+ ) ENGINE=InnoDB; 
 
-/** FIN ADMINISTRADOR **/
+/** FIN DE USUARIOS **/
 
 /** ESTUDIANTE **/
 
@@ -51,7 +51,9 @@ CREATE TABLE IF NOT EXISTS `POBLACIONES` (
 --
 DROP TABLE IF EXISTS `ESTUDIANTES`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
-  `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,  
+  `id_estudiante` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` int(11) UNSIGNED,  
+  `ciclo` enum('DAW','ASIR','TURISMO') NOT NULL;
   `nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_unicode_ci ,
   `telefono` varchar(9) COLLATE utf8_unicode_ci ,
@@ -62,45 +64,15 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `descripcion` varchar(3000) COLLATE utf8_unicode_ci ,
   `carnet` boolean DEFAULT FALSE,
   `alta` boolean DEFAULT FALSE,
-  `password` varchar(25) COLLATE utf8_unicode_ci ,
   `id_poblacion` int(11) UNSIGNED,
+  FOREIGN KEY (`id_usuario`) REFERENCES USUARIOS(`id_usuario`),
   FOREIGN KEY (`id_poblacion`) REFERENCES POBLACIONES(`id_poblacion`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
-/** USUARIOS **/
-DROP TABLE IF EXISTS `USUARIOS`;
-CREATE TABLE IF NOT EXISTS `USUARIOS`(
-  `id_usuario` int(11) UNSIGNED,
-  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(20) NOT NULL,
-  `tipo_usuario` enum('e','a'),
-  `activo` boolean DEFAULT FALSE,
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`),
-  PRIMARY KEY (`email`,`id_usuario`)
- ) ENGINE=InnoDB; 
 
-/** FIN DE USUARIOS **/
 
-/** REGISTRO **/
-
---
--- Estructura de tabla para la tabla `REGISTRO`
---
-/*DROP TABLE IF EXISTS `REGISTRO`;
-CREATE TABLE IF NOT EXISTS `REGISTRO` (
-  `id_registro` int(11) UNSIGNED AUTO_INCREMENT,
-  `id_usuario` int(11),
-  `alta` boolean DEFAULT FALSE,*/
-  /* ¿Cómo enlazar con la tabla estudiantes si el administrador tiene un email diferente?*/
-  /*`nombre` varchar(25) COLLATE utf8_unicode_ci NOT NULL,*/
- /* `password` varchar(25) COLLATE utf8_unicode_ci ,*/
-  /*`tipo_usuario` enum('e','a') COLLATE utf8_unicode_ci NOT NULL,*/
- /* PRIMARY KEY (`id_registro`,`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
-
-/** FIN DE REGISTRO **/
 
 --
 -- Estructura de tabla para la tabla `EXPERIENCIA`
@@ -108,15 +80,15 @@ CREATE TABLE IF NOT EXISTS `REGISTRO` (
 DROP TABLE IF EXISTS `EXPERIENCIA`;
 CREATE TABLE IF NOT EXISTS `EXPERIENCIA` (
   `id_experiencia` int(11) UNSIGNED AUTO_INCREMENT,
-  `id_usuario` int(11) UNSIGNED,
+  `id_estudiante` int(11) UNSIGNED,
   `titulo_puesto` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `nombre_empresa` varchar(200) COLLATE utf8_unicode_ci,
   `f_inicio` date,
   `f_fin` date,
   `actualmente` boolean DEFAULT FALSE,
   `experiencia_desc` varchar(3000) COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id_experiencia`, `id_usuario`),
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id_experiencia`, `id_estudiante`),
+  FOREIGN KEY (`id_estudiante`) REFERENCES ESTUDIANTES(`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -142,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES_EXPERIENCIA` (*/
 DROP TABLE IF EXISTS `FORMACION`;
 CREATE TABLE IF NOT EXISTS `FORMACION` (
   `id_formacion` int(11) UNSIGNED AUTO_INCREMENT ,
-  `id_usuario` int(11) UNSIGNED,
+  `id_estudiante` int(11) UNSIGNED,
   `titulo_formacion` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `institucion` int(11),
   `formacion_clasificacion` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_unicode_ci NOT NULL,
@@ -150,8 +122,8 @@ CREATE TABLE IF NOT EXISTS `FORMACION` (
   `f_inicio` date ,
   `f_fin` date ,
   `actualmente` boolean DEFAULT FALSE,
-  PRIMARY KEY(`id_formacion`,`id_usuario`),
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY(`id_formacion`,`id_estudiante`),
+  FOREIGN KEY (`id_estudiante`) REFERENCES ESTUDIANTES(`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -187,10 +159,10 @@ CREATE TABLE IF NOT EXISTS `ETIQUETAS` (
 DROP TABLE IF EXISTS `ESTUDIANTES_ETIQUETAS`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES_ETIQUETAS` (
   `id_etiquetas` int(11) UNSIGNED NOT NULL,
-  `id_usuario` int(11) UNSIGNED NOT NULL,
+  `id_estudiante` int(11) UNSIGNED NOT NULL,
   /*PRIMARY KEY (`id_etiquetas`,`id_usuario`),*/
   FOREIGN KEY (`id_etiquetas`) REFERENCES ETIQUETAS(`id_etiquetas`) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (`id_estudiante`) REFERENCES ESTUDIANTES(`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -214,10 +186,10 @@ CREATE TABLE IF NOT EXISTS `IDIOMAS` (
 DROP TABLE IF EXISTS `ESTUDIANTES_IDIOMAS`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES_IDIOMAS` (
   `id_idioma` int(11) UNSIGNED NOT NULL,
-  `id_usuario` int(11) UNSIGNED NOT NULL,
+  `id_estudiante` int(11) UNSIGNED NOT NULL,
   FOREIGN KEY (`id_idioma`) REFERENCES IDIOMAS(`id_idioma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (`id_usuario`) REFERENCES ESTUDIANTES(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY (`id_idioma`,`id_usuario`)
+  FOREIGN KEY (`id_estudiante`) REFERENCES ESTUDIANTES(`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (`id_idioma`,`id_estudiante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -276,7 +248,9 @@ CREATE TABLE IF NOT EXISTS `PUESTOS` (
 DROP TABLE IF EXISTS `FUNCIONES`;
 CREATE TABLE IF NOT EXISTS `FUNCIONES` (
   `id_funcion` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `funcion_desc` varchar(250) COLLATE utf8_unicode_ci NOT NULL
+  `id_puesto` int(11) UNSIGNED NOT NULL,
+  `funcion_desc` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -285,14 +259,14 @@ CREATE TABLE IF NOT EXISTS `FUNCIONES` (
 --
 -- Estructura de tabla para la tabla `FUNCIONES_PUESTOS`
 --
-DROP TABLE IF EXISTS `PUESTOS_FUNCIONES`;
+/*DROP TABLE IF EXISTS `PUESTOS_FUNCIONES`;
 CREATE TABLE IF NOT EXISTS `PUESTOS_FUNCIONES` (
   `id_funcion` int(11) UNSIGNED NOT NULL,
   `id_puesto` int(11) UNSIGNED NOT NULL,
   FOREIGN KEY (`id_funcion`) REFERENCES FUNCIONES(`id_funcion`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (`id_funcion`,`id_puesto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
 
 
 -- --------------------------------------------------------
