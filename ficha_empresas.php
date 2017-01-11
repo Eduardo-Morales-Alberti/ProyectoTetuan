@@ -41,6 +41,12 @@ ob_start();
                             <label>Teléfono</label>
                             <input type="text" class="form-control" name="telefono" value="" >
                         </div>
+                    </div>  
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Web de la empresa</label>
+                            <input type="text" class="form-control" name="webemp" value="" >
+                        </div>
                     </div>   
 					<!--<div class="col-md-3">
                         <div class="form-group">

@@ -205,6 +205,7 @@ DROP TABLE IF EXISTS `EMPRESAS`;
 CREATE TABLE IF NOT EXISTS `EMPRESAS` (
   `id_empresa` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `nombre_empresa` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `emp_web` varchar(250) COLLATE utf8_unicode_ci,
   `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `telefono` varchar(9) COLLATE utf8_unicode_ci ,
   `direccion` varchar(500) COLLATE utf8_unicode_ci ,
