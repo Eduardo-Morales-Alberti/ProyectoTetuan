@@ -4,7 +4,7 @@ mysql.exe -h localhost -u root -p
 */
 
 /* Funcion para crear un nuevo estudiante*/
-
+use tetuanjobs
 drop FUNCTION if EXISTS nuevoEstudiante;
 
 delimiter //
@@ -72,23 +72,25 @@ SELECT nuevaEmpresa("Carlos","Navarro","ASIR", "prueba4@gmail.com");
 /* Fin funcion*/
 
 
-	/* Obtener el enums //No funciona
-	drop PROCEDURE if EXISTS obtenerEnum;
+/* Obtener la lista que contiene la columna de tipo enum */
+drop PROCEDURE if EXISTS tetuanjobs.obtenerEnum;
 
-	delimiter //
+delimiter //
 
-	CREATE PROCEDURE obtenerEnum(nomCol varchar(20)) 
-	BEGIN
+CREATE PROCEDURE tetuanjobs.obtenerEnum(nomCol varchar(20)) 
+BEGIN
 	SELECT SUBSTRING(SUBSTRING(COLUMN_TYPE,6),((-1)*(length(SUBSTRING(COLUMN_TYPE,5))-1)),((length(SUBSTRING(COLUMN_TYPE,5)))-2))
-	FROM information_schema.COLUMNS
-	WHERE TABLE_SCHEMA='tetuanjobs' 
-	AND TABLE_NAME='estudiantes'
-	AND COLUMN_NAME=nomCol;
-	END;
-	//
-	delimiter ;
+		FROM information_schema.COLUMNS
+			WHERE TABLE_SCHEMA='tetuanjobs' 
+				AND TABLE_NAME='estudiantes'
+				AND COLUMN_NAME=nomCol;
+END;
+//
+delimiter ;	
 
-	call obtenerEnum('ciclo');*/
+call obtenerEnum('ciclo');
+
+/* Fin del procedimiento */
 
 
 
