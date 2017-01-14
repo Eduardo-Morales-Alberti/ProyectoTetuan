@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `nombre` varchar(25) COLLATE utf8_general_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_general_ci ,
   `telefono` varchar(9) COLLATE utf8_general_ci ,
-  `provincia` varchar(250) COLLATE utf8_general_ci ,
+  `poblacion` varchar(250) COLLATE utf8_general_ci ,
   `cod_postal` int(5) ,
   `foto` varchar(250) ,
   `cv` varchar(250) ,
