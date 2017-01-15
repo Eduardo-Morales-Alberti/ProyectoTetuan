@@ -25,9 +25,9 @@ USE tetuanjobs;
 DROP TABLE IF EXISTS `USUARIOS`;
 CREATE TABLE IF NOT EXISTS `USUARIOS`(
   `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `email` varchar(100) COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_general_ci NOT NULL UNIQUE,
   `password` varchar(41),
-  `tipo_usuario` enum('e','a'),
+  `tipo_usuario` enum('estudiante','administrador'),
   `activo` boolean DEFAULT FALSE
  ) ENGINE=InnoDB; 
 
@@ -304,9 +304,14 @@ CREATE TABLE IF NOT EXISTS `PUESTOS_IDIOMAS` (
 /** FIN DE PUESTOS **/
 
 /* INSERTAR usuario administrador */
-INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("admin@gmail.com",'e',1,
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("admin@gmail.com",'administrador',1,
 password('admintetuan'));
 /* INSERTAR usuario administrador */
+
+/* INSERTAR usuario de ejemplo */
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("eduardomoberti@hotmail.com",'estudiante',1,
+password('admintetuan'));
+/* INSERTAR usuario de ejemplo */
 
 /* insertar etiquetas */
 INSERT INTO `ETIQUETAS` (nombre_etiqueta) values

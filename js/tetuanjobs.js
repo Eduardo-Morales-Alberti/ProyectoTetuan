@@ -30,8 +30,9 @@ function cargarTabla(idtabla){
 
 /** Modal mensaje **/
 
-function mensajeModal(){
+function mensajeModal(mensaje){
   $(document).ready(function(){
+    $("#mensajeserv").text(mensaje);
       $("#modalmensaje").modal("show");
       var a = window.setTimeout(function(){
         $("#modalmensaje").modal("hide");
@@ -155,6 +156,11 @@ function eliminarTag(selctid,divid,elementos){
 
 /**Login**/
 function login(){
+  
+  $(document).ready(function(){
+    setTimeout(function() { $("#mail").focus() }, 500);
+   
+  });
   var selectTipo = document.getElementById("tipo");
   selectTipo.addEventListener("change", 
     function(){

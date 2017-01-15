@@ -1,10 +1,96 @@
 
 /* Conexión base de datos
 mysql.exe -h localhost -u root -p
+
 */
 
-/* Funcion para crear un nuevo estudiante*/
-use tetuanjobs
+/** RUTINAS GENERALES **/
+/* Obtener la lista que contiene la columna de tipo enum */
+drop PROCEDURE if EXISTS tetuanjobs.obtenerEnum;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.obtenerEnum(nomCol varchar(20)) 
+BEGIN
+	SELECT SUBSTRING(SUBSTRING(COLUMN_TYPE,6),((-1)*(length(SUBSTRING(COLUMN_TYPE,5))-1)),((length(SUBSTRING(COLUMN_TYPE,5)))-2))
+		FROM information_schema.COLUMNS
+			WHERE TABLE_SCHEMA='tetuanjobs' 
+				AND TABLE_NAME='estudiantes'
+				AND COLUMN_NAME=nomCol;
+END;
+//
+delimiter ;	
+
+--call tetuanjobs.obtenerEnum('ciclo');
+
+/* Fin del procedimiento */
+
+/** FIN RUTINAS GENERALES **/
+
+
+/** RUTINAS LOGIN **/
+
+/** RUTINA COMPROBACIÓN USUARIO EXISTE **/
+
+DROP PROCEDURE IF EXISTS tetuanjobs.compAcceso;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.compAcceso(mail varchar(100), contr varchar(41)) 
+BEGIN
+	declare id int default -1;
+	declare tipo varchar(20);
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where email = mail AND
+	password = password(contr) AND activo = 1;
+
+	SELECT tipo_usuario into tipo from tetuanjobs.usuarios where email = mail AND
+	password = password(contr) AND activo = 1;
+	
+
+	if id >= 0 and tipo = "estudiante" then 
+	SELECT nombre, id_estudiante as identificador, tipo as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
+	elseif id >= 0 and tipo = "administrador" then 
+	SELECT "Administrador" as nombre, id as identificador, tipo as "tipo_usuario";
+	else
+	SELECT false as mensaje;
+	END IF;
+
+END;
+//
+delimiter ;	
+
+--call tetuanjobs.compAcceso('prueba4@gmail.com','pruebadeacceso');
+--call tetuanjobs.compAcceso('admin@gmail.com','admintetuan');
+
+
+/** FIN RUTINA COMPROBACIÓN USUARIO EXISTE **/
+
+/** FUNCION PARA COMPROBAR EMAIL **/
+
+DROP PROCEDURE IF EXISTS tetuanjobs.compEmail;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.compEmail(mail varchar(100)) 
+BEGIN
+	declare existe boolean default false;
+
+	SELECT true into existe from tetuanjobs.usuarios where email = mail AND activo = 1;
+
+	SELECT existe;
+	
+
+END;
+//
+delimiter ;	
+
+--call tetuanjobs.compEmail('prueba4@gmail.com');
+
+/** FIN FUNCION PARA COMPROBAR EMAIL **/
+
+/* Funcion para crear un nuevo estudiante */
+
 drop FUNCTION if EXISTS tetuanjobs.nuevoEstudiante;
 
 delimiter //
@@ -21,7 +107,7 @@ BEGIN
 	end if;
 
 	INSERT INTO tetuanjobs.usuarios (email,tipo_usuario) 
-		values(mail,'e');
+		values(mail,'estudiante');
 		set identificador = @@IDENTITY;
 
 	INSERT INTO tetuanjobs.estudiantes 
@@ -33,9 +119,54 @@ BEGIN
 END;	
 //
 delimiter ;
-SELECT tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");
+--SELECT tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");
 
 /* Fin de funcion */
+
+/** FUNCION NUEVA EMPRESA **/
+
+drop FUNCTION if EXISTS tetuanjobs.nuevaEmpresa;
+
+delimiter //
+
+CREATE FUNCTION tetuanjobs.nuevaEmpresa(nomb_emp varchar(250),nomb_c varchar(250),
+ web varchar(250), mail varchar(100)) returns boolean
+BEGIN
+	declare creada boolean default false;
+	declare identificador int(11) default -1;
+
+	SELECT true into creada from tetuanjobs.empresas where nombre_empresa = nomb_emp AND
+	email = mail;
+
+	IF creada = false then 
+
+		INSERT INTO tetuanjobs.empresas (nombre_empresa, persona_contacto,
+			emp_web,email) 
+			values(nomb_emp,nomb_c,web, mail);
+
+		set identificador = @@IDENTITY;
+
+		SELECT true into creada from tetuanjobs.empresas where id_empresa = identificador;
+	
+	else
+		SELECT false into creada;
+	END IF;
+
+	return creada;
+
+END;	
+//
+delimiter ;
+--SELECT tetuanjobs.nuevaEmpresa("Microsoft","Prueba","microsoft.com", "prueba@microsoft.com");
+
+/* Fin de funcion */
+
+/** FIN FUNCION NUEVA EMPRESA **/
+
+/** FIN RUTINAS LOGIN **/
+
+
+/** RUTINAS PERFIL ESTUDIANTE **/
 
 /* Función para modificar Usuario */
 drop PROCEDURE if EXISTS tetuanjobs.modificarUsuario;
@@ -63,7 +194,7 @@ END;
 //
 delimiter ;
 
-call tetuanjobs.modificarUsuario(1,null, null, "625879852",null,null,null,null,null,1,null );
+--call tetuanjobs.modificarUsuario(1,null, null, "625879852",null,null,null,null,null,1,null );
 
 /* fin Función para modificar Usuario*/
 
@@ -89,29 +220,12 @@ CREATE FUNCTION tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv v
 	END;
 //
 delimiter ;
-SELECT tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");
+--SELECT tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");
 
 /* Función para modificar la contraseña */
+/** FIN RUTINAS PERFIL ESTUDIANTE **/
 
-/* Obtener la lista que contiene la columna de tipo enum */
-drop PROCEDURE if EXISTS tetuanjobs.obtenerEnum;
 
-delimiter //
-
-CREATE PROCEDURE tetuanjobs.obtenerEnum(nomCol varchar(20)) 
-BEGIN
-	SELECT SUBSTRING(SUBSTRING(COLUMN_TYPE,6),((-1)*(length(SUBSTRING(COLUMN_TYPE,5))-1)),((length(SUBSTRING(COLUMN_TYPE,5)))-2))
-		FROM information_schema.COLUMNS
-			WHERE TABLE_SCHEMA='tetuanjobs' 
-				AND TABLE_NAME='estudiantes'
-				AND COLUMN_NAME=nomCol;
-END;
-//
-delimiter ;	
-
-call tetuanjobs.obtenerEnum('ciclo');
-
-/* Fin del procedimiento */
 
 
 

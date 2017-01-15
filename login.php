@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿<?php 
+
+include_once('funciones/loginF.php');
+
+session_start();
+
+$logincl = loginBBDD::singleton();
+$logincl->entrar();
+$logincl->nvContrEmail();
+
+?>
+
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -63,10 +75,10 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
-                                    <form class="mb-lg">
+                                    <form class="mb-lg" method="post">
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
-                                            <input id="mail" name="mail" type="email" placeholder="Email" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido"/>
+                                            <input id="mail" name="mail" type="email" placeholder="Email" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido" />
                                             <span class="fa fa-envelope form-control-feedback text-muted"></span>
                                         </div>
                                         <div class="form-group has-feedback">
@@ -87,7 +99,7 @@
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <form >
+                                    <form method="post">
                                         <p class="text-center"><i>Escriba su email para establecer una nueva contraseña.</i></p>
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
@@ -102,7 +114,7 @@
                         <!-- FINAL panel Recuperar contraseña-->
                         <!-- COMIENZO panel Registro-->
                         <div class="panel radius-clear b0 shadow-clear">
-                            
+
                             <div class="panel-heading  radius-clear panel-heading-active panel-heading-blue ">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="text-muted btn-block text-center">REGISTRARSE</a>
                             </div>
@@ -162,8 +174,40 @@
 
         </div>
 
-
+        
         <!-- END wrapper-->
+
+        <!-- Modal mensaje del servidor -->
+        <div class="modal fade" id="modalmensaje" >
+            <div class="modal-dialog modal-lg">
+
+                <!-- Contenido del modal // Un modal es una ventana que se muestra encima del contenido -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- Este boton sirve para cerrar el modal -->
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!-- Este es el título de la cabecera del modal -->
+                        <h4 class="modal-title"><span id="titexp">Aviso</span></h4>
+                    </div>
+
+                    <!-- Este es el cuerpo del modal -->
+                    <div class="modal-body">
+                        <p><?php //echo $_SESSION["mensajeServidor"];?>
+                            <span id="mensajeserv"></span>
+                        </p>
+                    </div>
+                    <!-- Este es el pie del modal -->
+                    <div class="modal-footer"> 
+                        <input type="button" class="btn btn-info" data-dismiss="modal" value="Salir">
+                        <!-- Para cerrar todos los modales con data-dismiss-->
+                    </div>
+
+                </div>
+            </div>
+        </div>                        
+
+        <!-- Fin Modal -->
+
         <!-- jQuery Scripts-->
         <script src="js/jquery-2.1.4.min.js"></script>
         <!-- Bootstrap Scripts-->
@@ -189,5 +233,14 @@
         login();
 
         </script>
+        <?php
+        if(isset($_SESSION["mensajeServidor"])){
+            echo '<script type="text/javascript">
+            mensajeModal("'.$_SESSION["mensajeServidor"].'");
+            </script>';
+            unset($_SESSION["mensajeServidor"]);
+        }
+        
+        ?> 
     </body>
     </html>

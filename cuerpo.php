@@ -256,7 +256,8 @@ if(!isset($page)){
 
                                 <!-- Este es el cuerpo del modal -->
                                 <div class="modal-body">
-                                    <p><?php echo $_REQUEST["mensaje"]; ?></p>
+                                    <p><?php //echo $_REQUEST["mensaje"]; ?>
+                                        <span id="mensajeserv"></span></p>
                                 </div>
                                 <!-- Este es el pie del modal -->
                                 <div class="modal-footer"> 
@@ -303,11 +304,15 @@ if(!isset($page)){
                     if(isset($page["js"])){
                         echo $page["js"];
                     }
-                    if(isset($_REQUEST["mensaje"])){
+                    
+                    if(isset($_SESSION["mensajeServidor"])){
                         echo '<script type="text/javascript">
-                        mensajeModal();
+                        mensajeModal("'.$_SESSION["mensajeServidor"].'"");
                         </script>';
+                        unset($_SESSION["mensajeServidor"]);
                     }
+
+                    
                     ?>   
 
                 </body>

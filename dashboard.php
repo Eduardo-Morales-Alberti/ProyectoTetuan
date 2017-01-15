@@ -1,15 +1,15 @@
 ﻿<?php
 $page["nombrePag"] = "Dashboard";
 session_start();
-$_SESSION["tipo"] = "administrador";
+//$_SESSION["tipo"] = "administrador";
 ob_start();
 ?>
 <h1 style="text-align: center; color: #060349"><b>Bienvenido a Tetuán Jobs</b>
-    <!--<input type="hidden" name="key" value="<%=usuario.Key%>" />-->
+   
 </h1>
 <div class="panel sinborde col-md-12">
 
-    <h2>Nombre Usuario</h2>
+    <h2>Usuario <?php echo $_SESSION["nombre"] ?></h2>
 
 </div>
 <div class="panel sinborde col-md-12 " data-toggle="play-animation" data-play="bounceIn" data-offset="0" >
