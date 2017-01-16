@@ -18,7 +18,7 @@ $logincl->nvContrEmail();
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="description" content="Programa bolsa de empleo." />
-    <meta name="author" content="Eduardo Morales, Sandra Martin, Antonio Diaz" />
+    <meta name="author" content="Eduardo Morales" />
     <meta name="copyright" content="" />
     <meta name="producto" content="TetuanJobs" />
     <meta name="version" content="V1.0" />

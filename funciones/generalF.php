@@ -4,6 +4,8 @@ require_once('PHPMailer/class.phpmailer.php');
 require_once('PHPMailer/class.smtp.php');
 
 class general{
+
+	//Función para enviar email
 	public static function enviarEmail($emails, $asunto, $cuerpo){
 		$mail = new PHPMailer(); // create a new object
 
@@ -22,6 +24,8 @@ class general{
 
 		$mail->IsHTML(true);
 
+		$mail->CharSet = 'UTF-8';
+		
 		$mail->Username = "contacto@momentosenlata.es";
 
 		$mail->Password = "alumno";
@@ -38,11 +42,13 @@ class general{
 
 		if(!$mail->Send()) {
 
-			echo "Error en el mail: " . $mail->ErrorInfo;
+			/*echo "Error en el mail: " . $mail->ErrorInfo;*/
+			return false;
 
 		} else {
 
-			echo "El mensaje ha sido enviado";
+			/*echo "El mensaje ha sido enviado";*/
+			return true;
 
 		}
 	}

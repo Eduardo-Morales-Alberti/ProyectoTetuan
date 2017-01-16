@@ -21,7 +21,7 @@ END;
 //
 delimiter ;	
 
---call tetuanjobs.obtenerEnum('ciclo');
+/*call tetuanjobs.obtenerEnum('ciclo');*/
 
 /* Fin del procedimiento */
 
@@ -49,7 +49,7 @@ BEGIN
 	
 
 	if id >= 0 and tipo = "estudiante" then 
-	SELECT nombre, id_estudiante as identificador, tipo as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
+	SELECT nombre, id_estudiante as identificador, "estudiante" as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
 	elseif id >= 0 and tipo = "administrador" then 
 	SELECT "Administrador" as nombre, id as identificador, tipo as "tipo_usuario";
 	else
@@ -60,34 +60,111 @@ END;
 //
 delimiter ;	
 
---call tetuanjobs.compAcceso('prueba4@gmail.com','pruebadeacceso');
---call tetuanjobs.compAcceso('admin@gmail.com','admintetuan');
+/*call tetuanjobs.compAcceso('prueba4@gmail.com','pruebadeacceso');*/
+/*call tetuanjobs.compAcceso('admin@gmail.com','admintetuan');*/
+/*call tetuanjobs.compAcceso('eduardomoberti@hotmail.com','admintetuan');*/
 
 
 /** FIN RUTINA COMPROBACIÓN USUARIO EXISTE **/
 
-/** FUNCION PARA COMPROBAR EMAIL **/
+/** RESTABLECER EMAIL **/
 
-DROP PROCEDURE IF EXISTS tetuanjobs.compEmail;
+/** FUNCION PARA ESTABLECER LA CLAVE **/
+
+
+DROP PROCEDURE IF EXISTS tetuanjobs.restEmail;
 
 delimiter //
 
-CREATE PROCEDURE tetuanjobs.compEmail(mail varchar(100)) 
-BEGIN
+CREATE PROCEDURE tetuanjobs.restEmail(mail varchar(100)) 
+BEGIN	
+	declare clave varchar(41);
 	declare existe boolean default false;
+
+	select password(rand()) into clave;
 
 	SELECT true into existe from tetuanjobs.usuarios where email = mail AND activo = 1;
 
-	SELECT existe;
+	if existe then
+		update tetuanjobs.usuarios set restablecer = 1, clave_rest=clave 
+		where email = mail AND activo = 1;
+
+		SELECT clave_rest as hashing, existe from tetuanjobs.usuarios where email = mail AND activo = 1;
+	else
+		SELECT false as existe;
+	END IF;
+
+	/*SELECT existe;*/
 	
 
-END;
-//
+END//
 delimiter ;	
 
---call tetuanjobs.compEmail('prueba4@gmail.com');
+/*call tetuanjobs.restEmail('eduardomoberti@hotmail.com');*/
 
-/** FIN FUNCION PARA COMPROBAR EMAIL **/
+/** FIN FUNCION PARA ESTABLECER LA CLAVE **/
+
+/** RUTINA PARA COMPROBAR QUE TODO ES CORRECTO **/
+
+DROP PROCEDURE IF EXISTS tetuanjobs.testRestContr;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.testRestContr(mail varchar(100), clave varchar(41)) 
+BEGIN	
+	
+	declare existe boolean default false;	
+
+	SELECT true into existe from tetuanjobs.usuarios 
+	 where email = mail AND activo = 1 
+	and restablecer = 1 and clave_rest = clave;	
+
+	SELECT existe;
+
+END//
+delimiter ;	
+
+/*call tetuanjobs.testRestContr('eduardomoberti@hotmail.com','*FA33BA8C06BF2BA5E47CB77823D126E1D78877C2');*/
+
+/** RUTINA PARA COMPROBAR QUE TODO ES CORRECTO **/
+
+/** RUTINA PARA ACTUALIZAR LA CONTRASEÑA **/
+
+DROP PROCEDURE IF EXISTS tetuanjobs.cambiarContrRest;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.cambiarContrRest(mail varchar(100), clave varchar(41), contr varchar(41)) 
+BEGIN	
+	declare existe boolean default false;	
+
+	SELECT true into existe from tetuanjobs.usuarios where email = mail AND activo = 1 
+	and restablecer = 1 and clave_rest = clave;	
+
+	if existe then
+
+		update tetuanjobs.usuarios set password = password(contr), clave_rest = null, restablecer = 0
+		 where email = mail AND activo = 1 
+		and restablecer = 1 and clave_rest = clave;	
+
+		SELECT true as resultado, nombre, id_estudiante as identificador, tipo_usuario 
+		from tetuanjobs.usuarios as usr join tetuanjobs.estudiantes as est
+			on usr.id_usuario = est.id_usuario
+	 			where email = mail AND activo = 1 and password = password(contr);	
+
+	else
+		select false as resultado;
+	END IF;
+
+
+END//
+delimiter ;	
+
+/*call tetuanjobs.cambiarContrRest('eduardomoberti@hotmail.com','*E65BE8C64909EA20CB232EE91E0E5230B4540214','prueba'); */
+
+/** RUTINA PARA ACTUALIZAR LA CONTRASEÑA **/
+
+/** FIN RESTABLECER EMAIL **/
 
 /* Funcion para crear un nuevo estudiante */
 
@@ -119,7 +196,7 @@ BEGIN
 END;	
 //
 delimiter ;
---SELECT tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");
+/*SELECT tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");*/
 
 /* Fin de funcion */
 
@@ -157,7 +234,7 @@ BEGIN
 END;	
 //
 delimiter ;
---SELECT tetuanjobs.nuevaEmpresa("Microsoft","Prueba","microsoft.com", "prueba@microsoft.com");
+/*SELECT tetuanjobs.nuevaEmpresa("Microsoft","Prueba","microsoft.com", "prueba@microsoft.com");*/
 
 /* Fin de funcion */
 
@@ -194,7 +271,7 @@ END;
 //
 delimiter ;
 
---call tetuanjobs.modificarUsuario(1,null, null, "625879852",null,null,null,null,null,1,null );
+/*call tetuanjobs.modificarUsuario(1,null, null, "625879852",null,null,null,null,null,1,null );*/
 
 /* fin Función para modificar Usuario*/
 
@@ -220,7 +297,7 @@ CREATE FUNCTION tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv v
 	END;
 //
 delimiter ;
---SELECT tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");
+/*SELECT tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");*/
 
 /* Función para modificar la contraseña */
 /** FIN RUTINAS PERFIL ESTUDIANTE **/

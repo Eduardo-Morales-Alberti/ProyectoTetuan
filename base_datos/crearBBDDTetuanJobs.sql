@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS `USUARIOS`(
   `email` varchar(100) COLLATE utf8_general_ci NOT NULL UNIQUE,
   `password` varchar(41),
   `tipo_usuario` enum('estudiante','administrador'),
+  `restablecer` boolean DEFAULT FALSE,
+  `clave_rest` varchar(41),
   `activo` boolean DEFAULT FALSE
  ) ENGINE=InnoDB; 
 
@@ -310,7 +312,12 @@ password('admintetuan'));
 
 /* INSERTAR usuario de ejemplo */
 INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("eduardomoberti@hotmail.com",'estudiante',1,
-password('admintetuan'));
+password('estudiantetetuan'));
+
+INSERT INTO tetuanjobs.estudiantes 
+    (`id_estudiante`, `id_usuario`, `ciclo`, `nombre`, `apellidos`) 
+    VALUES (NULL, @@IDENTITY,"DAW","Eduardo", "Morales");
+
 /* INSERTAR usuario de ejemplo */
 
 /* insertar etiquetas */
