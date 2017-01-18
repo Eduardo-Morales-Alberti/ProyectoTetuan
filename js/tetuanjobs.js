@@ -33,11 +33,11 @@ function cargarTabla(idtabla){
 function mensajeModal(mensaje){
   $(document).ready(function(){
     $("#mensajeserv").text(mensaje);
-      $("#modalmensaje").modal("show");
-      var a = window.setTimeout(function(){
-        $("#modalmensaje").modal("hide");
-      },4000);
-    });
+    $("#modalmensaje").modal("show");
+    var a = window.setTimeout(function(){
+      $("#modalmensaje").modal("hide");
+    },4000);
+  });
 
 
 
@@ -156,30 +156,24 @@ function eliminarTag(selctid,divid,elementos){
 
 /**Login**/
 function login(){
-  
+
   $(document).ready(function(){
     setTimeout(function() { $("#mail").focus() }, 500);
-   
+
   });
-  var selectTipo = document.getElementById("tipo");
-  selectTipo.addEventListener("change", 
-    function(){
-      var elEmpresa = document.getElementsByClassName("elEmp");
-      var elEst = document.getElementsByClassName("elEst");
-      if(selectTipo.value =="empresa"){
-        for (var i = 0; i < elEmpresa.length; i++) {
-          elEmpresa[i].style.display = "block";
-        };
-        for (var i = 0; i < elEst.length; i++) {
-          elEst[i].style.display = "none";
-        };
-      }else{
-        for (var i = 0; i < elEmpresa.length; i++) {
-         elEmpresa[i].style.display = "none";
-       };
-       for (var i = 0; i < elEst.length; i++) {
-        elEst[i].style.display = "block";
-      };
+  
+  $("#tipo").change( function(){
+
+    if($(this).val() == "empresa"){
+      $(".elEmp").show();
+      $(".inputEmp").attr("required","required");
+      $(".elEst").hide();
+      $(".inputEst").removeAttr("required");
+    }else{
+      $(".elEst").show();
+      $(".inputEst").attr("required","required");
+      $(".elEmp").hide();
+      $(".inputEmp").removeAttr("required");
     }
 
   });

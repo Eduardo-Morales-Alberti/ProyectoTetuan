@@ -7,6 +7,8 @@ session_start();
 $logincl = loginBBDD::singleton();
 $logincl->entrar();
 $logincl->nvContrEmail();
+$logincl->nvEstudiante();
+$logincl->nvEmpresa();
 
 ?>
 
@@ -120,7 +122,7 @@ $logincl->nvContrEmail();
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <form id="registro" >
+                                    <form id="registro" method="post">
                                         <div class="form-group ">
                                             <label for="tipo">Tipo de usuario</label><br>
                                             <select id="tipo" name="tipo" class="form-control">
@@ -130,11 +132,11 @@ $logincl->nvContrEmail();
                                         </div>
                                         <div class="form-group has-feedback elEmp" >
                                             <label for="empresa">Empresa</label>
-                                            <input id="empresa" name="empresa" type="text" placeholder="Nombre de la empresa" class="form-control" required="required"   title="Introduzca un Nombre valido"/>                                       
+                                            <input id="empresa" name="empresa" type="text" placeholder="Nombre de la empresa" class="form-control inputEmp"  title="Introduzca un Nombre valido" required="required"/>                                       
                                         </div>
                                         <div class="form-group has-feedback">
                                             <label for="nombre">Nombre</label>
-                                            <input id="nombre" name="nombre" type="text" placeholder="Escriba su nombre" class="form-control" required="required"   title="Introduzca un Nombre valido"/>
+                                            <input id="nombre" name="nombre" type="text" placeholder="Escriba su nombre" class="form-control" required="required" title="Introduzca un Nombre valido"/>
 
                                         </div>
                                         <div class="form-group has-feedback">
@@ -143,15 +145,16 @@ $logincl->nvContrEmail();
 
                                         </div>
                                         <div class="form-group has-feedback elEmp" >
-                                            <label for="empresa">Web de la Empresa</label>
-                                            <input id="empresa" name="empresa" type="text" placeholder="Escriba la web de la empresa" class="form-control" required="required"   title="Introduzca un Apellido valido"/>
+                                            <label for="webempresa">Web de la Empresa</label>
+                                            <input id="webempresa" name="webempresa" type="text" placeholder="Escriba la web de la empresa" class="form-control" title="Introduzca un Apellido valido"/>
 
                                         </div>
                                         <div class="form-group has-feedback elEst">
                                             <label for="modulo">Módulo</label><br>
-                                            <select name="modulo" class="form-control">
+                                            <select name="modulo" class="form-control inputEst" required="required">
                                                 <option value="DAW">DAW</option>
                                                 <option value="ASIR">ASIR</option>
+                                                <option value="TURISMO">TURISMO</option>
                                             </select>  
                                         </div>
                                         <div class="form-group has-feedback">

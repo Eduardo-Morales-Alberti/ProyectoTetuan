@@ -70,7 +70,10 @@ class loginBBDD {
 		}
 	}
 
-	/** Funcion para establecer una nueva contraseña en el servidor y enviar el enlace para hacerlo **/
+	/** fin función entrar **/
+
+	/** Funcion para establecer una nueva clave para restablecer en el servidor y 
+	enviar el enlace con esa clave **/
 	public function nvContrEmail(){
 
 		if(isset($_POST['recordar'])&&isset($_POST['mail'])){
@@ -117,6 +120,8 @@ class loginBBDD {
 			
 		}
 	}
+
+	/** Fin función nvContrEmail **/
 
 	/** Funcion para establecer una nueva contraseña con el enlace del email recibido **/
 	public function restContr(){
@@ -208,9 +213,83 @@ class loginBBDD {
 
 		}
 
-
-
 	}
+
+	/** Fin función restContr **/
+
+	/** Función nuevo estudiante **/
+
+	public function nvEstudiante(){
+		if(isset($_POST['registrar'])&&isset($_POST['mail'])&&isset($_POST['nombre'])&&isset($_POST['modulo'])&&isset($_POST['tipo'])&&
+			$_POST['tipo'] == "estudiante"){
+			$apellidos = null;
+
+			if(isset($_POST['apellidos'])){
+				$apellidos = $_POST['apellidos'];
+			}
+
+			$query = "call nuevoEstudiante('".$_POST['nombre']."','".$apellidos."','".$_POST['modulo']."','".$_POST['mail']."')";
+			$consulta = $this->Idb->prepare($query);
+			$consulta->execute();
+			
+			if($consulta->rowCount()>0){
+				$result = $consulta->fetch();	
+			}
+
+			if(isset($result["mensaje"])){
+				session_reset();
+				$_SESSION["mensajeServidor"] = $result["mensaje"];
+
+			}else{
+				session_reset();
+				$_SESSION["mensajeServidor"] = "Error al crear el nuevo usuario.";
+				/*unset( $_SESSION["nombre"]);
+				unset( $_SESSION["idenficador"]);*/
+
+			}    
+		}
+	}
+
+	/** Fin función nvEstudiante **/
+
+	/** Función nueva empresa **/
+
+	public function nvEmpresa(){
+		if(isset($_POST['registrar'])&&isset($_POST['mail'])&&isset($_POST['nombre'])&&isset($_POST['empresa'])&&isset($_POST['tipo'])&&
+			$_POST['tipo'] == "empresa"){
+			$nombre = $_POST['nombre'];
+
+			if(isset($_POST['apellidos'])){
+				$nombre .= " ".$_POST['apellidos'];
+			}
+
+			if(isset($_POST['webempresa'])){
+				$web = $_POST['webempresa'];
+			}
+
+			$query = "call nuevaEmpresa('".$_POST['empresa']."','".$nombre."','".$web."','".$_POST['mail']."')";
+			$consulta = $this->Idb->prepare($query);
+			$consulta->execute();
+			
+			if($consulta->rowCount()>0){
+				$result = $consulta->fetch();	
+			}
+
+			if(isset($result["mensaje"])){
+				session_reset();
+				$_SESSION["mensajeServidor"] = $result["mensaje"];
+
+			}else{
+				session_reset();
+				$_SESSION["mensajeServidor"] = "Error al crear la nuevo empresa.";
+				/*unset( $_SESSION["nombre"]);
+				unset( $_SESSION["idenficador"]);*/
+
+			}    
+		}
+	}
+
+	/** Fin función nvEmpresa **/
 
 }
 

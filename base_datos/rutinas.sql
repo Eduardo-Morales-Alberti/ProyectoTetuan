@@ -17,8 +17,7 @@ BEGIN
 			WHERE TABLE_SCHEMA='tetuanjobs' 
 				AND TABLE_NAME='estudiantes'
 				AND COLUMN_NAME=nomCol;
-END;
-//
+END//
 delimiter ;	
 
 /*call tetuanjobs.obtenerEnum('ciclo');*/
@@ -56,8 +55,7 @@ BEGIN
 	SELECT false as mensaje;
 	END IF;
 
-END;
-//
+END//
 delimiter ;	
 
 /*call tetuanjobs.compAcceso('prueba4@gmail.com','pruebadeacceso');*/
@@ -168,20 +166,16 @@ delimiter ;
 
 /* Funcion para crear un nuevo estudiante */
 
-drop FUNCTION if EXISTS tetuanjobs.nuevoEstudiante;
+drop PROCEDURE if EXISTS tetuanjobs.nuevoEstudiante;
 
 delimiter //
 
-CREATE FUNCTION tetuanjobs.nuevoEstudiante(nomb varchar(25), ape varchar(50),ccl varchar(20),
-	mail varchar(100)) returns varchar(250)
+CREATE PROCEDURE tetuanjobs.nuevoEstudiante(nomb varchar(25), ape varchar(50),ccl varchar(20),
+	mail varchar(100)) 
 BEGIN
 	declare mensaje varchar(250) default "";
 	declare identificador int(11) unsigned;
-
-	if length(nomb) < 3 then
-		set mensaje = "Nombre demasiado corto";
-		return mensaje;
-	end if;
+	
 
 	INSERT INTO tetuanjobs.usuarios (email,tipo_usuario) 
 		values(mail,'estudiante');
@@ -191,23 +185,22 @@ BEGIN
 		(`id_estudiante`, `id_usuario`, `ciclo`, `nombre`, `apellidos`) 
 		VALUES (NULL, identificador,ccl,nomb, ape);
 
-	return concat("Usuario ",nomb," creado correctamente");
+	select concat("Usuario ",nomb," creado correctamente") as mensaje;
 
-END;	
-//
+END//
 delimiter ;
-/*SELECT tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");*/
+/*call tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");*/
 
 /* Fin de funcion */
 
 /** FUNCION NUEVA EMPRESA **/
 
-drop FUNCTION if EXISTS tetuanjobs.nuevaEmpresa;
+drop PROCEDURE if EXISTS tetuanjobs.nuevaEmpresa;
 
 delimiter //
 
-CREATE FUNCTION tetuanjobs.nuevaEmpresa(nomb_emp varchar(250),nomb_c varchar(250),
- web varchar(250), mail varchar(100)) returns boolean
+CREATE PROCEDURE tetuanjobs.nuevaEmpresa(nomb_emp varchar(250),nomb_c varchar(250),
+ web varchar(250), mail varchar(100))
 BEGIN
 	declare creada boolean default false;
 	declare identificador int(11) default -1;
@@ -223,18 +216,16 @@ BEGIN
 
 		set identificador = @@IDENTITY;
 
-		SELECT true into creada from tetuanjobs.empresas where id_empresa = identificador;
+		SELECT "La empresa se ha creado correctamente." as mensaje;
 	
 	else
-		SELECT false into creada;
+		SELECT "La empresa ya existe." as mensaje;
 	END IF;
 
-	return creada;
 
-END;	
-//
+END//
 delimiter ;
-/*SELECT tetuanjobs.nuevaEmpresa("Microsoft","Prueba","microsoft.com", "prueba@microsoft.com");*/
+/*call tetuanjobs.nuevaEmpresa("Microsoft","Prueba","microsoft.com", "prueba@microsoft.com");*/
 
 /* Fin de funcion */
 
@@ -267,8 +258,7 @@ update tetuanjobs.estudiantes set nombre = if(nomb is not null, nomb, nombre),
 
 	SELECT * from tetuanjobs.estudiantes where id_estudiante = id_est;
 
-END;
-//
+END//
 delimiter ;
 
 /*call tetuanjobs.modificarUsuario(1,null, null, "625879852",null,null,null,null,null,1,null );*/
@@ -294,8 +284,7 @@ CREATE FUNCTION tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv v
 			return "contraseña no válida";		
 		END IF;
 		
-	END;
-//
+	END//
 delimiter ;
 /*SELECT tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");*/
 
