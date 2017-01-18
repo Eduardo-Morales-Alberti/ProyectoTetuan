@@ -2,7 +2,8 @@
 //session_start();
 //$_SESSION["tipo"] = "estudiante";
 
-if(!isset($page)){
+
+if(!isset($page)|| !isset($_SESSION["usuario"])){
 	header("location:login.php");
 }else{
 
@@ -100,7 +101,7 @@ if(!isset($page)){
 
                         <!-- Apagar -->
                         <li style="margin-right:10px;">
-                            <a href="login.php" title="Salir">
+                            <a href="login.php?logout=true" title="Salir">
                                 <em class="fa fa-power-off"> Salir</em>
                             </a>
                         </li> 
@@ -126,7 +127,7 @@ if(!isset($page)){
                             </a>
                         </li>
                         <!---->
-                        <?php if($_SESSION["tipo"] == "estudiante"){
+                        <?php if($_SESSION["usuario"]->tipo == "estudiante"){
                             /*Menú del estudiante*/
                             ?>
                             <!--Perfil-->
@@ -147,7 +148,7 @@ if(!isset($page)){
                             </li>
                             <!----> 
 
-                            <?php }else if($_SESSION["tipo"] == "administrador"){
+                            <?php }else if($_SESSION["usuario"]->tipo == "administrador"){
                                 /* Menú del administrador */
                                 ?>
                                 <!--Usuarios-->                                

@@ -3,7 +3,22 @@
 require_once('PHPMailer/class.phpmailer.php');
 require_once('PHPMailer/class.smtp.php');
 
-class general{
+class Usuario{
+	public $mail;
+	public $nombre;
+	public $identificador;
+	public $tipo;
+
+	public function __construct($m,$nom,$id,$tp){
+		$this->mail = $m;
+		$this->nombre = $nom;
+		$this->identificador = $id;
+		$this->tipo = $tp;
+	}
+}
+
+
+class General{
 
 	//Función para enviar email
 	public static function enviarEmail($emails, $asunto, $cuerpo){

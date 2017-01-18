@@ -1,9 +1,18 @@
 <?php
-session_start();
-$_SESSION["tipo"] = "estudiante";
+
 /**$page tendrá el resto del contenido que se mostrará en el cuerpo**/
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Búsqueda de ofertas";
+
+include_once("funciones/generalF.php");
+session_start();
+/*$_SESSION["tipo"] = "estudiante";*/
+if(!isset($_SESSION["usuario"])){
+    header("location:login.php");
+}else if($_SESSION["usuario"]->tipo != "estudiante"){
+    header("location:dashboard.php");
+}
+
 /**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
 Se le llama en el cuerpo en las últimas líneas**/
 ob_start();?>

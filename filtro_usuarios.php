@@ -1,7 +1,13 @@
 <?php
 $page["nombrePag"] = "Gestión de Usuarios";
+include_once("funciones/generalF.php");
 session_start();
-$_SESSION["tipo"] = "administrador";
+/*$_SESSION["tipo"] = "administrador";*/
+if(!isset($_SESSION["usuario"])){
+    header("location:login.php");
+}else if($_SESSION["usuario"]->tipo != "administrador"){
+    header("location:dashboard.php");
+}
 
 ob_start();?>
 <script type="text/javascript">

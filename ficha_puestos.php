@@ -1,7 +1,13 @@
 <?php
 $page["nombrePag"] = "Ficha de puestos";
+include_once("funciones/generalF.php");
 session_start();
-$_SESSION["tipo"] = "administrador";
+if(!isset($_SESSION["usuario"])){
+    header("location:login.php");
+}else if($_SESSION["usuario"]->tipo != "administrador"){
+    header("location:dashboard.php");
+}
+/*$_SESSION["tipo"] = "administrador";*/
 
 ob_start();?>
 <script type="text/javascript">
@@ -264,7 +270,7 @@ ob_start();
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label>Tipo de contrato</label>
+                <label>Tipo de contrado</label>
                 <select class="form-control" name="contrato">
                     <option value="0">Sin especificar</option>
                     <option value="indef">Indefinido</option>

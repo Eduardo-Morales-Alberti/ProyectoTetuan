@@ -1,14 +1,20 @@
 ﻿<?php 
 
 include_once('funciones/loginF.php');
+include_once("funciones/generalF.php");
 
 session_start();
+
+if(isset($_SESSION["usuario"])){
+    header("location:dashboard.php");
+}
 
 $logincl = loginBBDD::singleton();
 $logincl->entrar();
 $logincl->nvContrEmail();
 $logincl->nvEstudiante();
 $logincl->nvEmpresa();
+$logincl->logOut();
 
 ?>
 

@@ -1,6 +1,10 @@
 ﻿<?php
 $page["nombrePag"] = "Dashboard";
+include_once("funciones/generalF.php");
 session_start();
+if(!isset($_SESSION["usuario"])){
+    header("location:login.php");
+}
 //$_SESSION["tipo"] = "administrador";
 ob_start();
 ?>
@@ -9,13 +13,13 @@ ob_start();
 </h1>
 <div class="panel sinborde col-md-12">
 
-    <h2>Usuario <?php echo $_SESSION["nombre"] ?></h2>
+    <h2>Usuario <?php echo $_SESSION["usuario"]->nombre; ?></h2>
 
 </div>
 <div class="panel sinborde col-md-12 " data-toggle="play-animation" data-play="bounceIn" data-offset="0" >
     <?php 
     /* Estudiante*/
-    if($_SESSION["tipo"] == "estudiante"){                            
+    if($_SESSION["usuario"]->tipo == "estudiante"){                            
 
         ?>
         <!-- Perfil -->
@@ -53,7 +57,7 @@ ob_start();
 
         <?php 
         /* Administrador*/
-    }else if($_SESSION["tipo"] == "administrador"){                            
+    }else if($_SESSION["usuario"]->tipo == "administrador"){                            
 
         ?>  
         <!-- Usuarios -->

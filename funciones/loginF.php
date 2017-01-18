@@ -48,24 +48,23 @@ class loginBBDD {
 
 			if(!isset($result["mensaje"])){
 
-				$_SESSION["email"] = $_POST['mail'];
+
+				$_SESSION["usuario"] = new Usuario($_POST['mail'],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
+
+				/*$_SESSION["email"] = $_POST['mail'];
 				$_SESSION["nombre"] = $result["nombre"];
 				$_SESSION["identificador"] = $result["identificador"];
-				$_SESSION["tipo"] = $result["tipo_usuario"];
+				$_SESSION["tipo"] = $result["tipo_usuario"];*/
 				$_SESSION["mensajeServidor"] = "Usuario correcto";
 				header("location: dashboard.php");
 
 			}else{
 				session_reset();
 				$_SESSION["mensajeServidor"] = "Usuario o Contraseña incorrectos";
-				/*unset( $_SESSION["nombre"]);
-				unset( $_SESSION["idenficador"]);*/
 
 			}    
 		}else{
 			session_reset();
-			/*unset( $_SESSION["nombre"]);
-			unset( $_SESSION["idenficador"]);*/
 
 		}
 	}
@@ -93,7 +92,7 @@ class loginBBDD {
 					<a href='http://localhost/proyectofinal/restablecercontr.php?
 					email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
 					Restablecer Contraseña</a>";
-					$enviado = general::enviarEmail($emails,"Restablecer la contraseña", $mensaje);
+					$enviado = General::enviarEmail($emails,"Restablecer la contraseña", $mensaje);
 
 					if($enviado){
 
@@ -146,9 +145,11 @@ class loginBBDD {
 
 						if($result["resultado"]){
 
-							$_SESSION["nombre"] = $result["nombre"];
+							$_SESSION["usuario"] = new Usuario($_SESSION["email"],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
+							
+							/*$_SESSION["nombre"] = $result["nombre"];
 							$_SESSION["identificador"] = $result["identificador"];
-							$_SESSION["tipo"] = $result["tipo_usuario"];
+							$_SESSION["tipo"] = $result["tipo_usuario"];*/
 							$_SESSION["mensajeServidor"] = "La contraseña ha sido restablecida.";							
 							header("location:dashboard.php");
 
@@ -290,6 +291,17 @@ class loginBBDD {
 	}
 
 	/** Fin función nvEmpresa **/
+
+	/** Funcion salir **/
+
+	public function logOut(){
+		if(isset($_REQUEST["logout"])){
+			session_destroy();
+		}
+		
+	}
+
+	/** Fin funcion salir **/
 
 }
 
