@@ -1,37 +1,11 @@
 <?php
 include_once("generalF.php");
+include_once("conexion.php");
+class loginBBDD extends singleton{
 
-class loginBBDD {
-
-	private $Idb; private $filas = array(); private static $instancia; 
-
-
-	// un constructor privado evita crear nuevos objetos desde fuera de la clase
-	private function __construct() { 
-
-		$this->Idb = new PDO( "mysql:host=localhost; dbname=tetuanjobs", 'usertetuan','tetuanjobs'); 
-
-	}
-
-	//método singleton que crea instancia sí no está creada
-	public static function singleton() { 
-
-		if (!isset(self::$instancia)) {
-
-			$miclase = __CLASS__;
-			self::$instancia = new $miclase;
-
-		}
-
-		return self::$instancia;
-	}
-
-	// Evita que el objeto se pueda clonar
-	public function __clone(){ 
-
-		trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR); 
-		
-	}
+	function __construct() {
+       parent::__construct();
+   }
 
 	/** Función para entrar en la web **/
 	public function entrar(){	
@@ -145,11 +119,9 @@ class loginBBDD {
 
 						if($result["resultado"]){
 
-							$_SESSION["usuario"] = new Usuario($_SESSION["email"],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
-							
-							/*$_SESSION["nombre"] = $result["nombre"];
+							$_SESSION["nombre"] = $result["nombre"];
 							$_SESSION["identificador"] = $result["identificador"];
-							$_SESSION["tipo"] = $result["tipo_usuario"];*/
+							$_SESSION["tipo"] = $result["tipo_usuario"];
 							$_SESSION["mensajeServidor"] = "La contraseña ha sido restablecida.";							
 							header("location:dashboard.php");
 

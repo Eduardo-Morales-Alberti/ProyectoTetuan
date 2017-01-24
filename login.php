@@ -8,8 +8,8 @@ session_start();
 if(isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
-
-$logincl = loginBBDD::singleton();
+singleton::singleton();
+$logincl = new loginBBDD;
 $logincl->entrar();
 $logincl->nvContrEmail();
 $logincl->nvEstudiante();
