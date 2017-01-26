@@ -216,10 +216,10 @@ BEGIN
 
 		set identificador = @@IDENTITY;
 
-		SELECT "La empresa se ha creado correctamente." as mensaje;
+		SELECT true as mensaje;
 	
 	else
-		SELECT "La empresa ya existe." as mensaje;
+		SELECT false as mensaje;
 	END IF;
 
 
@@ -291,7 +291,88 @@ delimiter ;
 /* Función para modificar la contraseña */
 /** FIN RUTINAS PERFIL ESTUDIANTE **/
 
+/** RUTINAS FILTRO DE USUARIOS **/
+
+/** FUNCION PARA DAR DE ALTA UN USUARIO O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
+
+drop PROCEDURE if EXISTS tetuanjobs.cambiarEstado;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.cambiarEstado(id_us int) 
+	BEGIN
+
+update tetuanjobs.usuarios set activo = if(activo = 1, 0, 1)
+	where id_usuario = id_us and tipo_usuario = "estudiante";
+
+	SELECT * from tetuanjobs.usuarios where id_usuario = id_us;
+
+END//
+delimiter ;
+
+/*call tetuanjobs.cambiarEstado(2);*/
 
 
+/** FIN FUNCION PARA DAR DE ALTA UN USUARIO O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
+
+/** FUNCION PARA ELIMINAR UN USUARIO **/
+drop PROCEDURE if EXISTS tetuanjobs.eliminarUsuario;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarUsuario(id_us int) 
+	BEGIN
+	delete from tetuanjobs.estudiantes where id_usuario = id_us;
+
+	delete from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "estudiante";
+
+
+END//
+delimiter ;
+/*call tetuanjobs.eliminarUsuario(1);*/
+
+/** FUNCION PARA ELIMINAR UN USUARIO **/
+
+/** FIN RUTINAS FILTRO DE USUARIOS **/
+
+
+/** RUTINAS FILTRO DE EMPRESAS **/
+
+/** RUTINA PARA ELIMINAR UNA EMPRESA **/
+
+drop PROCEDURE if EXISTS tetuanjobs.eliminarEmpresa;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarEmpresa(id_emp int) 
+	BEGIN
+	delete from tetuanjobs.empresas where id_empresa = id_emp;
+
+END//
+delimiter ;
+
+
+/** FIN RUTINA PARA ELIMINAR UNA EMPRESA **/
+
+/** RUTINA PARA MODIFICAR UNA EMPRESA **/
+
+drop PROCEDURE if EXISTS tetuanjobs.modificarEmpresa;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.modificarEmpresa(id_emp int, 
+	web varchar(250), mail varchar(100),telef varchar(9), contacto varchar(250)) 
+	BEGIN
+
+update tetuanjobs.empresas set 
+	emp_web = if(web is not null, web,emp_web), email = if(mail is not null, mail,email), 
+	telefono = if(telef is not null, telef,telefono),persona_contacto = if(contacto is not null, contacto,persona_contacto)
+	where id_empresa = id_emp;
+
+	SELECT * from tetuanjobs.empresas where id_empresa  = id_emp;
+
+END//
+delimiter ;
+
+/** FIN RUTINA PARA MODIFICAR UNA EMPRESA **/
+
+
+/** FIN RUTINAS FILTRO DE EMPRESAS **/
 
 

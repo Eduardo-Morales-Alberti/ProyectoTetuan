@@ -1,6 +1,6 @@
 <?php 
 //session_start();
-//$_SESSION["tipo"] = "estudiante";
+
 
 
 if(!isset($page)|| !isset($_SESSION["usuario"])){
@@ -161,25 +161,10 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                 <!---->
                                 <!--Empresa-->
                                 <li>
-                                    <a href="#" title="Empresas" data-toggle="collapse-next" class="has-submenu">
+                                    <a href="filtro_empresas.php" title="Empresas"  class="no-submenu">
                                         <em class="fa fa-building-o"></em>
                                         <span class="item-text">Empresas</span>                                        
-                                    </a>   
-                                    <ul class="nav collapse out">
-                                        <li>
-                                            <a href="ficha_empresas.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
-
-                                                <span class="item-text">Nueva empresa</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="filtro_empresas.php" title="Buscar" data-toggle="" class="no-submenu subitem">
-
-                                                <span class="item-text">Buscar empresa</span>
-                                            </a>
-                                        </li>
-                                        
-                                    </ul>            
+                                    </a>             
                                 </li>
                                 <!---->
                                 <!--Puestos-->

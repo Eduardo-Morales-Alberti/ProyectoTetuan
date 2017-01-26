@@ -5,7 +5,7 @@ session_start();
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
 }
-//$_SESSION["tipo"] = "administrador";
+
 ob_start();
 ?>
 <h1 style="text-align: center; color: #060349"><b>Bienvenido a Tetuán Jobs</b>
@@ -78,7 +78,7 @@ ob_start();
         <!-- Fin de Usuarios-->
         <!-- Empresas -->
         <div class="panel sinborde col-md-4" id="panel-anim-zoomOut1">
-            <a href="ficha_empresas.php?Id=nuevo" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
+            <a href="filtro_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">

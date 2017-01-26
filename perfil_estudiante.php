@@ -1,7 +1,7 @@
 ﻿<?php
 include_once("funciones/generalF.php");
 session_start();
-/*$_SESSION["tipo"] = "estudiante";*/
+
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
 }else if($_SESSION["usuario"]->tipo != "estudiante"){

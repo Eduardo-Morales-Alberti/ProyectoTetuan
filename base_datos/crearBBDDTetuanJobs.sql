@@ -16,6 +16,7 @@ CREATE DATABASE `tetuanjobs` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 DROP USER 'usertetuan'@'localhost';
 CREATE USER 'usertetuan'@'localhost' IDENTIFIED BY 'tetuanjobs';
 GRANT EXECUTE ON `tetuanjobs`.* TO 'usertetuan'@'localhost';
+
 -- --------------------------------------------------------
 
 USE tetuanjobs;
@@ -211,12 +212,7 @@ CREATE TABLE IF NOT EXISTS `EMPRESAS` (
   `emp_web` varchar(250) COLLATE utf8_general_ci,
   `email` varchar(100) COLLATE utf8_general_ci NOT NULL,
   `telefono` varchar(9) COLLATE utf8_general_ci ,
-  `direccion` varchar(500) COLLATE utf8_general_ci ,
-  `poblacion` varchar(250) COLLATE utf8_general_ci,
-  `id_provincia` int(11) UNSIGNED,
-  `persona_contacto` varchar(250) COLLATE utf8_general_ci ,
-  `empresas_desc` varchar(3000) COLLATE utf8_general_ci,
-  FOREIGN KEY (`id_provincia`) REFERENCES PROVINCIAS(`id_provincia`) ON DELETE CASCADE ON UPDATE CASCADE
+  `persona_contacto` varchar(250) COLLATE utf8_general_ci 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -235,12 +231,14 @@ CREATE TABLE IF NOT EXISTS `PUESTOS` (
   `puesto_nombre` varchar(500) COLLATE utf8_general_ci NOT NULL,
   `puesto_desc` varchar(3000) COLLATE utf8_general_ci NOT NULL,
   `puestos_carnet` boolean DEFAULT FALSE,
+  `id_provincia` int(11) UNSIGNED,
   `experiencia` enum('Sin experiencia','Al menos un año','Más de un año') COLLATE utf8_general_ci NOT NULL,
   `tipo_contrato` enum('Sin determinar','Indefinido','En prácticas','Por obra o servicio') COLLATE utf8_general_ci NOT NULL DEFAULT 'Sin determinar',
   `jornada` enum('Sin determinar','Completa','Sólo mañanas','Sólo tardes') COLLATE utf8_general_ci NOT NULL DEFAULT 'Sin determinar',
   `titulacion_minima` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_general_ci NOT NULL,
   `f_publicacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`id_empresa`) REFERENCES EMPRESAS(`id_empresa`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (`id_empresa`) REFERENCES EMPRESAS(`id_empresa`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_provincia`) REFERENCES PROVINCIAS(`id_provincia`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -305,81 +303,3 @@ CREATE TABLE IF NOT EXISTS `PUESTOS_IDIOMAS` (
 
 /** FIN DE PUESTOS **/
 
-/* INSERTAR usuario administrador */
-INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("admin@gmail.com",'administrador',1,
-password('admintetuan'));
-/* INSERTAR usuario administrador */
-
-/* INSERTAR usuario de ejemplo */
-INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("eduardomoberti@hotmail.com",'estudiante',1,
-password('estudiantetetuan'));
-
-INSERT INTO tetuanjobs.estudiantes 
-    (`id_estudiante`, `id_usuario`, `ciclo`, `nombre`, `apellidos`) 
-    VALUES (NULL, @@IDENTITY,"DAW","Eduardo", "Morales");
-
-/* INSERTAR usuario de ejemplo */
-
-/* insertar etiquetas */
-INSERT INTO `ETIQUETAS` (nombre_etiqueta) values
-('java'),('php'),('javascript'),('html'),('css');
-/* insertar etiquetas */
-
-
-/* Insertar provincias */
-
-INSERT INTO `provincias` (`id_provincia`, `slug`, `nombre_provincia`) VALUES
-(1, 'alava', 'Álava'),
-(2, 'albacete', 'Albacete'),
-(3, 'alicante', 'Alicante'),
-(4, 'almeria', 'Almería'),
-(5, 'vila', 'Ávila'),
-(6, 'badajoz', 'Badajoz'),
-(7, 'illes-balears', 'Illes Balears'),
-(8, 'barcelona', 'Barcelona'),
-(9, 'burgos', 'Burgos'),
-(10, 'caceres', 'Cáceres'),
-(11, 'cadiz', 'Cádiz'),
-(12, 'castellon', 'Castellón'),
-(13, 'ciudad-real', 'Ciudad Real'),
-(14, 'cordoba', 'Córdoba'),
-(15, 'a-coruna', 'A Coruña'),
-(16, 'cuenca', 'Cuenca'),
-(17, 'girona', 'Girona'),
-(18, 'granada', 'Granada'),
-(19, 'guadalajara', 'Guadalajara'),
-(20, 'guipuzcoa', 'Guipúzcoa'),
-(21, 'huelva', 'Huelva'),
-(22, 'huesca', 'Huesca'),
-(23, 'jaen', 'Jaén'),
-(24, 'leon', 'León'),
-(25, 'lleida', 'Lleida'),
-(26, 'la-rioja', 'La Rioja'),
-(27, 'lugo', 'Lugo'),
-(28, 'madrid', 'Madrid'),
-(29, 'malaga', 'Málaga'),
-(30, 'murcia', 'Murcia'),
-(31, 'navarra', 'Navarra'),
-(32, 'ourense', 'Ourense'),
-(33, 'asturias', 'Asturias'),
-(34, 'palencia', 'Palencia'),
-(35, 'las-palmas', 'Las Palmas'),
-(36, 'pontevedra', 'Pontevedra'),
-(37, 'salamanca', 'Salamanca'),
-(38, 'santa-cruz-de-tenerife', 'Santa Cruz de Tenerife'),
-(39, 'cantabria', 'Cantabria'),
-(40, 'segovia', 'Segovia'),
-(41, 'sevilla', 'Sevilla'),
-(42, 'soria', 'Soria'),
-(43, 'tarragona', 'Tarragona'),
-(44, 'teruel', 'Teruel'),
-(45, 'toledo', 'Toledo'),
-(46, 'valencia', 'Valencia'),
-(47, 'valladolid', 'Valladolid'),
-(48, 'vizcaya', 'Vizcaya'),
-(49, 'zamora', 'Zamora'),
-(50, 'zaragoza', 'Zaragoza'),
-(51, 'ceuta', 'Ceuta'),
-(52, 'melilla', 'Melilla');
-
-/* Fin Insertar provincias */

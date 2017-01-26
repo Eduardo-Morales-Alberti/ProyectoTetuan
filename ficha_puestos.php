@@ -7,7 +7,7 @@ if(!isset($_SESSION["usuario"])){
 }else if($_SESSION["usuario"]->tipo != "administrador"){
     header("location:dashboard.php");
 }
-/*$_SESSION["tipo"] = "administrador";*/
+
 
 ob_start();?>
 <script type="text/javascript">
@@ -43,6 +43,19 @@ ob_start();
                 <div class="form-group">
                     <label>Título del puesto</label>
                     <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="" >
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Provincia</label>
+                    <select class="form-control" name="provincia">
+                        <option value="Madrid">Madrid</option>
+                        <option value="Valladolid">Valladolid</option>
+                        <option value="Toledo">Toledo</option>
+                        <option value="Malaga">Malaga</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -245,7 +258,7 @@ ob_start();
         </div>
         <div class="row">
             <div class="col-md-6">
-               <div class="form-group">
+             <div class="form-group">
                 <label>Carnet de conducir</label> <br>
 
                 <div class="input-group">
@@ -313,11 +326,11 @@ ob_start();
 </div>
 <div class="panel-footer">
     <div class="row">
-     <div class="col-md-12 text-right">
-      <input type="submit" class="btn btn-danger" name="limpiar" value="Limpiar">
-      <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
+       <div class="col-md-12 text-right">
+          <input type="submit" class="btn btn-danger" name="limpiar" value="Limpiar">
+          <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
+      </div>
   </div>
-</div>
 </div>    
 
 </div>
