@@ -240,21 +240,26 @@ class loginBBDD extends singleton{
 				$web = $_POST['webempresa'];
 			}
 
-			$query = "call nuevaEmpresa('".$_POST['empresa']."','".$nombre."','".$web."','".$_POST['mail']."')";
+			$query = "call nuevaEmpresa(?,?,?,?,null)";
+			
+			$empresa = $_POST['empresa'];
+
+			$mail = $_POST["mail"];
+
 			$consulta = $this->Idb->prepare($query);
-			$consulta->execute();
+			$consulta->execute(array($empresa,$nombre,$web,$mail));
 			
 			if($consulta->rowCount()>0){
 				$result = $consulta->fetch();	
 			}
 
-			if(isset($result["mensaje"])){
+			if(isset($result["mensaje"])&&$result["mensaje"]){
 				session_reset();
-				$_SESSION["mensajeServidor"] = $result["mensaje"];
+				$_SESSION["mensajeServidor"] = "Empresa creada correctamente";
 
 			}else{
 				session_reset();
-				$_SESSION["mensajeServidor"] = "Error al crear la nuevo empresa.";
+				$_SESSION["mensajeServidor"] = "Error al crear la nueva empresa.";
 				/*unset( $_SESSION["nombre"]);
 				unset( $_SESSION["idenficador"]);*/
 

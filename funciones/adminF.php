@@ -94,9 +94,9 @@ class adminBBDD extends singleton{
 				if($clave == "identificador"){
 					echo "<td><input type='checkbox' name='ids[]' value='$valor'></td>";
 				}else if($clave == "nombre"){
-					echo "<td>$valor</td>";
+					echo "<td><b>$valor</b></td>";
 				}else{
-					echo "<td><input type='text' name='".$clave."[".$usuarios[$i]["identificador"]."]' value='$valor'> </td>";
+					echo "<td><input type='text' name='".$clave."[".$usuarios[$i]["identificador"]."]' value='$valor'> <span class='oculto'>$valor</span></td>";
 				}
 
 			}
@@ -130,7 +130,7 @@ class adminBBDD extends singleton{
 	/** funcion modificar empresa **/
 
 	function modificarEmpresas(){
-	
+
 		if(isset($_POST["modificaremp"])&&isset($_POST["ids"])&&isset($_POST["web"])){
 
 			for ($i=0; $i < count($_POST["ids"]); $i++) { 
@@ -155,6 +155,58 @@ class adminBBDD extends singleton{
 
 	/** funcion modificar empresa **/
 
+	/** FUNCION NUEVA EMPRESA**/
+	public function nuevaEmpresa(){
+		if(isset($_POST['agregaremp'])&&isset($_POST['mailemp'])&&isset($_POST['nemp'])){			
+			
+			$nombre = "";
+
+			if(isset($_POST['contemp'])){
+				$nombre = $_POST['contemp'];
+			}
+			
+
+			$web = "";
+			if(isset($_POST['webemp'])){
+				$web = $_POST['webemp'];
+			}
+
+			$telf = "";
+			if(isset($_POST["telfemp"])){
+				$telf = $_POST["telfemp"];
+			}
+
+			
+
+			$empresa = $_POST['nemp'];
+
+			$mail = $_POST["mailemp"];
+
+
+
+			$query = "call nuevaEmpresa(?,?,?,?,?)";	
+
+			$consulta = $this->Idb->prepare($query);
+			$consulta->execute(array($empresa,$nombre,$web,$mail,$telf));
+			
+			if($consulta->rowCount()>0){
+				$result = $consulta->fetch();	
+			}
+
+			if(isset($result["mensaje"])&&$result["mensaje"]){
+				
+				$_SESSION["mensajeServidor"] = "Empresa creada correctamente";
+
+			}else{
+				
+				$_SESSION["mensajeServidor"] = "Error al crear la nueva empresa.";
+				/*unset( $_SESSION["nombre"]);
+				unset( $_SESSION["idenficador"]);*/
+
+			}       
+		}
+	}
+	/** FUNCION NUEVA EMPRESA**/
 
 	/** FIN FILTRO EMPRESAS **/
 }

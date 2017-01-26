@@ -12,6 +12,7 @@ include_once("funciones/adminF.php");
 $adminclass = new adminBBDD;
 $adminclass->eliminarEmpresas();
 $adminclass->modificarEmpresas();
+$adminclass->nuevaEmpresa();
 
 ob_start();?>
 <script type="text/javascript">

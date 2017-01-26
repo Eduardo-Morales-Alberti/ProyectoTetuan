@@ -200,7 +200,7 @@ drop PROCEDURE if EXISTS tetuanjobs.nuevaEmpresa;
 delimiter //
 
 CREATE PROCEDURE tetuanjobs.nuevaEmpresa(nomb_emp varchar(250),nomb_c varchar(250),
- web varchar(250), mail varchar(100))
+ web varchar(250), mail varchar(100), telf varchar(9))
 BEGIN
 	declare creada boolean default false;
 	declare identificador int(11) default -1;
@@ -211,8 +211,11 @@ BEGIN
 	IF creada = false then 
 
 		INSERT INTO tetuanjobs.empresas (nombre_empresa, persona_contacto,
-			emp_web,email) 
-			values(nomb_emp,nomb_c,web, mail);
+			emp_web,email,telefono) 
+			values(nomb_emp,nomb_c,web, mail,telf);
+		/*if telf is not null then 
+		 update tetuanjobs.empresas set telefono = telf where id_empresa = @@IDENTITY;
+		end if;*/
 
 		set identificador = @@IDENTITY;
 
