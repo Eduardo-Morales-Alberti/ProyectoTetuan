@@ -9,7 +9,7 @@ class singleton {
 	// un constructor privado evita crear nuevos objetos desde fuera de la clase
 	protected function __construct() { 
 
-		$this->Idb = new PDO( "mysql:host=localhost; dbname=tetuanjobs", 'usertetuan','tetuanjobs'); 
+		$this->Idb = new PDO( "mysql:host=localhost; dbname=tetuanjobs;charset=utf8", 'usertetuan','tetuanjobs'); 
 
 	}
 

@@ -1,5 +1,6 @@
 ﻿<?php
 include_once("funciones/generalF.php");
+include_once('funciones/estudianteF.php');
 session_start();
 
 if(!isset($_SESSION["usuario"])){
@@ -10,9 +11,18 @@ if(!isset($_SESSION["usuario"])){
 /**$page tendrá el resto del contenido que se mostrará en el cuerpo**/
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Perfil";
+
+$estudiantecl = new estudianteBBDD;
+
+$estudiantecl->cambiarContr();
+
+$generacl = new General;
+
+/*print_r($generacl->provincias);*/
+
+
 /**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
 Se le llama en el cuerpo en las últimas líneas**/
-
 ob_start();?>
 <script type="text/javascript">
 perfil();
@@ -337,7 +347,7 @@ ob_start();?>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Provincia</label>
-                        <input type="text" class="form-control" name="poblacion" value="" >
+                        <?php echo $generacl->provinciasSELECT; ?>
                     </div>
                 </div>           
                 <div class="col-md-4">
@@ -409,38 +419,40 @@ ob_start();?>
     <!-- Panel Actualizar Contraseña -->
 
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Cambiar Contraseña</h4> 
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Contraseña actual</label>
-                        <input type="text" class="form-control" id="contr" name="contr" value="" required="required" >
+        <form method="post">
+            <div class="panel-heading">
+                <h4>Cambiar Contraseña</h4> 
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Contraseña actual</label>
+                            <input type="password" class="form-control"  name="contr" value="" required="required" >
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Nueva contraseña</label>
-                        <input type="text" class="form-control" id="ncontr" name="ncontr" value="" required="required">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nueva contraseña</label>
+                            <input type="password" class="form-control" name="ncontr" value="" required="required">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Confirma la contraseña</label>
-                        <input type="text" class="form-control" id="ccontr" name="ccontr" value="" required="required">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Confirma la contraseña</label>
+                            <input type="password" class="form-control"  name="ccontr" value="" required="required">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <input type="submit" id="modificar" name="modificar" class="btn btn-green" value="Renovar">
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <input type="submit" name="modcontr" class="btn btn-green" value="Renovar">
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Fin panel Actualizar Contraseña -->
@@ -846,8 +858,8 @@ ob_start();?>
                 </select>
             </div>
             <div class="col-xs-4">
-               <span class="spn">Alto</span>
-               <select name="nve" class="npt ">
+             <span class="spn">Alto</span>
+             <select name="nve" class="npt ">
                 <option value="Bajo">Bajo</option>
                 <option value="Intermedio">Intermedio</option>
                 <option value="Alto">Alto</option>
@@ -877,8 +889,8 @@ ob_start();?>
             </select>
         </div>
         <div class="col-xs-4">
-           <span class="spn">Alto</span>
-           <select name="nve" class="npt ">
+         <span class="spn">Alto</span>
+         <select name="nve" class="npt ">
             <option value="Bajo">Bajo</option>
             <option value="Intermedio">Intermedio</option>
             <option value="Alto">Alto</option>

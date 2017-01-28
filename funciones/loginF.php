@@ -119,9 +119,11 @@ class loginBBDD extends singleton{
 
 						if($result["resultado"]){
 
-							$_SESSION["nombre"] = $result["nombre"];
+							$_SESSION["usuario"] = new Usuario($_SESSION["email"],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
+
+							/*$_SESSION["nombre"] = $result["nombre"];
 							$_SESSION["identificador"] = $result["identificador"];
-							$_SESSION["tipo"] = $result["tipo_usuario"];
+							$_SESSION["tipo"] = $result["tipo_usuario"];*/
 							$_SESSION["mensajeServidor"] = "La contraseña ha sido restablecida.";							
 							header("location:dashboard.php");
 

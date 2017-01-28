@@ -269,22 +269,20 @@ delimiter ;
 /* fin Función para modificar Usuario*/
 
 /* Función para modificar la contraseña */
-drop FUNCTION if EXISTS tetuanjobs.cambiarContr;
+drop PROCEDURE if EXISTS tetuanjobs.cambiarContr;
 
 delimiter //
 
-CREATE FUNCTION tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv varchar(20)) 
-	returns varchar(250)
+CREATE PROCEDURE tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv varchar(20)) 
 	BEGIN
 		declare c varchar(41);
 
 		SELECT password into c from tetuanjobs.usuarios where id_usuario = usid;
 		if c = password(contract) then 
 			update tetuanjobs.usuarios set password = password(contrnv) where id_usuario = usid;
-			return "contraseña actualizada";
+			SELECT true as cambiada;
 		else
-
-			return "contraseña no válida";		
+			SELECT false as cambiada;		
 		END IF;
 		
 	END//
@@ -377,5 +375,7 @@ delimiter ;
 
 
 /** FIN RUTINAS FILTRO DE EMPRESAS **/
+
+
 
 
