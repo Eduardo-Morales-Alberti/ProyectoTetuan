@@ -243,10 +243,9 @@ delimiter ;
 drop PROCEDURE if EXISTS tetuanjobs.modificarUsuario;
 
 delimiter //
-CREATE PROCEDURE tetuanjobs.modificarUsuario(id_est int, nomb varchar(25), ape varchar(50),
-telef varchar(9),pobl varchar(250),codpos int, ft varchar(250),
-  c_v varchar(250) , descp varchar(3000), carnt tinyint,
-  id_prov int) 
+CREATE PROCEDURE tetuanjobs.modificarUsuario(id_us int, nomb varchar(25), ape varchar(50),
+telef varchar(9), id_prov int,pobl varchar(250),codpos int, ft varchar(250),
+  c_v varchar(250) , descp varchar(3000), carnt tinyint) 
 	BEGIN
 
 update tetuanjobs.estudiantes set nombre = if(nomb is not null, nomb, nombre), 
@@ -257,9 +256,10 @@ update tetuanjobs.estudiantes set nombre = if(nomb is not null, nomb, nombre),
 	descripcion = if(descp is not null, descp, descripcion),
 	carnet = if(carnt is not null,carnt, carnet), 
 	id_provincia = if(id_prov is not null, id_prov,id_provincia) 
-	where id_estudiante = id_est;
+	where id_usuario = id_us;
 
-	SELECT * from tetuanjobs.estudiantes where id_estudiante = id_est;
+	SELECT * from tetuanjobs.estudiantes where id_usuario = id_us;
+
 
 END//
 delimiter ;
@@ -309,6 +309,7 @@ delimiter ;
 
 
 /** fin funcion para cargar información de estudiante por id **/
+
 
 /** FIN RUTINAS PERFIL ESTUDIANTE **/
 

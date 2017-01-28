@@ -32,4 +32,16 @@ class singleton {
 		trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR); 
 		
 	}
+
+	/** funcion limpiar caracteres **/
+
+	function limpiar($string) {
+
+		$string = preg_replace('/[^A-Za-z0-9\-\_]/', ' ', $string);
+		$string = preg_replace ('/[ ]+/', ' ', $string);
+
+		return $string; 
+	}
+
+	/** fin funcion limpiar caracteres **/
 }

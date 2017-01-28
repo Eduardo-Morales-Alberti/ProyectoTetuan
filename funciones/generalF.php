@@ -75,6 +75,9 @@ class General extends singleton{
 
 		}
 	}
+	/**fin Función para enviar email **/
+
+	/** funcion listar provincias**/
 
 	function listarProvincias($seleccion = -1){
 
@@ -87,7 +90,7 @@ class General extends singleton{
 		while ($row = $consulta->fetch()) {
 			$this->provincias[] = $row;
 		}
-		$this->provinciasSELECT = "";
+		$this->provinciasSELECT = " <option disabled selected value> -- Selecciona una opción -- </option>";
 		for ($i=0; $i < count($this->provincias) ; $i++) { 
 			if($seleccion == $this->provincias[$i]['identificador']){
 				$this->provinciasSELECT .= "<option value='".$this->provincias[$i]['identificador']."' selected>";
@@ -101,6 +104,10 @@ class General extends singleton{
 		$this->provinciasSELECT .= "";
 
 	}
+
+	/** fin funcion listar provincias**/
+
+	
 }
 
 
