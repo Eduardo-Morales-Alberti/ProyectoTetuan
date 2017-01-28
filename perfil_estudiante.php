@@ -1,7 +1,8 @@
 ﻿<?php
 include_once("funciones/generalF.php");
-include_once('funciones/estudianteF.php');
+
 session_start();
+include_once('funciones/estudianteF.php');
 
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
@@ -13,10 +14,13 @@ if(!isset($_SESSION["usuario"])){
 $page["nombrePag"] = "Perfil";
 
 $estudiantecl = new estudianteBBDD;
+$generacl = new General;
 
 $estudiantecl->cambiarContr();
+$informacion = $estudiantecl->listarInformacion();
+//print_r($informacion);
+//print_r($_SESSION["usuario"]);
 
-$generacl = new General;
 
 /*print_r($generacl->provincias);*/
 
@@ -317,29 +321,29 @@ ob_start();?>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" class="form-control " id="nombre" name="nombre" value="" autofocus="autofocus" required="required" >
+                        <label>Nombre</label>                        
+                        <input type="text" class="form-control " id="nombre" name="nombre" value="<?php if(isset($informacion["nombre"])){echo $informacion["nombre"];}?>" autofocus="autofocus" required="required" >
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" name="apellidos" value="">
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" value="<?php if(isset($informacion["apellidos"])){echo $informacion["apellidos"];}?>">
                     </div>
                 </div>
 
-            </div>
+           <!--- </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Email</label>
                         <input type="email" class="form-control" id="email" name="email" value="" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido" />
                     </div>
-                </div> 
+                </div> -->
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" value="" >
+                        <input type="tel" class="form-control" id="telefono" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
                     </div>
                 </div>                   
             </div>
@@ -347,19 +351,26 @@ ob_start();?>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Provincia</label>
-                        <?php echo $generacl->provinciasSELECT; ?>
+                        <select id='provincias' class='form-control' name='provincias'>
+                        <?php
+                        $n = -1;
+                        if(isset($informacion["provincia"])&& is_numeric($informacion["provincia"]) && $informacion["provincia"] >0 ){
+                            $n = $informacion["provincia"];}
+                        $generacl->listarProvincias($n);
+                         echo $generacl->provinciasSELECT; ?>
+                        </select>
                     </div>
                 </div>           
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Población</label>
-                        <input type="text" class="form-control" name="poblacion" value="" >
+                        <input type="text" class="form-control" name="poblacion" value="<?php if(isset($informacion["poblacion"])){echo $informacion["poblacion"];}?>" >
                     </div>
                 </div> 
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Código Postal</label>
-                        <input type="text" class="form-control"name="cpostal" value="" >
+                        <input type="text" class="form-control" id="cpostal"  maxlength="5" size="5" name="cpostal" value="<?php if(isset($informacion["cod_postal"])){echo $informacion["cod_postal"];}?>" >
                     </div>
                 </div>
             </div>
@@ -386,7 +397,7 @@ ob_start();?>
                     <div class="form-group">
                         <label>Descripción personal</label>
                         <textarea class="form-control" rows="5" name="descpersonal">
-
+                            <?php if(isset($informacion["descripcion"])){echo $informacion["descripcion"];}?>
                         </textarea>
                     </div>
                 </div>
@@ -396,8 +407,11 @@ ob_start();?>
                     <div class="form-group">
                         <label>Carnet de conducir</label>
                         <div class="input-group">  
-                            <span class="input-group-addon">
-                                <input type="checkbox" name="carnet" value="carnet">
+                            <span class="input-group-addon">                                
+                                <input type="checkbox" name="carnet" value="carnet"
+                                <?php if(isset($informacion["carnet"]) && $informacion["carnet"]){
+                                    echo "checked";}?>
+                                >
                             </span>
                             <input type="text" class="form-control" value="Tengo carnet de conducir" disabled="disabled">
                         </div>

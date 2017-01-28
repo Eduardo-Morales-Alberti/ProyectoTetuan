@@ -3,7 +3,7 @@
 /** VISTA LISTAR PROVINCIAS **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarProvincias as 
-     select slug as alias, nombre_provincia as nombre from tetuanjobs.provincias order by nombre;
+     select id_provincia as identificador, nombre_provincia as nombre from tetuanjobs.provincias order by nombre;
 
 GRANT select on tetuanjobs.listarProvincias To 'usertetuan'@'localhost';
 
@@ -43,5 +43,7 @@ GRANT select on tetuanjobs.listarEmpresas To 'usertetuan'@'localhost';
 /** VISTA LISTAR empresas**/
 
 /** FIN FILTRO DE USUARIOS**/
+
+
 
 

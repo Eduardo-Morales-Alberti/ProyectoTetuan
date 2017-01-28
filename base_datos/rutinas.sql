@@ -48,7 +48,7 @@ BEGIN
 	
 
 	if id >= 0 and tipo = "estudiante" then 
-	SELECT nombre, id_estudiante as identificador, "estudiante" as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
+	SELECT nombre, id_usuario as identificador, "estudiante" as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
 	elseif id >= 0 and tipo = "administrador" then 
 	SELECT "Administrador" as nombre, id as identificador, tipo as "tipo_usuario";
 	else
@@ -60,7 +60,7 @@ delimiter ;
 
 /*call tetuanjobs.compAcceso('prueba4@gmail.com','pruebadeacceso');*/
 /*call tetuanjobs.compAcceso('admin@gmail.com','admintetuan');*/
-/*call tetuanjobs.compAcceso('eduardomoberti@hotmail.com','admintetuan');*/
+/*call tetuanjobs.compAcceso('eduardomoberti@hotmail.com','estudiantetetuan');*/
 
 
 /** FIN RUTINA COMPROBACIÓN USUARIO EXISTE **/
@@ -287,9 +287,29 @@ CREATE PROCEDURE tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv 
 		
 	END//
 delimiter ;
-/*SELECT tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");*/
+/*call tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");*/
 
-/* Función para modificar la contraseña */
+/* fin Función para modificar la contraseña */
+
+/** funcion para cargar información de estudiante por id **/
+
+drop PROCEDURE if EXISTS tetuanjobs.cargarInfoEstudiante;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.cargarInfoEstudiante(usid int) 
+	BEGIN	
+
+		SELECT nombre, apellidos, telefono, id_provincia as provincia, poblacion, cod_postal as cod_postal,
+		foto as fotografia, cv as curriculum, descripcion, carnet
+		 from tetuanjobs.estudiantes where id_usuario = usid;		
+		
+	END//
+delimiter ;
+
+
+/** fin funcion para cargar información de estudiante por id **/
+
 /** FIN RUTINAS PERFIL ESTUDIANTE **/
 
 /** RUTINAS FILTRO DE USUARIOS **/

@@ -28,6 +28,15 @@ function cargarTabla(idtabla){
 
 /** Fin datatable **/
 
+/** Poner 0 a la izquierda **/
+
+function pad (str, max) {
+  str = str.toString();
+  return str.length < max ? pad("0" + str, max) : str;
+}
+
+/** Fin Poner 0 a la izquierda **/
+
 /** Modal mensaje **/
 
 function mensajeModal(mensaje){
@@ -197,6 +206,7 @@ function perfil(){
   };
 
   /** Fin Opcion fechas actualmente **/
+
   /** Agregar etiquetas **/
   var elementosreq = new Array();
 
@@ -240,7 +250,7 @@ function perfil(){
 
   /** Fin Modificar valores experiencia, educación e idiomas**/
 
-  /** Modificar actualmente**/
+  /** Modificar actualmente **/
   var divactual = document.getElementsByClassName("mod1");
 
   for (var i = 0; i < divactual.length; i++) {
@@ -260,7 +270,16 @@ function perfil(){
       });
     });
   };
-  /** **/
+  /** fin Modificar actualmente**/
+
+  /** Ayuda código postal **/
+
+  $("#provincias").change(function(){
+    $("#cpostal").val(pad($(this).val(),2));
+  });
+
+  /** Fin Ayuda código postal **/
+
 }
 /**Fin Perfil **/
 

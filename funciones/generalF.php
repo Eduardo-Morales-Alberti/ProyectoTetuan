@@ -76,7 +76,7 @@ class General extends singleton{
 		}
 	}
 
-	function listarProvincias(){
+	function listarProvincias($seleccion = -1){
 
 		$sql = "select * from listarProvincias";
 		$consulta = $this->Idb->prepare($sql);
@@ -87,12 +87,18 @@ class General extends singleton{
 		while ($row = $consulta->fetch()) {
 			$this->provincias[] = $row;
 		}
-		$this->provinciasSELECT = "<select class='form-control' name='provincias' >";
+		$this->provinciasSELECT = "";
 		for ($i=0; $i < count($this->provincias) ; $i++) { 
-			$this->provinciasSELECT .= "<option value='".$this->provincias[$i]['alias']."'>";
-			$this->provinciasSELECT .= $this->provincias[$i]['nombre']."</option>";
+			if($seleccion == $this->provincias[$i]['identificador']){
+				$this->provinciasSELECT .= "<option value='".$this->provincias[$i]['identificador']."' selected>";
+				$this->provinciasSELECT .= $this->provincias[$i]['nombre']."</option>";
+			}else{
+				$this->provinciasSELECT .= "<option value='".$this->provincias[$i]['identificador']."'>";
+				$this->provinciasSELECT .= $this->provincias[$i]['nombre']."</option>";
+			}
+			
 		}
-		$this->provinciasSELECT .= "</select>";
+		$this->provinciasSELECT .= "";
 
 	}
 }

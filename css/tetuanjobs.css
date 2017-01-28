@@ -80,3 +80,11 @@ textarea{
 .oculto{
 	display: none;
 }
+
+#cpostal{
+	width: 100px;
+}
+
+#telefono{
+	width: 100px;
+}

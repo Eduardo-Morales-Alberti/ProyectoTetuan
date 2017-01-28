@@ -9,6 +9,22 @@ class estudianteBBDD extends singleton{
 
 	/** PERFIL ESTUDIANTE **/
 
+	/** FUNCIÓN PARA LISTAR INFORMACION ESTUDIANTE **/
+
+	function listarInformacion(){
+		$sql = "call cargarInfoEstudiante(?)";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$info = array();
+		$usuarios = array();
+
+		return $consulta->fetch();
+	}
+
+
+	/** FIN FUNCIÓN PARA LISTAR INFORMACION ESTUDIANTE **/
+
 	/** FUNCIÓN PARA CAMBIAR CONTRASEÑA ESTUDIANTE **/
 
 	function cambiarContr(){
