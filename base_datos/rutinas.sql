@@ -24,6 +24,23 @@ delimiter ;
 
 /* Fin del procedimiento */
 
+/** RUTINA PARA ELIMINAR UN USUARIO **/
+drop PROCEDURE if EXISTS tetuanjobs.eliminarUsuario;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarUsuario(id_us int) 
+	BEGIN
+	delete from tetuanjobs.estudiantes where id_usuario = id_us;
+
+	delete from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "estudiante";
+
+
+END//
+delimiter ;
+/*call tetuanjobs.eliminarUsuario(1);*/
+
+/** FIN RUTINA PARA ELIMINAR UN USUARIO **/
+
 /** FIN RUTINAS GENERALES **/
 
 
@@ -335,23 +352,6 @@ delimiter ;
 
 
 /** FIN FUNCION PARA DAR DE ALTA UN USUARIO O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
-
-/** FUNCION PARA ELIMINAR UN USUARIO **/
-drop PROCEDURE if EXISTS tetuanjobs.eliminarUsuario;
-
-delimiter //
-CREATE PROCEDURE tetuanjobs.eliminarUsuario(id_us int) 
-	BEGIN
-	delete from tetuanjobs.estudiantes where id_usuario = id_us;
-
-	delete from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "estudiante";
-
-
-END//
-delimiter ;
-/*call tetuanjobs.eliminarUsuario(1);*/
-
-/** FUNCION PARA ELIMINAR UN USUARIO **/
 
 /** FIN RUTINAS FILTRO DE USUARIOS **/
 

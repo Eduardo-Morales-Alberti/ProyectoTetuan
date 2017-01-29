@@ -10,8 +10,8 @@ INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("eduardomob
 password('estudiantetetuan'));
 
 INSERT INTO tetuanjobs.estudiantes 
-    (`id_estudiante`, `id_usuario`, `ciclo`, `nombre`, `apellidos`) 
-    VALUES (NULL, @@IDENTITY,"ASIR","Eduardo", "Morales");
+    (`id_estudiante`, `id_usuario`, `ciclo`, `nombre`, `apellidos`,`foto`,`cv`) 
+    VALUES (NULL, @@IDENTITY,"ASIR","Eduardo", "Morales","eduardomoberti_hotmail_com_fotop.jpg","eduardomoberti_hotmail_com_cv.pdf");
 
 
 INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("sara@hotmail.com",'estudiante',0,

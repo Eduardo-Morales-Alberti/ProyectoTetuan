@@ -3,6 +3,9 @@ include_once("funciones/generalF.php");
 
 session_start();
 include_once('funciones/estudianteF.php');
+$estudiantecl = new estudianteBBDD;
+$estudiantecl->eliminarUsuario();
+
 
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
@@ -13,7 +16,7 @@ if(!isset($_SESSION["usuario"])){
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Perfil";
 
-$estudiantecl = new estudianteBBDD;
+
 $generacl = new General;
 
 $estudiantecl->cambiarContr();
@@ -314,9 +317,8 @@ ob_start();?>
 
     <h1>Perfil</h1>
     <!--Panel Datos Personales -->
-
-    <div class="panel panel-default">
-        <form method="post">
+    <form method="post" enctype="multipart/form-data">
+        <div class="panel panel-default">        
             <div class="panel-heading">
                 <h4>Información del perfil </h4> 
             </div>
@@ -371,19 +373,21 @@ ob_start();?>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Fotografía de perfil</label><br>
+                            <div class="form-group">                               
+                                <label>Fotografía de perfil (Alto y Ancho de 90px)</label><br>
                                 <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
-                                <input type="file" id="fotop" name="fotop" style="display:none">                        
-                                <input type="button" class="btn btn-primary" id="mostrarf" name="mostrarf" value="Mostrar fotografía">
+                                <input type="file" id="fotop" name="fotop" style="display:none"> 
+                                <input type="hidden" id="dirfotop" value="<?php if(isset($informacion["fotografia"])){echo $informacion["fotografia"];}?>">                       
+                                <input type="button" class="btn btn-primary" id="mostrarf"  value="Mostrar fotografía">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Subir Currículum Vitae</label><br>
+                                <label>Currículum Vitae (Sólo pdf hasta 500KB)</label><br>
                                 <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
                                 <input type="file" id="cv" name="cv" style="display:none"> 
-                                <input type="button" class="btn btn-primary" id="mostrarcv" name="mostrarcv" value="Mostrar CV">
+                                <input type="hidden" id="dircv" value="<?php if(isset($informacion["curriculum"])){echo $informacion["curriculum"];}?>">
+                                <input type="button" class="btn btn-primary" id="mostrarcv" value="Mostrar CV">
                             </div>
                         </div>
                     </div>
@@ -420,14 +424,14 @@ ob_start();?>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
 
+                </div>
+            </form>
             <!-- Fin panel Datos Personales -->
             <!-- Panel Actualizar Contraseña -->
+            <form method="post">
+                <div class="panel panel-default">
 
-            <div class="panel panel-default">
-                <form method="post">
                     <div class="panel-heading">
                         <h4>Cambiar Contraseña</h4> 
                     </div>
@@ -460,8 +464,9 @@ ob_start();?>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                </div>
+            </form>
 
             <!-- Fin panel Actualizar Contraseña -->
             <!-- Experiencia -->        
@@ -928,7 +933,9 @@ ob_start();?>
 <!-- Eliminar cuenta -->
 <div class="panel panel-danger">
     <div class="panel-heading text-right">
-        <button type="button" class="btn btn-danger">Eliminar cuenta</button>
+        <form id="eliminarcuenta" method="post">
+            <input type="submit" name="elusuario" class="btn btn-danger" value="Eliminar cuenta">
+        </form>
     </div>
 </div>
 <!-- Fin eliminar cuenta-->

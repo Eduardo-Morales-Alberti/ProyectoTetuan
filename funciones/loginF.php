@@ -33,14 +33,16 @@ class loginBBDD extends singleton{
 				header("location: dashboard.php");
 
 			}else{
-				session_reset();
+				session_destroy();
+				session_start();
 				$_SESSION["mensajeServidor"] = "Usuario o Contraseña incorrectos";
 
 			}    
-		}else{
-			session_reset();
+		}/*else{
+			session_destroy();
+			session_start();
 
-		}
+		}*/
 	}
 
 	/** fin función entrar **/
@@ -111,7 +113,8 @@ class loginBBDD extends singleton{
 					$consulta = $this->Idb->prepare($query);
 					$consulta->execute();
 
-					session_reset();
+					session_destroy();
+					session_start();
 					
 					if($consulta->rowCount()>0){
 
@@ -181,12 +184,12 @@ class loginBBDD extends singleton{
 				}
 			}
 
-		}else{
+		}/*else{
 
 			session_destroy();
 			header("location:login.php");			
 
-		}
+		}*/
 
 	}
 
@@ -216,7 +219,8 @@ class loginBBDD extends singleton{
 				$_SESSION["mensajeServidor"] = $result["mensaje"];
 
 			}else{
-				session_reset();
+				session_destroy();
+				session_start();
 				$_SESSION["mensajeServidor"] = "Error al crear el nuevo usuario.";
 				/*unset( $_SESSION["nombre"]);
 				unset( $_SESSION["idenficador"]);*/
@@ -256,7 +260,8 @@ class loginBBDD extends singleton{
 			}
 
 			if(isset($result["mensaje"])&&$result["mensaje"]){
-				session_reset();
+				session_destroy();
+				session_start();
 				$_SESSION["mensajeServidor"] = "Empresa creada correctamente";
 
 			}else{

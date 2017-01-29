@@ -243,6 +243,7 @@ $logincl->logOut();
 
         </script>
         <?php
+        print_r($_SESSION);
         if(isset($_SESSION["mensajeServidor"])){
             echo '<script type="text/javascript">
             mensajeModal("'.$_SESSION["mensajeServidor"].'");

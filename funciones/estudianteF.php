@@ -69,6 +69,7 @@ class estudianteBBDD extends singleton{
 	function modificarInfo(){
 		//echo $this->limpiar("hol@@@        qu€     <>    tal?");
 		if (isset($_POST["guardarinfo"])) {
+			$mensaje = "<p>";
 			$sql = "call modificarUsuario(?,?,?,?,?,?,?,?,?,?,?)";
 			$consulta = $this->Idb->prepare($sql);
 
@@ -107,7 +108,82 @@ class estudianteBBDD extends singleton{
 			if(isset($_POST["cpostal"])&&strlen($_POST["cpostal"])==5&&is_numeric($_POST["cpostal"])){
 				$codpos = $this->limpiar($_POST["cpostal"]);
 			}
-			
+
+			if(is_uploaded_file($_FILES['fotop']['tmp_name'])){
+				
+				$tipo = $_FILES['fotop']["type"];
+
+				if($tipo == "image/jpeg"){
+					//print_r($_FILES['fotop']);
+					list($ancho, $alto, $tipo, $atributos) = getimagesize($_FILES['fotop']['tmp_name']);
+
+					if($ancho == "90" && $alto == "90"){
+
+						$nomDir = getcwd()."/subidas/";
+						/*if(!is_dir($nomDir)){
+							mkdir($nomDir);
+						}*/
+
+						$nomFich = $this->limpiarRuta($_SESSION["usuario"]->mail)."_fotop.jpg";
+						$nomComp = $nomDir.$nomFich;		
+
+
+						if(is_file($nomComp)){
+							/*$idUn = time();
+							$nomFich = $idUn."_".$nomFich;*/
+							unlink($nomComp);
+						}
+
+						move_uploaded_file($_FILES['fotop']['tmp_name'], $nomDir.$nomFich); 
+						$foto = $nomFich; 
+					}else{
+						$mensaje = "La imagen tiene que tener un ancho y un alto de 90 px. <br> ";
+					}   
+
+				}else{
+					$mensaje = "Sólo se aceptan imágenes jpg. <br> ";
+				}
+			}
+
+			if(is_uploaded_file($_FILES['cv']['tmp_name'])){
+				
+				$tipo = $_FILES['cv']["type"];
+				//echo $tipo;
+				$kbytes = filesize($_FILES['cv']['tmp_name']);
+				//echo $kbytes;
+
+				if($tipo == "application/pdf" ){
+					//print_r($_FILES['fotop']);
+					
+
+					if($kbytes < 500000){
+
+						$nomDir = getcwd()."/subidas/";
+						/*if(!is_dir($nomDir)){
+							mkdir($nomDir);
+						}*/
+
+						$nomFich = $this->limpiarRuta($_SESSION["usuario"]->mail)."_cv.pdf";
+						$nomComp = $nomDir.$nomFich;		
+
+
+						if(is_file($nomComp)){
+							/*$idUn = time();
+							$nomFich = $idUn."_".$nomFich;*/
+							unlink($nomComp);
+						}
+
+						move_uploaded_file($_FILES['cv']['tmp_name'], $nomDir.$nomFich); 
+						$cv = $nomFich; 
+					}else{
+						$mensaje = "El PDF no puede superar los 500KB <br> ";
+					}   
+
+				}else{
+					$mensaje = "Sólo se aceptan pdfs. <br> ";
+				}
+			}
+
 
 			if(isset($_POST["descpersonal"])){
 				$descp = $this->limpiar($_POST["descpersonal"]);
@@ -130,15 +206,40 @@ class estudianteBBDD extends singleton{
 				if(isset($_POST["nombre"])){
 					$_SESSION["usuario"]->nombre = $nombre;
 				}
-				
-				$_SESSION["mensajeServidor"] = "Información del usuario actualizada";
+
+				$mensaje .= "Información del usuario actualizada </p>";
 			}else{
-				$_SESSION["mensajeServidor"] = "Información del usuario no actualizada";
+				$mensaje .= "Información del usuario no actualizada </p>";
 			}
+			$_SESSION["mensajeServidor"] = $mensaje;
 		}
 	}
 
 	/** FIN FUNCIÓN MODIFICAR USUARIO ESTUDIANTE **/
+
+	function limpiarRuta($string) {
+
+		$string = preg_replace('/[^A-Za-z0-9\-\_]/', '_', $string);
+		$string = preg_replace ('/[ ]+/', '_', $string);
+
+		return $string; 
+	}
+
+	/** FUNCIÓN PARA ELIMINAR USUARIO **/
+	function eliminarUsuario(){
+		if(isset($_POST["elusuario"])&&isset($_SESSION["usuario"]->identificador)&&$_SESSION["usuario"]->tipo=="estudiante"){
+
+			$sql = "call eliminarUsuario(?)";
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($_SESSION["usuario"]->identificador));
+			session_destroy();
+			session_start();
+			$_SESSION["mensajeServidor"] = "Usuario eliminado correctamente";
+			header("location:login.php");
+
+		}
+	}
+	/** FUNCIÓN PARA ELIMINAR USUARIO **/
 
 	/** FIN PERFIL ESTUDIANTE **/
 

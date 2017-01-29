@@ -41,7 +41,7 @@ function pad (str, max) {
 
 function mensajeModal(mensaje){
   $(document).ready(function(){
-    $("#mensajeserv").text(mensaje);
+    $("#mensajeserv").html(mensaje);
     $("#modalmensaje").modal("show");
     var a = window.setTimeout(function(){
       $("#modalmensaje").modal("hide");
@@ -280,7 +280,43 @@ function perfil(){
 
   /** Fin Ayuda código postal **/
 
+  /** Función eliminar cuenta **/
+
+  $("#eliminarcuenta").click(function(event){
+    var eliminar = confirm("¿Seguro que desea eliminar la cuenta?");
+    if(!eliminar){
+      event.preventDefault();
+    }
+  });
+
+  /** Fin Función eliminar cuenta **/
+
+  /** función mostrar foto **/
+
+  $("#mostrarf").click(function(){   
+    var html = "<p><b>Imagen del perfil</b></p><img src='./subidas/"+$("#dirfotop").val()+"' alt='foto del perfil'/>";
+    mensajeModal(html);
+
+  });
+
+  /** fin función mostrar foto**/
+
+  /** función mostrar cv **/
+
+  $("#mostrarcv").click(function(){   
+    //var html = "<p><b>Curriculum Vitae</b></p><embed src='./subidas/"+$("#dircv").val()+"#toolbar=0' />";
+    var url = "./subidas/"+$("#dircv").val();
+    var win = window.open(url, '_blank');
+    win.focus();
+
+  });
+
+  /** fin función mostrar cv**/
+
 }
+
+
+
 /**Fin Perfil **/
 
 /** Búsqueda de ofertas **/
