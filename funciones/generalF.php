@@ -86,7 +86,6 @@ class General extends singleton{
 		$consulta->execute();
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 
-		$usuarios = array();
 		while ($row = $consulta->fetch()) {
 			$this->provincias[] = $row;
 		}
@@ -106,6 +105,58 @@ class General extends singleton{
 	}
 
 	/** fin funcion listar provincias**/
+
+	/** función listar etiquetas **/
+
+	function listarEtiquetas(){
+
+		$sql = "select * from listarEtiquetas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$etiquetasSELECT = "";
+	
+		while ($row = $consulta->fetch()) {
+			$etiquetas[] = $row;
+		}
+		$etiquetasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+		for ($i=0; $i < count($etiquetas) ; $i++) { 			
+				$etiquetasSELECT .= "<option value='".$etiquetas[$i]['nombre']."'>";
+				$etiquetasSELECT .= $etiquetas[$i]['nombre']."</option>";
+			
+			
+		}
+		return $etiquetasSELECT;
+
+	}
+
+	/** fin función listar etiquetas **/
+
+	/** función listar Idiomas **/
+
+	function listarIdiomas(){
+
+		$sql = "select * from listarIdiomas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$idiomasSELECT = "";
+	
+		while ($row = $consulta->fetch()) {
+			$idiomas[] = $row;
+		}
+		$idiomasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+		for ($i=0; $i < count($idiomas) ; $i++) { 			
+				$idiomasSELECT .= "<option value='".$idiomas[$i]['identificador']."'>";
+				$idiomasSELECT .= $idiomas[$i]['nombre']."</option>";
+			
+			
+		}
+		return $idiomasSELECT;
+
+	}
+
+	/** fin función listar Idiomas **/
 
 	
 }

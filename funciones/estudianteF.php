@@ -241,6 +241,218 @@ class estudianteBBDD extends singleton{
 	}
 	/** FUNCIÓN PARA ELIMINAR USUARIO **/
 
+	/** FUNCIÓN PARA AÑADIR UNA NUEVA EXPERIENCIA **/
+	function nuevaExperiencia(){
+		
+		if(isset($_POST["nuevaexp"])&&isset($_POST["tituloEmp"])){
+			$sql = "call nuevaExperiencia(?,?,?,?,?,?,?)";
+			$consulta = $this->Idb->prepare($sql);			
+			
+			$empresa = null;
+
+			if(isset($_POST["nombreEmp"])){
+				$empresa = $_POST["nombreEmp"];
+			}
+
+			$fecha1 = null;
+
+			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
+				$mes = 1;
+				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12){
+					$mes = $_POST["f1mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
+					$anio = $_POST["f1anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha1 = date("Y-m-d H:i:s",$f);
+			}
+
+			$fecha2 = null;
+			$actualmente = null;
+
+			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
+				$mes = 1;
+				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12){
+					$mes = $_POST["f2mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
+					$anio = $_POST["f2anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha2 = date("Y-m-d H:i:s",$f);
+			}elseif(isset($_POST["f2mes"])&&$_POST["f2mes"]==0){
+				$actualmente = true;
+			}
+
+			$desc = null;
+
+			if(isset($_POST["desc"])){
+				$desc = $_POST["desc"];
+			}	
+
+			$params = array();
+			array_push($params,$_SESSION["usuario"]->identificador,$_POST["tituloEmp"],$empresa,
+				$fecha1,$fecha2,$actualmente,$desc);
+			//print_r($params);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $consulta->fetch();
+
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Experiencia insertada correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido insertar la experiencia";
+				}
+				
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha podido insertar la experiencia";
+			}
+		}
+	}
+	/** fin FUNCIÓN PARA AÑADIR UNA NUEVA EXPERIENCIA **/
+
+	/** FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
+	function nuevaFormacion(){
+		
+		if(isset($_POST["nuevaform"])&&isset($_POST["tituloeduc"])){
+			$sql = "call nuevaFormacion(?,?,?,?,?,?,?,?)";
+			$consulta = $this->Idb->prepare($sql);			
+			
+			$institucion = null;
+
+			if(isset($_POST["institucion"])){
+				$institucion = $_POST["institucion"];
+			}
+
+			$fecha1 = null;
+
+			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
+				$mes = 1;
+				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12){
+					$mes = $_POST["f1mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
+					$anio = $_POST["f1anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha1 = date("Y-m-d H:i:s",$f);
+			}
+
+			$fecha2 = null;
+			$actualmente = null;
+
+			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
+				$mes = 1;
+				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12){
+					$mes = $_POST["f2mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
+					$anio = $_POST["f2anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha2 = date("Y-m-d H:i:s",$f);
+			}elseif(isset($_POST["f2mes"])&&$_POST["f2mes"]==0){
+				$actualmente = true;
+			}
+
+			$desc = null;
+
+			if(isset($_POST["desc"])){
+				$desc = $_POST["desc"];
+			}	
+
+			$nivel = null;
+
+			if(isset($_POST["nivel"])&&is_numeric($_POST["nivel"])){
+				$nivel = $_POST["nivel"];
+			}
+
+			$params = array();
+			array_push($params,$_SESSION["usuario"]->identificador,$_POST["tituloeduc"],$institucion,
+				$fecha1,$fecha2,$actualmente,$desc,$nivel);
+			//print_r($params);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $consulta->fetch();
+
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Formación insertada correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
+				}
+				
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
+			}
+		}
+	}
+	/** fin FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
+
+	/** Función nuevo idioma **/
+
+	function nuevoIdioma(){
+		
+		if(isset($_POST["nuevoidioma"])&&isset($_POST["idioma"])){
+			$sql = "call nuevoIdioma(?,?,?,?)";
+			$consulta = $this->Idb->prepare($sql);		
+			$params = array();
+			$hablado = 1;
+			if(isset($_POST["nvh"])&&is_numeric($_POST["nvh"])){
+				$hablado = $_POST["nvh"];
+			}
+			$escrito = 1;
+
+			if(isset($_POST["nve"])&&is_numeric($_POST["nve"])){
+				$escrito = $_POST["nve"];
+			}
+
+			array_push($params,$_SESSION["usuario"]->identificador,$_POST["idioma"],$hablado,
+				$escrito);
+			//print_r($params);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $consulta->fetch();
+
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Idioma insertado correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
+				}
+				
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
+			}
+		}
+	}
+
+	/** Fin Función nuevo idioma **/
+
 	/** FIN PERFIL ESTUDIANTE **/
 
 }

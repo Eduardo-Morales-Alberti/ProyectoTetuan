@@ -308,6 +308,136 @@ delimiter ;
 
 /* fin Función para modificar la contraseña */
 
+/** Funcion para crear nuevo experiencia de trabajo **/
+
+drop PROCEDURE if EXISTS tetuanjobs.nuevaExperiencia;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.nuevaExperiencia(usid int, titulo varchar(200),nombre varchar(200),
+f_ini date,f_final date,actualmente boolean, descripcion varchar(3000)) 
+	BEGIN
+		declare id int default -1;
+		declare diferencia int default -1;
+
+		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
+
+		if id >=0 then
+
+			INSERT INTO tetuanjobs.experiencia (id_estudiante, titulo_puesto, nombre_empresa,
+				f_inicio,experiencia_desc) values(id, titulo, nombre,f_ini, descripcion);
+
+			select true as resultado;
+
+			if actualmente is not null and actualmente then
+				update tetuanjobs.experiencia set actualmente = true
+					where id_estudiante = id;
+			elseif f_final is not null then
+				
+				select datediff(f_final,f_ini) into diferencia;
+				if diferencia >= 0 then 
+					update tetuanjobs.experiencia set f_fin = f_final
+						where id_estudiante = id;	
+				else 
+					update tetuanjobs.experiencia set f_fin = curdate()
+						where id_estudiante = id;
+				end if;
+			end if;
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/*call tetuanjobs.nuevaExperiencia(2,"Prueba diff 1", "Apple", "2015-05-01","2015-06-01",
+	null,"Un puesto bonito");*/
+
+/** Fin Funcion para crear nuevo experiencia de trabajo **/
+
+/** Funcion para crear nueva educación **/
+
+drop PROCEDURE if EXISTS tetuanjobs.nuevaFormacion;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.nuevaFormacion(usid int, titulo varchar(200),nombre varchar(200),
+f_ini date,f_final date,actualmente boolean, descripcion varchar(3000), clasificacion varchar(200)) 
+	BEGIN
+		declare id int default -1;
+		declare diferencia int default -1;
+
+		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
+
+		if id >=0 then
+
+			INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
+				f_inicio,formacion_desc,formacion_clasificacion) values(id, titulo, nombre,f_ini, descripcion,clasificacion);
+
+			select true as resultado;
+
+			if actualmente is not null and actualmente then
+				update tetuanjobs.formacion set actualmente = true
+					where id_estudiante = id;
+			elseif f_final is not null then
+				
+				select datediff(f_final,f_ini) into diferencia;
+				if diferencia >= 0 then 
+					update tetuanjobs.formacion set f_fin = f_final
+						where id_estudiante = id;	
+				else 
+					update tetuanjobs.formacion set f_fin = curdate()
+						where id_estudiante = id;
+				end if;
+			end if;
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/*call tetuanjobs.nuevaFormacion(2,"Prueba Formacion 1", "Desarrollo web", "2015-05-01","2015-06-01",
+	null,"Hemos aprendido un montón", 1);*/
+
+/** Fin Funcion para crear nueva educación **/
+
+/** Funcion para crear nueva Idioma **/
+
+drop PROCEDURE if EXISTS tetuanjobs.nuevoIdioma;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.nuevoIdioma(usid int, ididioma int, habl int, esc int) 
+	BEGIN
+		declare id int default -1;
+
+		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
+
+		if id >=0 then
+
+			INSERT INTO tetuanjobs.estudiantes_idiomas (id_estudiante,id_idioma, hablado, escrito) 
+			values(id, ididioma, habl, esc);
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/*call tetuanjobs.nuevoIdioma(2,1, 2,3);*/
+
+/** Fin Funcion para crear nueva Idioma **/
+
+
 /** funcion para cargar información de estudiante por id **/
 
 drop PROCEDURE if EXISTS tetuanjobs.cargarInfoEstudiante;

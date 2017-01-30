@@ -22,6 +22,9 @@ $generacl = new General;
 $estudiantecl->cambiarContr();
 $estudiantecl->modificarinfo();
 $informacion = $estudiantecl->listarInformacion();
+$estudiantecl->nuevaExperiencia();
+$estudiantecl->nuevaFormacion();
+$estudiantecl->nuevoIdioma();
 
 //print_r($informacion);
 //print_r($_SESSION["usuario"]);
@@ -43,23 +46,23 @@ $page["js"] = ob_get_clean();
 ob_start();?>
 <!-- El id es importante en el modal porque através del atributo data-target="iddelmodal" con un botón
     lo vamos a invocar -->
+    <form method="post">
+        <div class="modal fade" id="modalexp" >
+            <div class="modal-dialog modal-lg">
 
-    <div class="modal fade" id="modalexp" >
-        <div class="modal-dialog modal-lg">
+                <!-- Contenido del modal // Un modal es una ventana que se muestra encima del contenido -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- Este boton sirve para cerrar el modal -->
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!-- Este es el título de la cabecera del modal -->
+                        <h4 class="modal-title"><span id="titexp">Añadir un nuevo puesto de trabajo</span></h4>
+                    </div>
 
-            <!-- Contenido del modal // Un modal es una ventana que se muestra encima del contenido -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <!-- Este boton sirve para cerrar el modal -->
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <!-- Este es el título de la cabecera del modal -->
-                    <h4 class="modal-title"><span id="titexp">Añadir un nuevo puesto de trabajo</span></h4>
-                </div>
-
-                <!-- Este es el cuerpo del modal -->
-                <div class="modal-body">
-                    <!-- Esta es una fila dentro del cuerpo del modal -->
-                    <div class="row">
+                    <!-- Este es el cuerpo del modal -->
+                    <div class="modal-body">
+                        <!-- Esta es una fila dentro del cuerpo del modal -->
+                        <div class="row">
                         <!-- Esta clase ocupa 6 columnas del grid de 12, lo que seria la mitad
                         pero cómo es md sólo se aplicará a una resolución de hasta 992 px-->
                         <div class="col-md-6">
@@ -67,7 +70,7 @@ ob_start();?>
                             <div class="form-group">
                                 <label>Título</label>
                                 <!-- La clase form-control da estilo al input-->
-                                <input type="text" class="form-control" name="tituloEmp" value="">
+                                <input type="text" class="form-control" name="tituloEmp" value="" required>
                             </div>    
                         </div>
                         <div class="col-md-6">
@@ -96,7 +99,7 @@ ob_start();?>
                                     <option value="11">noviembre</option>
                                     <option value="12">diciembre</option>
                                 </select>
-                                <input type="text" class="conborde text-center" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+                                <input type="text" class="conborde text-center" name="f1anio" placeholder="Año" maxlength="4" size="4" > - 
                                 
                                 <select class="conborde selact" name="f2mes">                                        
                                     <option value="1">enero</option>
@@ -129,8 +132,8 @@ ob_start();?>
                 </div>
                 <!-- Este es el pie del modal -->
                 <div class="modal-footer">                    
-                    <input type="button" class="btn btn-warning" name="limpiar" value="Limpiar">
-                    <input type="submit" class="btn btn-green" value="Guardar">
+                    <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+                    <input type="submit" name="nuevaexp" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
                     <!-- Para cerrar todos los modales con data-dismiss-->
                 </div>
@@ -138,17 +141,19 @@ ob_start();?>
             </div>
         </div>
     </div>
-    <?php 
-    /** Obtenermos el buffer con todo el html anterior y limpiamos el buffer**/
-    $page["modal"][0] = ob_get_clean();
+</form>
+<?php 
+/** Obtenermos el buffer con todo el html anterior y limpiamos el buffer**/
+$page["modal"][0] = ob_get_clean();
 
 
-    /*Fin Modal Experiencia*/
+/*Fin Modal Experiencia*/
 
-    /*Modal Educación*/
+/*Modal Educación*/
 
-    ob_start();
-    ?>
+ob_start();
+?>
+<form method="post">
     <div class="modal fade" id="modaleduc" role="dialog">
         <div class="modal-dialog modal-lg">
 
@@ -164,7 +169,7 @@ ob_start();?>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Título</label>
-                                <input type="text" class="form-control " name="titeduc" value="" required="required" >
+                                <input type="text" class="form-control " name="tituloeduc" value="" required="required" >
                             </div>    
                         </div>  
                         <div class="col-md-6">
@@ -193,7 +198,7 @@ ob_start();?>
                                     <option value="12">diciembre</option>
                                 </select>
                                 <input type="text" class="conborde text-center" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-                                
+
                                 <select class="conborde selact" name="f2mes">                                        
                                     <option value="1">enero</option>
                                     <option value="2">febrero</option>
@@ -221,8 +226,8 @@ ob_start();?>
                                     <option value="2">Grado medio</option>
                                     <option value="3">Bachillerato</option>
                                     <option value="4">Grado superior</option>
-                                    <option value="5">Carrera</option>
-                                    <option value="6">Master</option>
+                                    <option value="5">Grado Universitario</option>
+                                    <option value="6">Máster</option>
                                     <option value="7">Certificado oficial</option>
                                     <option value="8">otro</option>
                                 </select>
@@ -239,22 +244,24 @@ ob_start();?>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-warning" name="limpiar" value="Limpiar">
-                    <input type="submit" class="btn btn-green" value="Guardar">
+                    <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+                    <input type="submit" name="nuevaform" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
                 </div>
 
             </div>
         </div>
     </div>
-    <?php
-    $page["modal"][1] = ob_get_clean();
+</form>
+<?php
+$page["modal"][1] = ob_get_clean();
 
-    /*Fin Modal educ*/
-    /* Modal Idioma */
+/*Fin Modal educ*/
+/* Modal Idioma */
 
-    ob_start();
-    ?>
+ob_start();
+?>
+<form method="post">
     <div class="modal fade" id="modalidioma" role="dialog">
         <div class="modal-dialog modal-lg">
 
@@ -270,7 +277,9 @@ ob_start();?>
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>Idioma</label>
-                                <input type="text" class="form-control " name="titeduc" value="" required="required" >
+                                <select name="idioma" class="form-control" required>
+                                    <?php echo $generacl->listarIdiomas(); ?>
+                                </select>
                             </div>    
                         </div>                     
 
@@ -299,239 +308,183 @@ ob_start();?>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-warning" name="limpiar" value="Limpiar">
-                    <input type="submit" class="btn btn-green" value="Guardar">
+                    <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+                    <input type="submit" name="nuevoidioma" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
                 </div>
 
             </div>
         </div>
     </div>
-    <?php
+</form>
+<?php
 
-    $page["modal"][2] = ob_get_clean();
-    /* Fin Modal idioma */
+$page["modal"][2] = ob_get_clean();
+/* Fin Modal idioma */
 
-    ob_start();
-    ?>
+ob_start();
+?>
 
-    <h1>Perfil</h1>
-    <!--Panel Datos Personales -->
-    <form method="post" enctype="multipart/form-data">
-        <div class="panel panel-default">        
-            <div class="panel-heading">
-                <h4>Información del perfil </h4> 
+<h1>Perfil</h1>
+<!--Panel Datos Personales -->
+<form method="post" enctype="multipart/form-data">
+    <div class="panel panel-default">        
+        <div class="panel-heading">
+            <h4>Información del perfil </h4> 
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Nombre</label>                        
+                        <input type="text" class="form-control " id="nombre" name="nombre" maxlength="25" value="<?php if(isset($informacion["nombre"])){echo $informacion["nombre"];}?>" autofocus="autofocus" required="required" >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" maxlength="50" value="<?php if(isset($informacion["apellidos"])){echo $informacion["apellidos"];}?>">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
+                    </div>
+                </div>                   
             </div>
-            <div class="panel-body">
-                <div class="row">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Provincia</label>
+                        <select id='provincias' class='form-control' name='provincia'>
+                            <?php
+                            $n = -1;
+                            if(isset($informacion["provincia"])&& is_numeric($informacion["provincia"]) && $informacion["provincia"] >0 ){
+                                $n = $informacion["provincia"];}
+                                $generacl->listarProvincias($n);
+                                echo $generacl->provinciasSELECT; ?>
+                            </select>
+                        </div>
+                    </div>           
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Nombre</label>                        
-                            <input type="text" class="form-control " id="nombre" name="nombre" maxlength="25" value="<?php if(isset($informacion["nombre"])){echo $informacion["nombre"];}?>" autofocus="autofocus" required="required" >
+                            <label>Población</label>
+                            <input type="text" class="form-control" name="poblacion" value="<?php if(isset($informacion["poblacion"])){echo $informacion["poblacion"];}?>" >
                         </div>
-                    </div>
+                    </div> 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Apellidos</label>
-                            <input type="text" class="form-control" id="apellidos" name="apellidos" maxlength="50" value="<?php if(isset($informacion["apellidos"])){echo $informacion["apellidos"];}?>">
+                            <label>Código Postal</label>
+                            <input type="text" class="form-control" id="cpostal"  maxlength="5" size="5" name="cpostal" value="<?php if(isset($informacion["cod_postal"])){echo $informacion["cod_postal"];}?>" >
                         </div>
                     </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <input type="tel" class="form-control" id="telefono" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
-                        </div>
-                    </div>                   
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
+                        <div class="form-group">                               
+                            <label>Fotografía de perfil (Alto y Ancho de 90px)</label><br>
+                            <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
+                            <input type="file" id="fotop" name="fotop" style="display:none"> 
+                            <input type="hidden" id="dirfotop" value="<?php if(isset($informacion["fotografia"])){echo $informacion["fotografia"];}?>">                       
+                            <input type="button" class="btn btn-primary" id="mostrarf"  value="Mostrar fotografía">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label>Provincia</label>
-                            <select id='provincias' class='form-control' name='provincia'>
-                                <?php
-                                $n = -1;
-                                if(isset($informacion["provincia"])&& is_numeric($informacion["provincia"]) && $informacion["provincia"] >0 ){
-                                    $n = $informacion["provincia"];}
-                                    $generacl->listarProvincias($n);
-                                    echo $generacl->provinciasSELECT; ?>
-                                </select>
-                            </div>
-                        </div>           
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Población</label>
-                                <input type="text" class="form-control" name="poblacion" value="<?php if(isset($informacion["poblacion"])){echo $informacion["poblacion"];}?>" >
-                            </div>
+                            <label>Currículum Vitae (Sólo pdf hasta 500KB)</label><br>
+                            <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
+                            <input type="file" id="cv" name="cv" style="display:none"> 
+                            <input type="hidden" id="dircv" value="<?php if(isset($informacion["curriculum"])){echo $informacion["curriculum"];}?>">
+                            <input type="button" class="btn btn-primary" id="mostrarcv" value="Mostrar CV">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Descripción personal</label>
+                            <textarea class="form-control" rows="5" name="descpersonal"><?php if(isset($informacion["descripcion"])){echo $informacion["descripcion"];}?></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Carnet de conducir</label>
+                            <div class="input-group">  
+                                <span class="input-group-addon">                                
+                                    <input type="checkbox" name="carnet" 
+                                    <?php if(isset($informacion["carnet"]) && $informacion["carnet"]){
+                                        echo "checked";}?>
+                                        >
+                                    </span>
+                                    <input type="text" class="form-control" value="Tengo carnet de conducir" disabled="disabled">
+                                </div>
+                            </div>                        
                         </div> 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Código Postal</label>
-                                <input type="text" class="form-control" id="cpostal"  maxlength="5" size="5" name="cpostal" value="<?php if(isset($informacion["cod_postal"])){echo $informacion["cod_postal"];}?>" >
-                            </div>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">                               
-                                <label>Fotografía de perfil (Alto y Ancho de 90px)</label><br>
-                                <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
-                                <input type="file" id="fotop" name="fotop" style="display:none"> 
-                                <input type="hidden" id="dirfotop" value="<?php if(isset($informacion["fotografia"])){echo $informacion["fotografia"];}?>">                       
-                                <input type="button" class="btn btn-primary" id="mostrarf"  value="Mostrar fotografía">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Currículum Vitae (Sólo pdf hasta 500KB)</label><br>
-                                <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
-                                <input type="file" id="cv" name="cv" style="display:none"> 
-                                <input type="hidden" id="dircv" value="<?php if(isset($informacion["curriculum"])){echo $informacion["curriculum"];}?>">
-                                <input type="button" class="btn btn-primary" id="mostrarcv" value="Mostrar CV">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label>Descripción personal</label>
-                                <textarea class="form-control" rows="5" name="descpersonal"><?php if(isset($informacion["descripcion"])){echo $informacion["descripcion"];}?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Carnet de conducir</label>
-                                <div class="input-group">  
-                                    <span class="input-group-addon">                                
-                                        <input type="checkbox" name="carnet" 
-                                        <?php if(isset($informacion["carnet"]) && $informacion["carnet"]){
-                                            echo "checked";}?>
-                                            >
-                                        </span>
-                                        <input type="text" class="form-control" value="Tengo carnet de conducir" disabled="disabled">
-                                    </div>
-                                </div>                        
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
-                                <input type="submit" id="guardar" name="guardarinfo" value="Guardar" class="btn btn-green">
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </form>
-            <!-- Fin panel Datos Personales -->
-            <!-- Panel Actualizar Contraseña -->
-            <form method="post">
-                <div class="panel panel-default">
-
-                    <div class="panel-heading">
-                        <h4>Cambiar Contraseña</h4> 
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Contraseña actual</label>
-                                    <input type="password" class="form-control"  name="contr" value="" required="required" >
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Nueva contraseña</label>
-                                    <input type="password" class="form-control" name="ncontr" value="" required="required">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Confirma la contraseña</label>
-                                    <input type="password" class="form-control"  name="ccontr" value="" required="required">
-                                </div>
-                            </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+                            <input type="submit" id="guardar" name="guardarinfo" value="Guardar" class="btn btn-green">
                         </div>
                     </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <input type="submit" name="modcontr" class="btn btn-green" value="Renovar">
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </form>
 
-            <!-- Fin panel Actualizar Contraseña -->
-            <!-- Experiencia -->        
+            </div>
+        </form>
+        <!-- Fin panel Datos Personales -->
+        <!-- Panel Actualizar Contraseña -->
+        <form method="post">
             <div class="panel panel-default">
+
                 <div class="panel-heading">
-                    <h4>Experiencia</h4> 
+                    <h4>Cambiar Contraseña</h4> 
                 </div>
                 <div class="panel-body">
-                    <div class="row">                        
-                        <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
-                            <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Contraseña actual</label>
+                                <input type="password" class="form-control"  name="contr" value="" required="required" >
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            <small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>, 
-                            <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-                            <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-                            <span class="mod2"><select class="selact" name="f2mes">                                        
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                                <option value="actualmente">actualmente</option>
-                            </select>&nbsp;
-                            <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-                        </i></small>
-
-
-
-                    </div>   
-                    <div class="col-md-8">
-                        <p>  
-                            <span class="spn">Esta es la descripción del puesto de trabajo.</span>
-                            <textarea class="npt" name="desc" rows="5"></textarea>
-                        </p>
-                    </div>
-                    <div class="col-md-12 pie-acciones">
-
-                        <input type="hidden" name="ided" value="85135454">
-                        <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                        <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
+                            <div class="form-group">
+                                <label>Nueva contraseña</label>
+                                <input type="password" class="form-control" name="ncontr" value="" required="required">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Confirma la contraseña</label>
+                                <input type="password" class="form-control"  name="ccontr" value="" required="required">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <hr>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <input type="submit" name="modcontr" class="btn btn-green" value="Renovar">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <!-- Fin panel Actualizar Contraseña -->
+        <!-- Experiencia -->        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Experiencia</h4> 
+            </div>
+            <div class="panel-body">
                 <div class="row">                        
                     <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
                         <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
@@ -572,6 +525,8 @@ ob_start();?>
                         <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
                     </i></small>
 
+
+
                 </div>   
                 <div class="col-md-8">
                     <p>  
@@ -586,92 +541,82 @@ ob_start();?>
                     <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
                 </div>
             </div>
-        </div>
-        <div class="panel-footer">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
+            <hr>
+            <div class="row">                        
+                <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
+                    <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
                 </div>
+                <div class="col-md-4">
+                    <small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Septiembre">Septiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                    </select>, 
+                    <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+                    <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+                    <span class="mod2"><select class="selact" name="f2mes">                                        
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Septiembre">Septiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                        <option value="actualmente">actualmente</option>
+                    </select>&nbsp;
+                    <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+                </i></small>
+
+            </div>   
+            <div class="col-md-8">
+                <p>  
+                    <span class="spn">Esta es la descripción del puesto de trabajo.</span>
+                    <textarea class="npt" name="desc" rows="5"></textarea>
+                </p>
+            </div>
+            <div class="col-md-12 pie-acciones">
+
+                <input type="hidden" name="ided" value="85135454">
+                <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
+                <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
             </div>
         </div>
     </div>
-
-    <!-- Fin de Experiencia -->
-    <!-- Educación -->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Educación</h4> 
-        </div>
-        <div class="panel-body">
-            <div class="row">                        
-                <div class="col-md-8">
-                    <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt" type="text" value="" name="titeduc"><br>
-                        <small><span class="spn">Instituto Ies Tetuan</span><input class="npt" type="text" value="" name="institucion"></small><br>
-                        <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
-                            <option value="Fp básica">Fp básica</option>
-                            <option value="Grado medio">Grado medio</option>
-                            <option value="Bachillerato">Bachillerato</option>
-                            <option value="Grado superior">Grado superior</option>
-                            <option value="Carrera">Carrera</option>
-                            <option value="Master">Master</option>
-                            <option value="Certificado oficial">Certificado oficial</option>
-                            <option value="otro">otro</option>
-                        </select></small>
-                    </h4>
-                </div>
-                <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-                    <option value="Enero">Enero</option>
-                    <option value="Febrero">Febrero</option>
-                    <option value="Marzo">Marzo</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Mayo">Mayo</option>
-                    <option value="Junio">Junio</option>
-                    <option value="Julio">Julio</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Septiembre">Septiembre</option>
-                    <option value="Octubre">Octubre</option>
-                    <option value="Noviembre">Noviembre</option>
-                    <option value="Diciembre">Diciembre</option>
-                </select>, 
-                <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-                <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-                <span class="mod2"><select class="selact" name="f2mes">                                        
-                    <option value="Enero">Enero</option>
-                    <option value="Febrero">Febrero</option>
-                    <option value="Marzo">Marzo</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Mayo">Mayo</option>
-                    <option value="Junio">Junio</option>
-                    <option value="Julio">Julio</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Septiembre">Septiembre</option>
-                    <option value="Octubre">Octubre</option>
-                    <option value="Noviembre">Noviembre</option>
-                    <option value="Diciembre">Diciembre</option>
-                    <option value="0">actualmente</option>
-                </select>&nbsp;
-                <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-            </i></small></div>   
-            <div class="col-md-12">
-                <p>   
-                    <span class="spn">Esta es la descripción de la educación.</span>
-                    <textarea class="npt" name="desc" rows="5"></textarea>  
-                </p>
-
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
             </div>
-            <div class="col-md-12 pie-acciones">
-                <input type="hidden" name="ided" value="85135454">
-                <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                <input type="button" name="moded" value="Modificar" class="btn btn-green">
-            </div>
-
         </div>
-        <hr>
+    </div>
+</div>
+
+<!-- Fin de Experiencia -->
+<!-- Educación -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Educación</h4> 
+    </div>
+    <div class="panel-body">
         <div class="row">                        
-            <div class="col-md-8 ">
-                <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt " type="text" value="" name="titeduc"><br>
-                    <small><span class="spn">Instituto Ies Tetuan</span><input class="npt " type="text" value="" name="institucion"></small><br>
+            <div class="col-md-8">
+                <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt" type="text" value="" name="titeduc"><br>
+                    <small><span class="spn">Instituto Ies Tetuan</span><input class="npt" type="text" value="" name="institucion"></small><br>
                     <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
                         <option value="Fp básica">Fp básica</option>
                         <option value="Grado medio">Grado medio</option>
@@ -730,7 +675,72 @@ ob_start();?>
             <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
             <input type="button" name="moded" value="Modificar" class="btn btn-green">
         </div>
+
     </div>
+    <hr>
+    <div class="row">                        
+        <div class="col-md-8 ">
+            <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt " type="text" value="" name="titeduc"><br>
+                <small><span class="spn">Instituto Ies Tetuan</span><input class="npt " type="text" value="" name="institucion"></small><br>
+                <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
+                    <option value="Fp básica">Fp básica</option>
+                    <option value="Grado medio">Grado medio</option>
+                    <option value="Bachillerato">Bachillerato</option>
+                    <option value="Grado superior">Grado superior</option>
+                    <option value="Carrera">Carrera</option>
+                    <option value="Master">Master</option>
+                    <option value="Certificado oficial">Certificado oficial</option>
+                    <option value="otro">otro</option>
+                </select></small>
+            </h4>
+        </div>
+        <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+        </select>, 
+        <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+        <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+        <span class="mod2"><select class="selact" name="f2mes">                                        
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+            <option value="0">actualmente</option>
+        </select>&nbsp;
+        <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+    </i></small></div>   
+    <div class="col-md-12">
+        <p>   
+            <span class="spn">Esta es la descripción de la educación.</span>
+            <textarea class="npt" name="desc" rows="5"></textarea>  
+        </p>
+
+    </div>
+    <div class="col-md-12 pie-acciones">
+        <input type="hidden" name="ided" value="85135454">
+        <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+        <input type="button" name="moded" value="Modificar" class="btn btn-green">
+    </div>
+</div>
 </div>
 <div class="panel-footer">
     <div class="row">
@@ -754,11 +764,12 @@ ob_start();?>
                     <label>Etiquetas</label>
                     <div class="input-group">
                         <select class="form-control" id="etiquetas" name="etiqueta">
-                            <option value="nada">Ninguna</option>
+                            <!--<option value="nada">Ninguna</option>
                             <option value="php">php</option>
                             <option value="java">java</option>
                             <option value="html">html</option>
-                            <option value="css">css</option>
+                            <option value="css">css</option>-->
+                            <?php echo $generacl->listarEtiquetas(); ?>
                         </select>
                         <span class="input-group-btn">
                             <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">

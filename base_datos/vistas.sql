@@ -7,7 +7,25 @@ CREATE OR REPLACE VIEW tetuanjobs.listarProvincias as
 
 GRANT select on tetuanjobs.listarProvincias To 'usertetuan'@'localhost';
 
-/** VISTA LISTAR PROVINCIAS **/
+/** FIN VISTA LISTAR PROVINCIAS **/
+
+/** VISTA LISTAR ETIQUETAS **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarEtiquetas as 
+     select id_etiqueta as identificador, nombre_etiqueta as nombre from tetuanjobs.etiquetas order by nombre;
+
+GRANT select on tetuanjobs.listarEtiquetas To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR ETIQUETAS **/
+
+/** VISTA LISTAR Idiomas **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarIdiomas as 
+     select id_idioma as identificador, nombre_idioma as nombre from tetuanjobs.idiomas order by nombre;
+
+GRANT select on tetuanjobs.listarIdiomas To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR Idiomas **/
 
 /** VISTAS GENERALES **/
 
@@ -28,7 +46,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarUsuarios as
 
 GRANT select on tetuanjobs.listarUsuarios To 'usertetuan'@'localhost';
 
-/** VISTA LISTAR USUARIOS**/
+/** FIN VISTA LISTAR USUARIOS**/
 
 
 /** VISTA LISTAR empresas **/
@@ -40,7 +58,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarEmpresas as
 
 GRANT select on tetuanjobs.listarEmpresas To 'usertetuan'@'localhost';
 
-/** VISTA LISTAR empresas**/
+/** FIN VISTA LISTAR empresas**/
 
 /** FIN FILTRO DE USUARIOS**/
 

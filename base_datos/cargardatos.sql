@@ -1,3 +1,5 @@
+use tetuanjobs;
+
 /* INSERTAR usuarios de ejemplo */
 
 /* INSERTAR usuario administrador */
@@ -124,3 +126,43 @@ INSERT INTO `provincias` (`id_provincia`, `slug`, `nombre_provincia`) VALUES
 (52, 'melilla', 'Melilla');
 
 /* Fin Insertar provincias */
+
+
+/* Insertar experiencia */
+	INSERT INTO tetuanjobs.experiencia (id_estudiante, titulo_puesto, nombre_empresa,
+				f_inicio,f_fin,experiencia_desc) values(1, "Desarrollador web", "Microsoft",
+				"2015-05-01","2016-05-01", "Un trabajo muy chulo");
+
+	INSERT INTO tetuanjobs.experiencia (id_estudiante, titulo_puesto, nombre_empresa,
+				f_inicio,actualmente,experiencia_desc) values(1, "Maquetador", "Facebook",
+				"2015-06-01",true, "Otro trabajo muy chulo");
+
+	INSERT INTO tetuanjobs.experiencia (id_estudiante, titulo_puesto, nombre_empresa,
+				f_inicio,f_fin,experiencia_desc) values(1, "Programador PHP", "Ies Tetuan",
+				"2015-05-01","2016-08-01", "Había que hacer algo");
+
+/* Fin insertar experiencia */
+
+/* insertar formacion */
+
+INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
+				f_inicio,f_fin,formacion_desc, formacion_clasificacion) values(1, "Desarrollador web", "IES Tetuan",
+				"2015-05-01",true, "Aprendimos un montón", 4);
+
+INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
+			f_inicio,actualmente,formacion_desc, formacion_clasificacion) values(1, "ESO", "Las Codornices",
+			"2010-06-01","2014-06-01", "Tenía que estudiarlo",8);
+
+INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
+			f_inicio,f_fin,formacion_desc, formacion_clasificacion) values(1, "Programacion O Objetos", "Corenetworks",
+			"2015-05-01","2016-08-01", "Aprendí ha hacer clases",7);
+
+/* Fin insertar formacion */
+
+/* insertar idiomas */
+
+INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("inglés");
+INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("francés");
+INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("alemán");
+INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("chino");
+/* fin insertar idiomas */
