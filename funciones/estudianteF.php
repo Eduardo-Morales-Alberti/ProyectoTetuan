@@ -453,6 +453,100 @@ class estudianteBBDD extends singleton{
 
 	/** Fin Función nuevo idioma **/
 
+	/** FUNCIÓN LISTAR EXPERIENCIA **/
+
+	function listarExperiencia(){
+		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+		$sql = "select * from listarExperiencia";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$experienciafilas = array();
+		while ($row = $consulta->fetch()) {
+			$experienciafilas[] = $row;
+		}
+		//print_r($experienciafilas);
+		for ($i=0; $i < count($experienciafilas); $i++) { 			
+
+			?>
+			<div class="row">                        
+				<div class="col-md-8"><h4><?php echo $experienciafilas[$i]["titulo"];?><br>
+					<small><?php echo $experienciafilas[$i]["empresa"];?></small></h4>
+				</div>
+				<div class="col-md-4">
+					<small class="femp ">Período: <i> <?php 
+
+					$fechaini = $experienciafilas[$i]["fecha_ini"];
+					$mes = date("n",strtotime($fechaini));
+					$anio = date("Y",strtotime($fechaini));
+					echo $meses[$mes-1].", ".$anio;
+
+					?>- <?php 
+
+					$fechafin = $experienciafilas[$i]["fecha_fin"];
+					if($fechafin != "actualmente"){
+						$mes = date("n",strtotime($fechafin));
+						$anio = date("Y",strtotime($fechafin));
+						echo $meses[$mes-1].", ".$anio;
+					}else{
+						echo $fechafin;
+					}
+					
+					
+					?> </i></small>
+				</div>   
+				<div class="col-md-8">
+					<p>  
+						<?php echo $experienciafilas[$i]["descripcion"];?>
+					</p>
+				</div>
+				<div class="col-md-12 pie-acciones">
+					<form method="post">
+						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"];?>">
+						<input type="submit" name="elimexp" value="Eliminar" class="btn btn-danger">
+						<input type="submit" name="modexp" value="Modificar" class="btn btn-green">
+					</form>
+				</div>
+			</div>
+
+			<?php
+			if($i<count($experienciafilas)-1){
+				echo "<hr>";
+			}
+		}
+
+		
+	}
+
+
+	/** FIN FUNCIÓN LISTAR EXPERIENCIA **/
+
+	/** FUNCIÓN ELIMINAR EXPERIENCIA **/
+
+	function eliminarExperiencia(){
+		if(isset($_POST["elimexp"])&&isset($_POST["idexp"])){
+			$sql = "call eliminarExperiencia(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idexp"]));
+			if($consulta->rowCount() > 0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Experiencia eliminada correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha eliminado la experiencia";
+				}
+				
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado";
+			}
+			
+			
+		}
+	}
+
+	/** FIN FUNCIÓN ELIMINAR EXPERIENCIA **/
+
 	/** FIN PERFIL ESTUDIANTE **/
 
 }

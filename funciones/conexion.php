@@ -45,3 +45,5 @@ class singleton {
 
 	/** fin funcion limpiar caracteres **/
 }
+
+?>

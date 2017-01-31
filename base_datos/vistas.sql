@@ -60,6 +60,17 @@ GRANT select on tetuanjobs.listarEmpresas To 'usertetuan'@'localhost';
 
 /** FIN VISTA LISTAR empresas**/
 
+/** VISTA LISTAR EXPERIENCIA **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarExperiencia as 
+  select id_experiencia as identificador, titulo_puesto as titulo, nombre_empresa as empresa, f_inicio as fecha_ini, 
+  if(actualmente,"actualmente",f_fin) as fecha_fin, experiencia_desc as descripcion      
+             from tetuanjobs.experiencia;
+
+GRANT select on tetuanjobs.listarExperiencia To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR EXPERIENCIA **/
+
 /** FIN FILTRO DE USUARIOS**/
 
 

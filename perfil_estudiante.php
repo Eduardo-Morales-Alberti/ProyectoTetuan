@@ -25,6 +25,7 @@ $informacion = $estudiantecl->listarInformacion();
 $estudiantecl->nuevaExperiencia();
 $estudiantecl->nuevaFormacion();
 $estudiantecl->nuevoIdioma();
+$estudiantecl->eliminarExperiencia();
 
 //print_r($informacion);
 //print_r($_SESSION["usuario"]);
@@ -485,69 +486,42 @@ ob_start();
                 <h4>Experiencia</h4> 
             </div>
             <div class="panel-body">
-                <div class="row">                        
-                    <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
-                        <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
+                <?php echo $estudiantecl->listarExperiencia(); ?>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
                     </div>
-                    <div class="col-md-4">
-                        <small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-                            <option value="Enero">Enero</option>
-                            <option value="Febrero">Febrero</option>
-                            <option value="Marzo">Marzo</option>
-                            <option value="Abril">Abril</option>
-                            <option value="Mayo">Mayo</option>
-                            <option value="Junio">Junio</option>
-                            <option value="Julio">Julio</option>
-                            <option value="Agosto">Agosto</option>
-                            <option value="Septiembre">Septiembre</option>
-                            <option value="Octubre">Octubre</option>
-                            <option value="Noviembre">Noviembre</option>
-                            <option value="Diciembre">Diciembre</option>
-                        </select>, 
-                        <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-                        <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-                        <span class="mod2"><select class="selact" name="f2mes">                                        
-                            <option value="Enero">Enero</option>
-                            <option value="Febrero">Febrero</option>
-                            <option value="Marzo">Marzo</option>
-                            <option value="Abril">Abril</option>
-                            <option value="Mayo">Mayo</option>
-                            <option value="Junio">Junio</option>
-                            <option value="Julio">Julio</option>
-                            <option value="Agosto">Agosto</option>
-                            <option value="Septiembre">Septiembre</option>
-                            <option value="Octubre">Octubre</option>
-                            <option value="Noviembre">Noviembre</option>
-                            <option value="Diciembre">Diciembre</option>
-                            <option value="actualmente">actualmente</option>
-                        </select>&nbsp;
-                        <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-                    </i></small>
-
-
-
-                </div>   
-                <div class="col-md-8">
-                    <p>  
-                        <span class="spn">Esta es la descripción del puesto de trabajo.</span>
-                        <textarea class="npt" name="desc" rows="5"></textarea>
-                    </p>
-                </div>
-                <div class="col-md-12 pie-acciones">
-
-                    <input type="hidden" name="ided" value="85135454">
-                    <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                    <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
                 </div>
             </div>
-            <hr>
-            <div class="row">                        
-                <div class="col-md-8"><h4><span class="spn">Título del puesto</span><input class="npt" type="text" value="" name="tituloEmp"><br>
-                    <small><span class="spn">Nombre de la empresa</span><input class="npt" type="text" value="" name="nombreEmp"></small></h4>
-                </div>
-                <div class="col-md-4">
-                    <small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+        </div>
+
+        <!-- Fin de Experiencia -->
+        <!-- Educación -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Educación</h4> 
+            </div>
+            <div class="panel-body">
+                <div class="row">                        
+                    <div class="col-md-8">
+                        <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt" type="text" value="" name="titeduc"><br>
+                            <small><span class="spn">Instituto Ies Tetuan</span><input class="npt" type="text" value="" name="institucion"></small><br>
+                            <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
+                                <option value="Fp básica">Fp básica</option>
+                                <option value="Grado medio">Grado medio</option>
+                                <option value="Bachillerato">Bachillerato</option>
+                                <option value="Grado superior">Grado superior</option>
+                                <option value="Carrera">Carrera</option>
+                                <option value="Master">Master</option>
+                                <option value="Certificado oficial">Certificado oficial</option>
+                                <option value="otro">otro</option>
+                            </select></small>
+                        </h4>
+                    </div>
+                    <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
                         <option value="Enero">Enero</option>
                         <option value="Febrero">Febrero</option>
                         <option value="Marzo">Marzo</option>
@@ -577,178 +551,96 @@ ob_start();
                         <option value="Octubre">Octubre</option>
                         <option value="Noviembre">Noviembre</option>
                         <option value="Diciembre">Diciembre</option>
-                        <option value="actualmente">actualmente</option>
+                        <option value="0">actualmente</option>
                     </select>&nbsp;
                     <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-                </i></small>
+                </i></small></div>   
+                <div class="col-md-12">
+                    <p>   
+                        <span class="spn">Esta es la descripción de la educación.</span>
+                        <textarea class="npt" name="desc" rows="5"></textarea>  
+                    </p>
 
-            </div>   
-            <div class="col-md-8">
-                <p>  
-                    <span class="spn">Esta es la descripción del puesto de trabajo.</span>
-                    <textarea class="npt" name="desc" rows="5"></textarea>
+                </div>
+                <div class="col-md-12 pie-acciones">
+                    <input type="hidden" name="ided" value="85135454">
+                    <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+                    <input type="button" name="moded" value="Modificar" class="btn btn-green">
+                </div>
+
+            </div>
+            <hr>
+            <div class="row">                        
+                <div class="col-md-8 ">
+                    <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt " type="text" value="" name="titeduc"><br>
+                        <small><span class="spn">Instituto Ies Tetuan</span><input class="npt " type="text" value="" name="institucion"></small><br>
+                        <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
+                            <option value="Fp básica">Fp básica</option>
+                            <option value="Grado medio">Grado medio</option>
+                            <option value="Bachillerato">Bachillerato</option>
+                            <option value="Grado superior">Grado superior</option>
+                            <option value="Carrera">Carrera</option>
+                            <option value="Master">Master</option>
+                            <option value="Certificado oficial">Certificado oficial</option>
+                            <option value="otro">otro</option>
+                        </select></small>
+                    </h4>
+                </div>
+                <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
+                    <option value="Enero">Enero</option>
+                    <option value="Febrero">Febrero</option>
+                    <option value="Marzo">Marzo</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Mayo">Mayo</option>
+                    <option value="Junio">Junio</option>
+                    <option value="Julio">Julio</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Septiembre">Septiembre</option>
+                    <option value="Octubre">Octubre</option>
+                    <option value="Noviembre">Noviembre</option>
+                    <option value="Diciembre">Diciembre</option>
+                </select>, 
+                <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+                <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
+                <span class="mod2"><select class="selact" name="f2mes">                                        
+                    <option value="Enero">Enero</option>
+                    <option value="Febrero">Febrero</option>
+                    <option value="Marzo">Marzo</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Mayo">Mayo</option>
+                    <option value="Junio">Junio</option>
+                    <option value="Julio">Julio</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Septiembre">Septiembre</option>
+                    <option value="Octubre">Octubre</option>
+                    <option value="Noviembre">Noviembre</option>
+                    <option value="Diciembre">Diciembre</option>
+                    <option value="0">actualmente</option>
+                </select>&nbsp;
+                <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
+            </i></small></div>   
+            <div class="col-md-12">
+                <p>   
+                    <span class="spn">Esta es la descripción de la educación.</span>
+                    <textarea class="npt" name="desc" rows="5"></textarea>  
                 </p>
+
             </div>
             <div class="col-md-12 pie-acciones">
-
                 <input type="hidden" name="ided" value="85135454">
-                <input type="submit" name="elimemp" value="Eliminar" class="btn btn-danger">
-                <input type="submit" name="modemp" value="Modificar" class="btn btn-green">
+                <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
+                <input type="button" name="moded" value="Modificar" class="btn btn-green">
             </div>
         </div>
     </div>
     <div class="panel-footer">
         <div class="row">
             <div class="col-md-12 text-right">
-                <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
+                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Fin de Experiencia -->
-<!-- Educación -->
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Educación</h4> 
-    </div>
-    <div class="panel-body">
-        <div class="row">                        
-            <div class="col-md-8">
-                <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt" type="text" value="" name="titeduc"><br>
-                    <small><span class="spn">Instituto Ies Tetuan</span><input class="npt" type="text" value="" name="institucion"></small><br>
-                    <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
-                        <option value="Fp básica">Fp básica</option>
-                        <option value="Grado medio">Grado medio</option>
-                        <option value="Bachillerato">Bachillerato</option>
-                        <option value="Grado superior">Grado superior</option>
-                        <option value="Carrera">Carrera</option>
-                        <option value="Master">Master</option>
-                        <option value="Certificado oficial">Certificado oficial</option>
-                        <option value="otro">otro</option>
-                    </select></small>
-                </h4>
-            </div>
-            <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-                <option value="Enero">Enero</option>
-                <option value="Febrero">Febrero</option>
-                <option value="Marzo">Marzo</option>
-                <option value="Abril">Abril</option>
-                <option value="Mayo">Mayo</option>
-                <option value="Junio">Junio</option>
-                <option value="Julio">Julio</option>
-                <option value="Agosto">Agosto</option>
-                <option value="Septiembre">Septiembre</option>
-                <option value="Octubre">Octubre</option>
-                <option value="Noviembre">Noviembre</option>
-                <option value="Diciembre">Diciembre</option>
-            </select>, 
-            <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-            <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-            <span class="mod2"><select class="selact" name="f2mes">                                        
-                <option value="Enero">Enero</option>
-                <option value="Febrero">Febrero</option>
-                <option value="Marzo">Marzo</option>
-                <option value="Abril">Abril</option>
-                <option value="Mayo">Mayo</option>
-                <option value="Junio">Junio</option>
-                <option value="Julio">Julio</option>
-                <option value="Agosto">Agosto</option>
-                <option value="Septiembre">Septiembre</option>
-                <option value="Octubre">Octubre</option>
-                <option value="Noviembre">Noviembre</option>
-                <option value="Diciembre">Diciembre</option>
-                <option value="0">actualmente</option>
-            </select>&nbsp;
-            <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-        </i></small></div>   
-        <div class="col-md-12">
-            <p>   
-                <span class="spn">Esta es la descripción de la educación.</span>
-                <textarea class="npt" name="desc" rows="5"></textarea>  
-            </p>
-
-        </div>
-        <div class="col-md-12 pie-acciones">
-            <input type="hidden" name="ided" value="85135454">
-            <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-            <input type="button" name="moded" value="Modificar" class="btn btn-green">
-        </div>
-
-    </div>
-    <hr>
-    <div class="row">                        
-        <div class="col-md-8 ">
-            <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt " type="text" value="" name="titeduc"><br>
-                <small><span class="spn">Instituto Ies Tetuan</span><input class="npt " type="text" value="" name="institucion"></small><br>
-                <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
-                    <option value="Fp básica">Fp básica</option>
-                    <option value="Grado medio">Grado medio</option>
-                    <option value="Bachillerato">Bachillerato</option>
-                    <option value="Grado superior">Grado superior</option>
-                    <option value="Carrera">Carrera</option>
-                    <option value="Master">Master</option>
-                    <option value="Certificado oficial">Certificado oficial</option>
-                    <option value="otro">otro</option>
-                </select></small>
-            </h4>
-        </div>
-        <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-            <option value="Marzo">Marzo</option>
-            <option value="Abril">Abril</option>
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Septiembre">Septiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-        </select>, 
-        <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-        <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-        <span class="mod2"><select class="selact" name="f2mes">                                        
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-            <option value="Marzo">Marzo</option>
-            <option value="Abril">Abril</option>
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Septiembre">Septiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-            <option value="0">actualmente</option>
-        </select>&nbsp;
-        <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-    </i></small></div>   
-    <div class="col-md-12">
-        <p>   
-            <span class="spn">Esta es la descripción de la educación.</span>
-            <textarea class="npt" name="desc" rows="5"></textarea>  
-        </p>
-
-    </div>
-    <div class="col-md-12 pie-acciones">
-        <input type="hidden" name="ided" value="85135454">
-        <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-        <input type="button" name="moded" value="Modificar" class="btn btn-green">
-    </div>
-</div>
-</div>
-<div class="panel-footer">
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
-        </div>
-    </div>
-</div>
 </div>
 <!-- Educación -->
 <!-- Skills -->
@@ -882,8 +774,8 @@ ob_start();
                 </select>
             </div>
             <div class="col-xs-4">
-             <span class="spn">Alto</span>
-             <select name="nve" class="npt ">
+               <span class="spn">Alto</span>
+               <select name="nve" class="npt ">
                 <option value="Bajo">Bajo</option>
                 <option value="Intermedio">Intermedio</option>
                 <option value="Alto">Alto</option>
@@ -913,8 +805,8 @@ ob_start();
             </select>
         </div>
         <div class="col-xs-4">
-         <span class="spn">Alto</span>
-         <select name="nve" class="npt ">
+           <span class="spn">Alto</span>
+           <select name="nve" class="npt ">
             <option value="Bajo">Bajo</option>
             <option value="Intermedio">Intermedio</option>
             <option value="Alto">Alto</option>

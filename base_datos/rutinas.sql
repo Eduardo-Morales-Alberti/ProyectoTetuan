@@ -357,6 +357,30 @@ delimiter ;
 
 /** Fin Funcion para crear nuevo experiencia de trabajo **/
 
+
+/** RUTINA PARA ELIMINAR UNA EXPERIENCIA **/
+drop PROCEDURE if EXISTS tetuanjobs.eliminarExperiencia;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarExperiencia(id_us int,id_exp int) 
+	BEGIN
+	declare r boolean default false;
+
+	select true into r from tetuanjobs.estudiantes est join tetuanjobs.experiencia exp 
+	on est.id_estudiante =  exp.id_estudiante where id_usuario = id_us limit 1;
+
+	if r then
+		delete from tetuanjobs.experiencia where id_experiencia = id_exp;
+		select true as resultado;
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+/** FIN RUTINA PARA ELIMINAR UNA EXPERIENCIA **/
+
 /** Funcion para crear nueva educación **/
 
 drop PROCEDURE if EXISTS tetuanjobs.nuevaFormacion;
