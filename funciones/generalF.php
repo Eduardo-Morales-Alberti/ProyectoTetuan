@@ -115,14 +115,14 @@ class General extends singleton{
 		$consulta->execute();
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$etiquetasSELECT = "";
-	
+
 		while ($row = $consulta->fetch()) {
 			$etiquetas[] = $row;
 		}
 		$etiquetasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
 		for ($i=0; $i < count($etiquetas) ; $i++) { 			
-				$etiquetasSELECT .= "<option value='".$etiquetas[$i]['nombre']."'>";
-				$etiquetasSELECT .= $etiquetas[$i]['nombre']."</option>";
+			$etiquetasSELECT .= "<option value='".$etiquetas[$i]['nombre']."'>";
+			$etiquetasSELECT .= $etiquetas[$i]['nombre']."</option>";
 			
 			
 		}
@@ -141,15 +141,16 @@ class General extends singleton{
 		$consulta->execute();
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$idiomasSELECT = "";
-	
+
 		while ($row = $consulta->fetch()) {
 			$idiomas[] = $row;
 		}
 		$idiomasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
-		for ($i=0; $i < count($idiomas) ; $i++) { 			
+		for ($i=0; $i < count($idiomas) ; $i++) { 
+			
 				$idiomasSELECT .= "<option value='".$idiomas[$i]['identificador']."'>";
 				$idiomasSELECT .= $idiomas[$i]['nombre']."</option>";
-			
+					
 			
 		}
 		return $idiomasSELECT;

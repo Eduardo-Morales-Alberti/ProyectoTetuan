@@ -365,9 +365,12 @@ delimiter //
 CREATE PROCEDURE tetuanjobs.eliminarExperiencia(id_us int,id_exp int) 
 	BEGIN
 	declare r boolean default false;
+	declare ext boolean default false;
 
 	select true into r from tetuanjobs.estudiantes est join tetuanjobs.experiencia exp 
 	on est.id_estudiante =  exp.id_estudiante where id_usuario = id_us limit 1;
+
+	select true into ext from tetuanjobs.experiencia where id_experiencia = id_exp;
 
 	if r then
 		delete from tetuanjobs.experiencia where id_experiencia = id_exp;
@@ -430,7 +433,33 @@ delimiter ;
 
 /** Fin Funcion para crear nueva educación **/
 
-/** Funcion para crear nueva Idioma **/
+/** RUTINA PARA ELIMINAR UNA Educacion **/
+drop PROCEDURE if EXISTS tetuanjobs.eliminarEducacion;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarEducacion(id_us int,id_edc int) 
+	BEGIN
+	declare r boolean default false;
+	declare ext boolean default false;
+
+	select true into r  from tetuanjobs.estudiantes est join tetuanjobs.formacion edc 
+	on est.id_estudiante =  edc.id_estudiante where id_usuario = id_us limit 1;
+
+	select true into ext from tetuanjobs.formacion where id_formacion = id_edc;
+
+	if r then
+		delete from tetuanjobs.formacion where id_formacion = id_edc;
+		select true as resultado;
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+/** FIN RUTINA PARA ELIMINAR UNA Educacion **/
+
+/** Funcion para crear nuevo Idioma **/
 
 drop PROCEDURE if EXISTS tetuanjobs.nuevoIdioma;
 
@@ -459,7 +488,60 @@ delimiter ;
 
 /*call tetuanjobs.nuevoIdioma(2,1, 2,3);*/
 
-/** Fin Funcion para crear nueva Idioma **/
+/** Fin Funcion para crear nuevo Idioma **/
+
+/** RUTINA PARA ELIMINAR UN Idioma **/
+drop PROCEDURE if EXISTS tetuanjobs.eliminarIdioma;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarIdioma(id_us int,id_idm int) 
+	BEGIN
+	declare r boolean default false;
+	declare ext boolean default false;
+
+	select true into r  from tetuanjobs.estudiantes est join tetuanjobs.estudiantes_idiomas idm 
+	on est.id_estudiante =  idm.id_estudiante where id_usuario = id_us limit 1;
+	select true into ext from tetuanjobs.estudiantes_idiomas where id_idioma = id_idm;
+
+	if r and ext then		
+
+		delete from tetuanjobs.estudiantes_idiomas where id_idioma = id_idm;
+		select true as resultado;
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+/** FIN RUTINA PARA ELIMINAR UN Idioma **/
+
+/** RUTINA PARA MODIFICAR UN IDIOMA **/
+
+drop PROCEDURE if EXISTS tetuanjobs.modificarIdioma;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.modificarIdioma(id_us int,id_idm int, h int, esc int) 
+	BEGIN
+	declare r boolean default false;
+	declare ext boolean default false;
+
+	select true into r  from tetuanjobs.estudiantes est join tetuanjobs.estudiantes_idiomas idm 
+	on est.id_estudiante =  idm.id_estudiante where id_usuario = id_us limit 1;
+	select true into ext from tetuanjobs.estudiantes_idiomas where id_idioma = id_idm;
+
+	if r and ext then		
+
+		update tetuanjobs.estudiantes_idiomas set hablado = h, escrito = esc where id_idioma = id_idm;
+		select true as resultado;
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+/** RUTINA PARA MODIFICAR UN IDIOMA **/
 
 
 /** funcion para cargar información de estudiante por id **/

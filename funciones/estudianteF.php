@@ -457,9 +457,9 @@ class estudianteBBDD extends singleton{
 
 	function listarExperiencia(){
 		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-		$sql = "select * from listarExperiencia";
+		$sql = "select * from listarExperiencia where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
-		$consulta->execute();
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$experienciafilas = array();
 		while ($row = $consulta->fetch()) {
@@ -546,6 +546,303 @@ class estudianteBBDD extends singleton{
 	}
 
 	/** FIN FUNCIÓN ELIMINAR EXPERIENCIA **/
+
+	
+
+	/** FUNCIÓN LISTAR EDUCACIÓN **/
+
+	function listarEducacion(){
+		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+		$sql = "select * from listarEducacion where estudiante = ?";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$educacionfilas = array();
+		while ($row = $consulta->fetch()) {
+			$educacionfilas[] = $row;
+		}
+		//print_r($experienciafilas);
+		for ($i=0; $i < count($educacionfilas); $i++) { 			
+
+			?>
+			<div class="row">                        
+				<div class="col-md-8"><h4><?php echo $educacionfilas[$i]["titulo"];?><br>
+					<small><?php echo $educacionfilas[$i]["institucion"];?><br>
+						<?php echo $educacionfilas[$i]["grado"];?>
+					</small></h4>
+				</div>
+				<div class="col-md-4">
+					<small class="femp ">Período: <i> <?php 
+
+					$fechaini = $educacionfilas[$i]["fecha_ini"];
+					$mes = date("n",strtotime($fechaini));
+					$anio = date("Y",strtotime($fechaini));
+					echo $meses[$mes-1].", ".$anio;
+
+					?>- <?php 
+
+					$fechafin = $educacionfilas[$i]["fecha_fin"];
+					if($fechafin != "actualmente"){
+						$mes = date("n",strtotime($fechafin));
+						$anio = date("Y",strtotime($fechafin));
+						echo $meses[$mes-1].", ".$anio;
+					}else{
+						echo $fechafin;
+					}
+					
+					
+					?> </i></small>
+				</div>   
+				<div class="col-md-8">
+					<p>  
+						<?php echo $educacionfilas[$i]["descripcion"];?>
+					</p>
+				</div>
+				<div class="col-md-12 pie-acciones">
+					<form method="post">
+						<input type="hidden" name="idedc" value="<?php echo $educacionfilas[$i]["identificador"];?>">
+						<input type="submit" name="elimedc" value="Eliminar" class="btn btn-danger">
+						<input type="submit" name="modedc" value="Modificar" class="btn btn-green">
+					</form>
+				</div>
+			</div>
+
+			<?php
+			if($i<count($educacionfilas)-1){
+				echo "<hr>";
+			}
+		}
+
+		
+	}
+
+
+	/** FIN FUNCIÓN LISTAR EDUCACIÓN **/
+
+	/** FUNCIÓN ELIMINAR Educacion **/
+
+	function eliminarEducacion(){
+		if(isset($_POST["elimedc"])&&isset($_POST["idedc"])){
+			$sql = "call eliminarEducacion(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+
+			$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idedc"]));
+			if($consulta->rowCount() > 0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Formación eliminada correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha eliminado la formación";
+				}
+				
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado";
+			}
+			
+			
+		}
+	}
+
+	/** FIN FUNCIÓN ELIMINAR Educacion **/
+
+	/** FUNCIÓN LISTAR Idiomas **/
+
+	function listarIdiomas(){
+		
+		$sql = "select * from listarIdiomasEst where estudiante = ?";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$idiomasfilas = array();
+		while ($row = $consulta->fetch()) {
+			$idiomasfilas[] = $row;
+		}
+		//print_r($experienciafilas);
+		for ($i=0; $i < count($idiomasfilas); $i++) { 			
+
+			?>
+			
+			<div class="row idiomas">                        
+				<div class="col-xs-4">
+					<?php echo $idiomasfilas[$i]["nombre"];?>
+
+				</div>                 
+				<div class="col-xs-4">
+					<?php echo $idiomasfilas[$i]["hablado"];?>
+				</div>
+				<div class="col-xs-4">
+					<?php echo $idiomasfilas[$i]["escrito"];?>
+
+				</div>               
+				<div class="col-xs-12 pie-acciones">
+					<form method="post">
+						<input type="hidden" name="ididio" value="<?php echo $idiomasfilas[$i]["identificador"];?>">
+						<?php 
+							foreach ($idiomasfilas[$i] as $valor) {
+								?>
+								<input type="hidden" name="filas[]" value="<?php echo $valor;?>">
+							
+								<?php
+							}
+						?>
+						
+						<input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
+						<input type="submit" name="modidio" value="Modificar" class="btn btn-green">
+					</form>
+				</div>
+
+			</div>
+			
+
+			<?php
+		}
+
+		
+	}
+
+
+	/** FIN FUNCIÓN LISTAR Idiomas **/
+
+	/** FUNCIÓN ELIMINAR Idioma **/
+
+	function eliminarIdioma(){
+		if(isset($_POST["elimidio"])&&isset($_POST["ididio"])){
+			$sql = "call eliminarIdioma(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+			
+			$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["ididio"]));
+			if($consulta->rowCount() > 0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+				//echo($_POST["ididio"]);
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Idioma eliminado correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha eliminado el idioma";
+				}
+				
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado";
+			}
+			
+			
+		}
+	}
+
+	/** FIN FUNCIÓN ELIMINAR Idioma **/
+
+	/** FUNCION Mostrar modal MODIFICAR IDIOMA **/
+
+	function modalModificarIdioma(){
+		$niveles = array("Bajo","Intermedio","Alto","Bilingüe");
+		if(isset($_POST["modidio"])&&isset($_POST["filas"])){
+			$generacl = new General;
+			?>
+			<form method="post">
+				<input type="hidden" name="ididioma" value="<?php echo $_POST["filas"][0]; ?>">
+				<div class="modal fade" id="modificarmodal" role="dialog">
+					<div class="modal-dialog modal-lg">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Modificar idioma <?php echo $_POST["filas"][1]; ?></h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-md-5">
+										<div class="form-group">
+											<label>Idioma</label>
+											<input type="text" class="form-control" value="<?php echo $_POST["filas"][1]; ?>" disabled> 
+												
+											
+										</div>    
+									</div>                     
+
+									<div class="col-xs-6 col-md-3">
+										<div class="form-group">
+											<label>Hablado</label>
+											<select name="nvh" class="form-control " >
+												<?php 
+													for ($i=0; $i < count($niveles); $i++) { 
+														if($niveles[$i] == $_POST["filas"][2]){
+															echo "<option value=".($i+1)." selected>".$niveles[$i]."</option>";
+														}else{
+															echo "<option value=".($i+1).">".$niveles[$i]."</option>";
+														}														
+													}
+												?>
+												
+											</select>
+										</div>    
+									</div>  
+									<div class="col-xs-6 col-md-3">
+										<div class="form-group">
+											<label>Escrito</label>
+											<select name="nve" class="form-control ">
+												<?php 
+													for ($i=0; $i < count($niveles); $i++) { 
+														if($niveles[$i] == $_POST["filas"][3]){
+															echo "<option value=".($i+1)." selected>".$niveles[$i]."</option>";
+														}else{
+															echo "<option value=".($i+1).">".$niveles[$i]."</option>";
+														}														
+													}
+												?>
+											</select>
+										</div>    
+									</div>                     
+								</div>
+							</div>
+							<div class="modal-footer">
+								<input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+								<input type="submit" name="modificaridioma" class="btn btn-green" value="Guardar">
+								<input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<?php
+			$_SESSION["modificar"] = "";
+		}
+	}
+
+	/** FIN FUNCION Mostrar modal MODIFICAR IDIOMA **/
+
+	/** FUNCION MODIFICAR IDIOMA **/
+	function modificarIdioma(){
+		if(isset($_POST["modificaridioma"])&&isset($_POST["ididioma"])&&isset($_POST["nve"])&&isset($_POST["nvh"])){
+
+			$sql = "call modificarIdioma(?,?,?,?)";
+
+			$params = array($_SESSION["usuario"]->identificador,$_POST["ididioma"],$_POST["nvh"],$_POST["nve"]);
+
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+				if($row["resultado"]){
+					$mensaje = "Idioma actualizado";
+				}else{
+					$mensaje = "No se ha actualizado el idioma";
+				}
+
+				
+			}else{
+				$mensaje = "No se obtenido filas de la base de datos.";
+			}
+			$_SESSION["mensajeServidor"] = $mensaje;
+		}
+	}
+
+	/** FIN FUNCION MODIFICAR IDIOMA **/
 
 	/** FIN PERFIL ESTUDIANTE **/
 

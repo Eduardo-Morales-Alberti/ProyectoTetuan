@@ -26,6 +26,9 @@ $estudiantecl->nuevaExperiencia();
 $estudiantecl->nuevaFormacion();
 $estudiantecl->nuevoIdioma();
 $estudiantecl->eliminarExperiencia();
+$estudiantecl->eliminarEducacion();
+$estudiantecl->eliminarIdioma();
+$estudiantecl->modificarIdioma();
 
 //print_r($informacion);
 //print_r($_SESSION["usuario"]);
@@ -45,6 +48,10 @@ $page["js"] = ob_get_clean();
 /*Modal experiencia*/
 /** Abro un buffer para alamacenar el html en el buffer**/
 ob_start();?>
+<!-- Función para modificar através de modales -->
+
+<?php $estudiantecl->modalModificarIdioma(); ?>
+
 <!-- El id es importante en el modal porque através del atributo data-target="iddelmodal" con un botón
     lo vamos a invocar -->
     <form method="post">
@@ -505,157 +512,31 @@ ob_start();
                 <h4>Educación</h4> 
             </div>
             <div class="panel-body">
-                <div class="row">                        
-                    <div class="col-md-8">
-                        <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt" type="text" value="" name="titeduc"><br>
-                            <small><span class="spn">Instituto Ies Tetuan</span><input class="npt" type="text" value="" name="institucion"></small><br>
-                            <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
-                                <option value="Fp básica">Fp básica</option>
-                                <option value="Grado medio">Grado medio</option>
-                                <option value="Bachillerato">Bachillerato</option>
-                                <option value="Grado superior">Grado superior</option>
-                                <option value="Carrera">Carrera</option>
-                                <option value="Master">Master</option>
-                                <option value="Certificado oficial">Certificado oficial</option>
-                                <option value="otro">otro</option>
-                            </select></small>
-                        </h4>
+                <?php echo $estudiantecl->listarEducacion(); ?>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
                     </div>
-                    <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-                        <option value="Enero">Enero</option>
-                        <option value="Febrero">Febrero</option>
-                        <option value="Marzo">Marzo</option>
-                        <option value="Abril">Abril</option>
-                        <option value="Mayo">Mayo</option>
-                        <option value="Junio">Junio</option>
-                        <option value="Julio">Julio</option>
-                        <option value="Agosto">Agosto</option>
-                        <option value="Septiembre">Septiembre</option>
-                        <option value="Octubre">Octubre</option>
-                        <option value="Noviembre">Noviembre</option>
-                        <option value="Diciembre">Diciembre</option>
-                    </select>, 
-                    <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-                    <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-                    <span class="mod2"><select class="selact" name="f2mes">                                        
-                        <option value="Enero">Enero</option>
-                        <option value="Febrero">Febrero</option>
-                        <option value="Marzo">Marzo</option>
-                        <option value="Abril">Abril</option>
-                        <option value="Mayo">Mayo</option>
-                        <option value="Junio">Junio</option>
-                        <option value="Julio">Julio</option>
-                        <option value="Agosto">Agosto</option>
-                        <option value="Septiembre">Septiembre</option>
-                        <option value="Octubre">Octubre</option>
-                        <option value="Noviembre">Noviembre</option>
-                        <option value="Diciembre">Diciembre</option>
-                        <option value="0">actualmente</option>
-                    </select>&nbsp;
-                    <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-                </i></small></div>   
-                <div class="col-md-12">
-                    <p>   
-                        <span class="spn">Esta es la descripción de la educación.</span>
-                        <textarea class="npt" name="desc" rows="5"></textarea>  
-                    </p>
-
                 </div>
-                <div class="col-md-12 pie-acciones">
-                    <input type="hidden" name="ided" value="85135454">
-                    <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                    <input type="button" name="moded" value="Modificar" class="btn btn-green">
-                </div>
-
-            </div>
-            <hr>
-            <div class="row">                        
-                <div class="col-md-8 ">
-                    <h4><span class="spn">Desarrollo de aplicaciones web</span><input class="npt " type="text" value="" name="titeduc"><br>
-                        <small><span class="spn">Instituto Ies Tetuan</span><input class="npt " type="text" value="" name="institucion"></small><br>
-                        <small><span class="spn">Grado superior</span><select class="conborde npt" name="nivel">
-                            <option value="Fp básica">Fp básica</option>
-                            <option value="Grado medio">Grado medio</option>
-                            <option value="Bachillerato">Bachillerato</option>
-                            <option value="Grado superior">Grado superior</option>
-                            <option value="Carrera">Carrera</option>
-                            <option value="Master">Master</option>
-                            <option value="Certificado oficial">Certificado oficial</option>
-                            <option value="otro">otro</option>
-                        </select></small>
-                    </h4>
-                </div>
-                <div class="col-md-4"><small class="femp ">Período: <i><span class="spn">Mayo</span><select name="f1mes" class="npt">
-                    <option value="Enero">Enero</option>
-                    <option value="Febrero">Febrero</option>
-                    <option value="Marzo">Marzo</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Mayo">Mayo</option>
-                    <option value="Junio">Junio</option>
-                    <option value="Julio">Julio</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Septiembre">Septiembre</option>
-                    <option value="Octubre">Octubre</option>
-                    <option value="Noviembre">Noviembre</option>
-                    <option value="Diciembre">Diciembre</option>
-                </select>, 
-                <span class="spn">2015</span><input type="text" class="text-center npt" name="f1anio" placeholder="Año" required="required" maxlength="4" size="4" > - 
-
-                <span class="mod1"><span class="oculto">Junio</span>Junio, 2016<span class="oculto">2016</span></span>
-                <span class="mod2"><select class="selact" name="f2mes">                                        
-                    <option value="Enero">Enero</option>
-                    <option value="Febrero">Febrero</option>
-                    <option value="Marzo">Marzo</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Mayo">Mayo</option>
-                    <option value="Junio">Junio</option>
-                    <option value="Julio">Julio</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Septiembre">Septiembre</option>
-                    <option value="Octubre">Octubre</option>
-                    <option value="Noviembre">Noviembre</option>
-                    <option value="Diciembre">Diciembre</option>
-                    <option value="0">actualmente</option>
-                </select>&nbsp;
-                <input type="text" name="f2anio" class="text-center" placeholder="Año"  maxlength="4" size="4" ></span>
-            </i></small></div>   
-            <div class="col-md-12">
-                <p>   
-                    <span class="spn">Esta es la descripción de la educación.</span>
-                    <textarea class="npt" name="desc" rows="5"></textarea>  
-                </p>
-
-            </div>
-            <div class="col-md-12 pie-acciones">
-                <input type="hidden" name="ided" value="85135454">
-                <input type="submit" name="elimed" value="Eliminar" class="btn btn-danger">
-                <input type="button" name="moded" value="Modificar" class="btn btn-green">
             </div>
         </div>
-    </div>
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-md-12 text-right">
-                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Educación -->
-<!-- Skills -->
+        <!-- Educación -->
+        <!-- Skills -->
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Skills</h4> 
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Etiquetas</label>
-                    <div class="input-group">
-                        <select class="form-control" id="etiquetas" name="etiqueta">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Skills</h4> 
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Etiquetas</label>
+                            <div class="input-group">
+                                <select class="form-control" id="etiquetas" name="etiqueta">
                             <!--<option value="nada">Ninguna</option>
                             <option value="php">php</option>
                             <option value="java">java</option>
@@ -760,76 +641,17 @@ ob_start();
 
             </div>
         </div>
-        <div class="row idiomas">                        
-            <div class="col-xs-4">
-                <span class="spn">Inglés</span><input type="text" class="form-control npt" name="titeduc" value="" required="required" >
-            </div>                 
-            <div class="col-xs-4">
-                <span class="spn">Intermedio</span>
-                <select name="nvh" class="npt " >
-                    <option value="Bajo">Bajo</option>
-                    <option value="Intermedio">Intermedio</option>
-                    <option value="Alto">Alto</option>
-                    <option value="Bilingüe">Bilingüe</option>
-                </select>
+        <?php $estudiantecl->listarIdiomas();?>
+
+    </div>
+
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
             </div>
-            <div class="col-xs-4">
-               <span class="spn">Alto</span>
-               <select name="nve" class="npt ">
-                <option value="Bajo">Bajo</option>
-                <option value="Intermedio">Intermedio</option>
-                <option value="Alto">Alto</option>
-                <option value="Bilingüe">Bilingüe</option>
-            </select>
-
-        </div>               
-        <div class="col-xs-12 pie-acciones">
-
-            <input type="hidden" name="ididio" value="85135454">
-            <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
-            <input type="button" name="modidio" value="Modificar" class="btn btn-green">
-        </div>
-
-    </div>
-    <div class="row idiomas" >                        
-        <div class="col-xs-4">
-            <span class="spn">Inglés</span><input type="text" class="form-control npt" name="titeduc" value="" required="required" >
-        </div>                 
-        <div class="col-xs-4">
-            <span class="spn">Intermedio</span>
-            <select name="nvh" class="npt " >
-                <option value="Bajo">Bajo</option>
-                <option value="Intermedio">Intermedio</option>
-                <option value="Alto">Alto</option>
-                <option value="Bilingüe">Bilingüe</option>
-            </select>
-        </div>
-        <div class="col-xs-4">
-           <span class="spn">Alto</span>
-           <select name="nve" class="npt ">
-            <option value="Bajo">Bajo</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Alto">Alto</option>
-            <option value="Bilingüe">Bilingüe</option>
-        </select>
-
-    </div>               
-    <div class="col-xs-12 pie-acciones">
-        <input type="hidden" name="ididio" value="85135454">
-        <input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
-        <input type="button" name="modidio" value="Modificar" class="btn btn-green">
-
-    </div>
-
-</div>
-</div>
-<div class="panel-footer">
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
         </div>
     </div>
-</div>
 </div>
 <!-- Fin Idiomas -->
 

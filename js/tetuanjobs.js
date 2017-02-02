@@ -48,15 +48,39 @@ function mensajeModal(mensaje){
     },4000);
   });
 
-
-
-
 }
 
 /** Fin Modal mensaje **/
 
-/** Next sibling **/
-function siguienteHermano(x){
+/** limpiar cadena **/
+function getCleanedString(cadena){
+   // Definimos los caracteres que queremos eliminar
+   var specialChars = "\'\"!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   // Los eliminamos todos
+   for (var i = 0; i < specialChars.length; i++) {
+     cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
+   cadena = cadena.replace(/ /g,"_");
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+ }
+ /** fin limpiar cadena**/
+
+ /** Next sibling **/
+ function siguienteHermano(x){
   if(x.nextElementSibling){
     var e = x.nextElementSibling;
     while(e.nodeName == "#text"){
@@ -88,9 +112,9 @@ function anteriorHermano(x){
 function agregarTag(selctid,divid,elementos,col){
   /** Obtengo el select con las etiquetas**/
   var x = document.getElementById(selctid);
-
-  /** Compruebo que el opction seleccionado es correcto**/
-  if(x.value != "nada"){
+  x.value = getCleanedString(x.value);
+  /** Compruebo que el option seleccionado es correcto**/
+  if(x.value != "nada"  && x.value.length >2){
     /** Obtengo el div donde voy a agregar la etiqueta**/
     var ele = document.getElementById(divid);
     /** Creo un div **/
@@ -102,7 +126,7 @@ function agregarTag(selctid,divid,elementos,col){
     '<span class="input-group-addon">'+
     '<input type="checkbox" id="check'+x.value+'" name="'+x.value+'" value="'+x.value+'">'+
     '</span>'+
-    '<input type="text" class="form-control" value="'+x.value+'" disabled="disabled">'+
+    '<input type="text" name="etiquetas[]" class="form-control" value="'+x.value+'" disabled="disabled">'+
     '</div>';
     divele.innerHTML = html;
     /** Agrego a elementos los id de los checkbox que he ido añadiendo al div**/
@@ -315,6 +339,16 @@ function perfil(){
 
 }
 
+/** Modificar modal **/
+
+function modificarModal(){
+  $(document).ready(function(){
+    $("#modificarmodal").modal("show");  
+  });
+
+}
+
+/** Modificar modal**/
 
 
 /**Fin Perfil **/

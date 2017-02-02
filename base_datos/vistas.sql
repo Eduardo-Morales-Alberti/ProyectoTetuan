@@ -64,12 +64,39 @@ GRANT select on tetuanjobs.listarEmpresas To 'usertetuan'@'localhost';
 
 CREATE OR REPLACE VIEW tetuanjobs.listarExperiencia as 
   select id_experiencia as identificador, titulo_puesto as titulo, nombre_empresa as empresa, f_inicio as fecha_ini, 
-  if(actualmente,"actualmente",f_fin) as fecha_fin, experiencia_desc as descripcion      
-             from tetuanjobs.experiencia;
+  if(actualmente,"actualmente",f_fin) as fecha_fin, experiencia_desc as descripcion,id_usuario as estudiante      
+             from tetuanjobs.experiencia ex join tetuanjobs.estudiantes e on
+             ex.id_estudiante = e.id_estudiante;
 
 GRANT select on tetuanjobs.listarExperiencia To 'usertetuan'@'localhost';
 
 /** FIN VISTA LISTAR EXPERIENCIA **/
+
+/** VISTA LISTAR EDUCACION **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarEducacion as 
+  select id_formacion as identificador, titulo_formacion as titulo, institucion, formacion_clasificacion as grado,
+  f_inicio as fecha_ini,  if(actualmente,"actualmente",f_fin) as fecha_fin, 
+  formacion_desc as descripcion, id_usuario as estudiante
+             from tetuanjobs.formacion f  join tetuanjobs.estudiantes e on
+             f.id_estudiante = e.id_estudiante;
+
+GRANT select on tetuanjobs.listarEducacion To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR EDUCACION **/
+
+/** VISTA LISTAR Idiomas **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarIdiomasEst as 
+  select id.id_idioma as identificador,nombre_idioma as nombre, hablado, escrito, id_usuario as estudiante
+             from tetuanjobs.idiomas id join tetuanjobs.estudiantes_idiomas est_id on
+             id.id_idioma = est_id.id_idioma
+              join tetuanjobs.estudiantes e on
+             est_id.id_estudiante = e.id_estudiante;
+
+GRANT select on tetuanjobs.listarIdiomasEst To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR Idiomas **/
 
 /** FIN FILTRO DE USUARIOS**/
 
