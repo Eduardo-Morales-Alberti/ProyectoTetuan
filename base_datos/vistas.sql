@@ -47,12 +47,14 @@ CREATE OR REPLACE VIEW tetuanjobs.listarUsuarios as
 GRANT select on tetuanjobs.listarUsuarios To 'usertetuan'@'localhost';
 
 /** FIN VISTA LISTAR USUARIOS**/
+/** FIN FILTRO DE USUARIOS**/
 
+/** FILTRO DE empresas**/
 
 /** VISTA LISTAR empresas **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarEmpresas as 
-	select id_empresa as identificador, nombre_empresa as nombre, emp_web as web, email as correo, 
+	select nombre_empresa as nombre, id_empresa as identificador, emp_web as web, email as correo, 
       telefono, persona_contacto as contacto
              from tetuanjobs.empresas;
 
@@ -60,13 +62,17 @@ GRANT select on tetuanjobs.listarEmpresas To 'usertetuan'@'localhost';
 
 /** FIN VISTA LISTAR empresas**/
 
+/** FIN FILTRO DE empresas**/
+
+/** Perfil estudiante **/
+
 /** VISTA LISTAR EXPERIENCIA **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarExperiencia as 
   select id_experiencia as identificador, titulo_puesto as titulo, nombre_empresa as empresa, f_inicio as fecha_ini, 
   if(actualmente,"actualmente",f_fin) as fecha_fin, experiencia_desc as descripcion,id_usuario as estudiante      
              from tetuanjobs.experiencia ex join tetuanjobs.estudiantes e on
-             ex.id_estudiante = e.id_estudiante;
+             ex.id_estudiante = e.id_estudiante order by fecha_ini desc;
 
 GRANT select on tetuanjobs.listarExperiencia To 'usertetuan'@'localhost';
 
@@ -79,7 +85,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarEducacion as
   f_inicio as fecha_ini,  if(actualmente,"actualmente",f_fin) as fecha_fin, 
   formacion_desc as descripcion, id_usuario as estudiante
              from tetuanjobs.formacion f  join tetuanjobs.estudiantes e on
-             f.id_estudiante = e.id_estudiante;
+             f.id_estudiante = e.id_estudiante order by fecha_ini desc;
 
 GRANT select on tetuanjobs.listarEducacion To 'usertetuan'@'localhost';
 
@@ -98,7 +104,23 @@ GRANT select on tetuanjobs.listarIdiomasEst To 'usertetuan'@'localhost';
 
 /** FIN VISTA LISTAR Idiomas **/
 
-/** FIN FILTRO DE USUARIOS**/
+/** vista listar skills **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarSkills as 
+     select etq.id_etiqueta as identificador, nombre_etiqueta as nombre, usu.id_usuario usuario 
+     from tetuanjobs.etiquetas etq left join 
+     tetuanjobs.estudiantes_etiquetas estetq on etq.id_etiqueta = estetq.id_etiqueta left join tetuanjobs.estudiantes est
+     on estetq.id_estudiante = est.id_estudiante left join tetuanjobs.usuarios usu on est.id_usuario = usu.id_usuario 
+      order by etq.id_etiqueta;
+
+GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
+
+/** fin vista listar skills **/
+
+/** fin Perfil estudiante **/
+
+
+
 
 
 

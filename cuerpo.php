@@ -298,6 +298,20 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                         unset($_SESSION["mensajeServidor"]);
                     }
 
+                    if(isset($_SESSION["modificar"])){
+                        echo '<script type="text/javascript">
+                        modificarModal();
+                        </script>';
+                        unset($_SESSION["modificar"]);
+                    }
+
+                    if(isset($_SESSION["etiquetas"])){
+                        echo '<script type="text/javascript">
+                        agregarEtiquetas('.$_SESSION["etiquetas"].');
+                        </script>';
+                        unset($_SESSION["etiquetas"]);
+                    }
+
                     
                     ?>   
 

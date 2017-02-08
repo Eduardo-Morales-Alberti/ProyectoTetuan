@@ -164,7 +164,7 @@ DROP TABLE IF EXISTS `ESTUDIANTES_ETIQUETAS`;
 CREATE TABLE IF NOT EXISTS `ESTUDIANTES_ETIQUETAS` (
   `id_etiqueta` int(11) UNSIGNED NOT NULL,
   `id_estudiante` int(11) UNSIGNED NOT NULL,
-  /*PRIMARY KEY (`id_etiquetas`,`id_usuario`),*/
+  PRIMARY KEY (`id_etiqueta`,`id_estudiante`),
   FOREIGN KEY (`id_etiqueta`) REFERENCES ETIQUETAS(`id_etiqueta`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`id_estudiante`) REFERENCES ESTUDIANTES(`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES_ETIQUETAS` (
 DROP TABLE IF EXISTS `IDIOMAS`;
 CREATE TABLE IF NOT EXISTS `IDIOMAS` (
   `id_idioma` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `nombre_idioma` varchar(100) COLLATE utf8_general_ci NOT NULL  
+  `nombre_idioma` varchar(100) UNIQUE COLLATE utf8_general_ci NOT NULL  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------

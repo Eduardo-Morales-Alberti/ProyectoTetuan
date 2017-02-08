@@ -29,6 +29,10 @@ $estudiantecl->eliminarExperiencia();
 $estudiantecl->eliminarEducacion();
 $estudiantecl->eliminarIdioma();
 $estudiantecl->modificarIdioma();
+$estudiantecl->modificarFormacion();
+$estudiantecl->modalModificarExperiencia();
+$estudiantecl->modificarExperiencia();
+$estudiantecl->agregarSkills();
 
 //print_r($informacion);
 //print_r($_SESSION["usuario"]);
@@ -51,6 +55,8 @@ ob_start();?>
 <!-- Función para modificar através de modales -->
 
 <?php $estudiantecl->modalModificarIdioma(); ?>
+
+<?php $estudiantecl->modalModificarEducacion(); ?>
 
 <!-- El id es importante en el modal porque através del atributo data-target="iddelmodal" con un botón
     lo vamos a invocar -->
@@ -525,24 +531,25 @@ ob_start();
         </div>
         <!-- Educación -->
         <!-- Skills -->
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Skills</h4> 
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Etiquetas</label>
-                            <div class="input-group">
-                                <select class="form-control" id="etiquetas" name="etiqueta">
+        <form method="POST">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Skills</h4> 
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Etiquetas</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="etiquetas" name="etiqueta">
                             <!--<option value="nada">Ninguna</option>
                             <option value="php">php</option>
                             <option value="java">java</option>
                             <option value="html">html</option>
                             <option value="css">css</option>-->
-                            <?php echo $generacl->listarEtiquetas(); ?>
+                            <?php /*echo $generacl->listarEtiquetas();*/
+                            echo $estudiantecl->listarSkillsSelect(); ?>
                         </select>
                         <span class="input-group-btn">
                             <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
@@ -574,38 +581,15 @@ ob_start();
             <div class="col-md-12">
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="divetiquetas">
-                        <div class="col-md-4 col-lg-3 form-group" id="php">
+                        <!--<div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="php" value="php">
                                 </span>
                                 <input type="text" class="form-control" value="php" disabled="disabled">
                             </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3 form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" name="javascript" value="javascript" >
-                                </span>
-                                <input type="text" class="form-control" value="javascript" disabled="disabled">
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3 form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" name="html" value="html">
-                                </span>
-                                <input type="text" class="form-control" value="html" disabled="disabled">
-                            </div>
-                        </div>                           
-                        <div class="col-md-4 col-lg-3 form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" name="css" value="css">
-                                </span>
-                                <input type="text" class="form-control" value="css" disabled="disabled">
-                            </div>
-                        </div>
+                        </div>-->                    
+                        <?php echo $estudiantecl->listarEtiquetasEst();?>
                     </div> 
                 </div>
             </div>
@@ -620,6 +604,7 @@ ob_start();
         </div>
     </div>
 </div>
+</form>
 
 <!-- Fin Skills -->
 <!-- Idiomas -->

@@ -108,7 +108,7 @@ class General extends singleton{
 
 	/** función listar etiquetas **/
 
-	function listarEtiquetas(){
+	/*function listarEtiquetas(){
 
 		$sql = "select * from listarEtiquetas";
 		$consulta = $this->Idb->prepare($sql);
@@ -128,7 +128,7 @@ class General extends singleton{
 		}
 		return $etiquetasSELECT;
 
-	}
+	}*/
 
 	/** fin función listar etiquetas **/
 

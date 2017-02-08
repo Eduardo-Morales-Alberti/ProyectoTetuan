@@ -68,7 +68,10 @@ INSERT INTO `ETIQUETAS` (nombre_etiqueta) values
 ('java'),('php'),('javascript'),('html'),('css');
 /* insertar etiquetas */
 
+/* insertar etiquetas al usuario */
 
+/* insertar etiquetas al usuario */
+INSERT INTO `estudiantes_etiquetas` (id_estudiante, id_etiqueta) values (1,2), (1,3);
 /* Insertar provincias */
 
 INSERT INTO `provincias` (`id_provincia`, `slug`, `nombre_provincia`) VALUES
@@ -146,11 +149,11 @@ INSERT INTO `provincias` (`id_provincia`, `slug`, `nombre_provincia`) VALUES
 /* insertar formacion */
 
 INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
-				f_inicio,f_fin,formacion_desc, formacion_clasificacion) values(1, "Desarrollador web", "IES Tetuan",
+				f_inicio,actualmente,formacion_desc, formacion_clasificacion) values(1, "Desarrollador web", "IES Tetuan",
 				"2015-05-01",true, "Aprendimos un montón", 4);
 
 INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
-			f_inicio,actualmente,formacion_desc, formacion_clasificacion) values(1, "ESO", "Las Codornices",
+			f_inicio,f_fin,formacion_desc, formacion_clasificacion) values(1, "ESO", "Las Codornices",
 			"2010-06-01","2014-06-01", "Tenía que estudiarlo",8);
 
 INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
@@ -166,3 +169,13 @@ INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("francés");
 INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("alemán");
 INSERT INTO tetuanjobs.idiomas(nombre_idioma) values("chino");
 /* fin insertar idiomas */
+
+/* insertar idiomas al estudiante */
+
+INSERT INTO tetuanjobs.estudiantes_idiomas(id_idioma, id_estudiante, hablado, escrito)
+	values(1, 1, 2,3);
+
+INSERT INTO tetuanjobs.estudiantes_idiomas(id_idioma, id_estudiante, hablado, escrito)
+	values(4, 1, 2,1);
+
+/* fin insertar idiomas al estudiante */

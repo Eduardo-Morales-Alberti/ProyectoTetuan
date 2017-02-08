@@ -384,6 +384,54 @@ delimiter ;
 
 /** FIN RUTINA PARA ELIMINAR UNA EXPERIENCIA **/
 
+/** Rutina para modificar una experiencia **/
+drop PROCEDURE if EXISTS tetuanjobs.modificarExperiencia;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.modificarExperiencia(id_us int,id_exp int, titulo varchar(200), emp varchar(250), expdesc varchar(300),
+f_ini date, f_final date, actualmente boolean) 
+	BEGIN
+
+	declare diferencia int default -1;
+	declare id_est int default -1;
+
+	select est.id_estudiante into id_est  from tetuanjobs.estudiantes est inner join tetuanjobs.experiencia exp 
+	on est.id_estudiante =  exp.id_estudiante where id_usuario = id_us and id_experiencia = id_exp;
+
+
+	if id_est > 0 then		
+
+		update tetuanjobs.experiencia set titulo_puesto = if(titulo is not null, titulo, titulo_puesto), nombre_empresa = if(emp is not null, emp, nombre_empresa),
+			experiencia_desc = if(expdesc is not null, expdesc, experiencia_desc),	f_inicio = if(f_ini is not null, f_ini, f_inicio)
+			where id_experiencia = id_exp and id_estudiante = id_est;
+		select true as resultado;
+
+		if actualmente is not null and actualmente then
+				update tetuanjobs.experiencia set actualmente = true
+					where id_estudiante = id_est and id_experiencia = id_exp;
+			elseif f_final is not null then
+				
+				select datediff(f_final,f_ini) into diferencia;
+				if diferencia >= 0 then 
+					update tetuanjobs.experiencia set f_fin = f_final
+						where id_estudiante = id_est and id_experiencia = id_exp;	
+				else 
+					update tetuanjobs.experiencia set f_fin = curdate()
+						where id_estudiante = id_est and id_experiencia = id_exp;
+				end if;
+			end if;
+
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+/*call modificarExperiencia(2,1, null, "Peras", "Verdes y muy ricas",null,null,null);*/
+
+/** Fin Rutina para modificar una experiencia **/
+
 /** Funcion para crear nueva educación **/
 
 drop PROCEDURE if EXISTS tetuanjobs.nuevaFormacion;
@@ -394,6 +442,7 @@ CREATE PROCEDURE tetuanjobs.nuevaFormacion(usid int, titulo varchar(200),nombre 
 f_ini date,f_final date,actualmente boolean, descripcion varchar(3000), clasificacion varchar(200)) 
 	BEGIN
 		declare id int default -1;
+		declare idform int default -1;
 		declare diferencia int default -1;
 
 		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
@@ -402,21 +451,21 @@ f_ini date,f_final date,actualmente boolean, descripcion varchar(3000), clasific
 
 			INSERT INTO tetuanjobs.formacion (id_estudiante, titulo_formacion, institucion,
 				f_inicio,formacion_desc,formacion_clasificacion) values(id, titulo, nombre,f_ini, descripcion,clasificacion);
-
+			select @@IDENTITY into idform;
 			select true as resultado;
 
 			if actualmente is not null and actualmente then
 				update tetuanjobs.formacion set actualmente = true
-					where id_estudiante = id;
+					where id_estudiante = id and id_formacion =idform;
 			elseif f_final is not null then
 				
 				select datediff(f_final,f_ini) into diferencia;
 				if diferencia >= 0 then 
 					update tetuanjobs.formacion set f_fin = f_final
-						where id_estudiante = id;	
+						where id_estudiante = id and id_formacion =idform;	
 				else 
 					update tetuanjobs.formacion set f_fin = curdate()
-						where id_estudiante = id;
+						where id_estudiante = id and id_formacion =idform;
 				end if;
 			end if;
 			
@@ -458,6 +507,125 @@ END//
 delimiter ;
 
 /** FIN RUTINA PARA ELIMINAR UNA Educacion **/
+
+/** RUTINA PARA MODIFICAR UNA FORMACION **/
+
+drop PROCEDURE if EXISTS tetuanjobs.modificarFormacion;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.modificarFormacion(id_us int,id_form int, inst varchar(250), clas int,fdesc varchar(300),
+f_ini date, f_final date, actualmente boolean) 
+	BEGIN
+
+	declare diferencia int default -1;
+	declare id_est int default -1;
+
+	select est.id_estudiante into id_est  from tetuanjobs.estudiantes est inner join tetuanjobs.formacion form 
+	on est.id_estudiante =  form.id_estudiante where id_usuario = id_us and id_formacion = id_form;
+
+
+	if id_est > 0 then		
+
+		update tetuanjobs.formacion set institucion = if(inst is not null, inst, institucion), 
+			formacion_clasificacion = if(clas is not null, clas, formacion_clasificacion),
+			formacion_desc = if(fdesc is not null, fdesc, formacion_desc),	f_inicio = if(f_ini is not null, f_ini, f_inicio)
+			where id_formacion = id_form and id_estudiante = id_est;
+		select true as resultado;
+
+		if actualmente is not null and actualmente then
+				update tetuanjobs.formacion set actualmente = true
+					where id_estudiante = id_est and id_formacion = id_form;
+			elseif f_final is not null then
+				
+				select datediff(f_final,f_ini) into diferencia;
+				if diferencia >= 0 then 
+					update tetuanjobs.formacion set f_fin = f_final
+						where id_estudiante = id_est and id_formacion = id_form;	
+				else 
+					update tetuanjobs.formacion set f_fin = curdate()
+						where id_estudiante = id_est and id_formacion = id_form;
+				end if;
+			end if;
+
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+/*call tetuanjobs.modificarFormacion(2,1, "Naranjas",2,null, null,null,
+	null);*/
+
+
+/** RUTINA PARA MODIFICAR UNA FORMACION **/
+
+/** Rutina para eliminar todas las etiquetas de un estudiante **/
+
+drop PROCEDURE if EXISTS tetuanjobs.eliminarSkills;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.eliminarSkills(usid int) 
+	BEGIN
+		declare id int default -1;
+
+		SELECT est.id_estudiante into id from tetuanjobs.estudiantes est join tetuanjobs.estudiantes_etiquetas etq
+		on est.id_estudiante = etq.id_estudiante  where id_usuario = usid limit 1;
+
+		if id >=0 then
+
+			delete from tetuanjobs.estudiantes_etiquetas where id_estudiante = id;
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/** Fin Rutina para eliminar todas las etiquetas de un estudiante **/
+
+/** Rutina para modificar skills **/
+
+drop PROCEDURE if EXISTS tetuanjobs.agregarSkills;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.agregarSkills(usid int, etiqueta varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_etq int default -1;
+
+		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
+
+		select id_etiqueta into id_etq from tetuanjobs.etiquetas where nombre_etiqueta = etiqueta;
+
+		if id_etq < 0 then
+			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(etiqueta);
+			select @@IDENTITY into id_etq;
+		end if;
+
+		if id >=0 then
+
+			INSERT INTO tetuanjobs.estudiantes_etiquetas (id_estudiante,id_etiqueta) 
+			values(id,id_etq);
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/** Fin Rutina para modificar skills **/
+
 
 /** Funcion para crear nuevo Idioma **/
 
@@ -599,9 +767,19 @@ delimiter ;
 drop PROCEDURE if EXISTS tetuanjobs.eliminarEmpresa;
 
 delimiter //
-CREATE PROCEDURE tetuanjobs.eliminarEmpresa(id_emp int) 
+CREATE PROCEDURE tetuanjobs.eliminarEmpresa(id_us int, id_emp int) 
 	BEGIN
-	delete from tetuanjobs.empresas where id_empresa = id_emp;
+	declare r boolean default false;
+	declare ext boolean default false;
+	select true into r from tetuanjobs.usuarios where id_usuario = id_us;
+	select true into ext from tetuanjobs.empresas where id_empresa = id_emp;
+
+	if r and ext then
+		delete from tetuanjobs.empresas where id_empresa = id_emp;
+		select true as resultado;
+	else 
+		select false as resultado;
+	end if;
 
 END//
 delimiter ;

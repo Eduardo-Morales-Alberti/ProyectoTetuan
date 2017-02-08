@@ -2,6 +2,7 @@
 include_once("conexion.php");
 
 class estudianteBBDD extends singleton{
+	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 
 	function __construct(){
 		parent::__construct();		
@@ -456,7 +457,7 @@ class estudianteBBDD extends singleton{
 	/** FUNCIÓN LISTAR EXPERIENCIA **/
 
 	function listarExperiencia(){
-		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+		
 		$sql = "select * from listarExperiencia where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute(array($_SESSION["usuario"]->identificador));
@@ -479,7 +480,7 @@ class estudianteBBDD extends singleton{
 					$fechaini = $experienciafilas[$i]["fecha_ini"];
 					$mes = date("n",strtotime($fechaini));
 					$anio = date("Y",strtotime($fechaini));
-					echo $meses[$mes-1].", ".$anio;
+					echo $this->meses[$mes].", ".$anio;
 
 					?>- <?php 
 
@@ -487,7 +488,7 @@ class estudianteBBDD extends singleton{
 					if($fechafin != "actualmente"){
 						$mes = date("n",strtotime($fechafin));
 						$anio = date("Y",strtotime($fechafin));
-						echo $meses[$mes-1].", ".$anio;
+						echo $this->meses[$mes].", ".$anio;
 					}else{
 						echo $fechafin;
 					}
@@ -502,7 +503,15 @@ class estudianteBBDD extends singleton{
 				</div>
 				<div class="col-md-12 pie-acciones">
 					<form method="post">
-						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"];?>">
+						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"];?>">						
+						<?php 
+						foreach ($experienciafilas[$i] as $clave => $valor) {
+							?>
+							<input type="hidden" name="filas[<?php echo $clave;?>]" value="<?php echo $valor;?>">
+							
+							<?php
+						}
+						?>
 						<input type="submit" name="elimexp" value="Eliminar" class="btn btn-danger">
 						<input type="submit" name="modexp" value="Modificar" class="btn btn-green">
 					</form>
@@ -547,12 +556,220 @@ class estudianteBBDD extends singleton{
 
 	/** FIN FUNCIÓN ELIMINAR EXPERIENCIA **/
 
-	
+	/** FUNCION Mostrar modal MODIFICAR Experiencia **/
+
+	function modalModificarExperiencia(){
+		if(isset($_POST["modexp"])&&isset($_POST["filas"])){			
+
+			$generacl = new General;
+			?>
+			<form method="post">
+				<input type="hidden" name="idexperiencia" value="<?php echo $_POST['filas']['identificador']; ?>">
+				<div class="modal fade" id="modificarmodal" role="dialog">
+					<div class="modal-dialog modal-lg">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Modificar <?php echo $_POST["filas"]["titulo"]; ?></h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Título</label>
+											<input type="text" class="form-control " name="titulo"  value="<?php echo $_POST['filas']['titulo']; ?>" >
+										</div>    
+									</div>  
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Empresa</label>
+											<input type="text" class="form-control " name="empresa" value="<?php echo $_POST['filas']['empresa']; ?>" >
+										</div>    
+									</div>                      
+								</div>                    
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Período</label><br>											
+											<select name="f1mes" class="conborde">
+												<?php 
+												
+												$mes1 = date("m",strtotime($_POST["filas"]["fecha_ini"]));
+												$anio1 = date("Y",strtotime($_POST["filas"]["fecha_ini"]));
+												$mes1 = $mes1-1;
+
+												
+												for ($i=1; $i < count($this->meses); $i++) {
+													$mes =  $this->meses[$i];
+													if($mes1 == $i){
+														echo "<option value='".($i)."' selected> ".$mes."</option>";
+													}else{
+														echo "<option value='".($i)."'> ".$mes."</option>";
+													}
+
+												}
+												?>
+											</select>
+											<input type="text" class="conborde text-center" name="f1anio" value="<?php echo $anio1;?>" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+											<select class="conborde selact" name="f2mes">                                        
+												<?php 
+												if($_POST["filas"]["fecha_fin"] != "actualmente"){
+													$mes2 = date("m",strtotime($_POST["filas"]["fecha_fin"]));
+													$anio2 = date("Y",strtotime($_POST["filas"]["fecha_fin"]));
+													$mes2 = $mes2-1;
+												}else{
+													$mes2 = 0;
+													$anio2 = "";
+												}
+												
+												
+												for ($i=0; $i < count($this->meses); $i++) {
+													$mes =  $this->meses[$i];
+													if($mes2 == $i){
+														echo "<option value='".($i)."' selected> ".$mes."</option>";
+													}else{
+														echo "<option value='".($i)."'> ".$mes."</option>";
+													}
+
+												}
+												?>
+												<!--<option value="0">actualmente</option>-->
+											</select>
+											<input type="text" name="f2anio"
+											<?php 
+											if($_POST["filas"]["fecha_fin"] == "actualmente"){
+												echo "style='display:none;'";
+											}
+											?>value="<?php echo $anio2;?>" class="conborde text-center" placeholder="Año"  maxlength="4" size="4" >
+
+										</div>    
+									</div>  									                     
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Descripción</label><br>
+											<textarea name="desc" class="form-control" rows="5"><?php echo $_POST["filas"]["descripcion"]; ?></textarea>
+										</div>    
+									</div>                      
+								</div>
+							</div>
+							<div class="modal-footer">
+								<input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+								<input type="submit" name="modificarexp" class="btn btn-green" value="Guardar">
+								<input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<?php
+			$_SESSION["modificar"] = "";
+		}
+	}
+
+	/** FIN FUNCION Mostrar modal MODIFICAR Experiencia **/
+
+	/** FUNCION MODIFICAR Experiencia **/
+	function modificarExperiencia(){
+		if(isset($_POST["modificarexp"])&&isset($_POST["idexperiencia"])){
+
+			$empresa = null;
+
+			if(isset($_POST["empresa"])){
+				$empresa = $_POST["empresa"];
+			}
+
+			$titulo = null;
+
+			if(isset($_POST["titulo"])){
+				$titulo = $_POST["titulo"];
+			}
+
+			$descripcion = null;
+
+			if(isset($_POST["desc"])){
+				$descripcion = $_POST["desc"];
+			}
+
+			$fecha1 = null;
+
+			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
+				$mes = 1;
+				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12){
+					$mes = $_POST["f1mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
+					$anio = $_POST["f1anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha1 = date("Y-m-d H:i:s",$f);
+			}
+
+			$fecha2 = null;
+			$actualmente = null;
+
+			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
+				$mes = 1;
+				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12){
+					$mes = $_POST["f2mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
+					$anio = $_POST["f2anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha2 = date("Y-m-d H:i:s",$f);
+			}elseif(isset($_POST["f2mes"])&&$_POST["f2mes"]==0){
+				$actualmente = true;
+			}
+
+
+
+
+			$sql = "call modificarExperiencia(?,?,?,?,?,?,?,?)";
+
+			$params = array($_SESSION["usuario"]->identificador,$_POST["idexperiencia"],$titulo,$empresa,$descripcion,
+				$fecha1,$fecha2,$actualmente);
+
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+				if($row["resultado"]){
+					$mensaje = "Experiencia actualizada";
+				}else{
+					$mensaje = "No se ha actualizado la experiencia";
+				}
+
+				
+			}else{
+				$mensaje = "No se obtenido filas de la base de datos.";
+			}
+			$_SESSION["mensajeServidor"] = $mensaje;
+		}
+	}
+
+	/** FIN FUNCION MODIFICAR Experiencia **/
 
 	/** FUNCIÓN LISTAR EDUCACIÓN **/
 
 	function listarEducacion(){
-		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+		//$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 		$sql = "select * from listarEducacion where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute(array($_SESSION["usuario"]->identificador));
@@ -577,17 +794,18 @@ class estudianteBBDD extends singleton{
 					$fechaini = $educacionfilas[$i]["fecha_ini"];
 					$mes = date("n",strtotime($fechaini));
 					$anio = date("Y",strtotime($fechaini));
-					echo $meses[$mes-1].", ".$anio;
+					echo $this->meses[$mes].", ".$anio;
 
-					?>- <?php 
+					?> - <?php 
 
 					$fechafin = $educacionfilas[$i]["fecha_fin"];
-					if($fechafin != "actualmente"){
+
+					if($fechafin != 0){
 						$mes = date("n",strtotime($fechafin));
 						$anio = date("Y",strtotime($fechafin));
-						echo $meses[$mes-1].", ".$anio;
+						echo $this->meses[$mes].", ".$anio;
 					}else{
-						echo $fechafin;
+						echo "actualmente";
 					}
 					
 					
@@ -601,6 +819,14 @@ class estudianteBBDD extends singleton{
 				<div class="col-md-12 pie-acciones">
 					<form method="post">
 						<input type="hidden" name="idedc" value="<?php echo $educacionfilas[$i]["identificador"];?>">
+						<?php 
+						foreach ($educacionfilas[$i] as $clave => $valor) {
+							?>
+							<input type="hidden" name="filas[<?php echo $clave;?>]" value="<?php echo $valor;?>">
+							
+							<?php
+						}
+						?>
 						<input type="submit" name="elimedc" value="Eliminar" class="btn btn-danger">
 						<input type="submit" name="modedc" value="Modificar" class="btn btn-green">
 					</form>
@@ -646,6 +872,352 @@ class estudianteBBDD extends singleton{
 
 	/** FIN FUNCIÓN ELIMINAR Educacion **/
 
+	/** FUNCION Mostrar modal MODIFICAR Educacion **/
+
+	function modalModificarEducacion(){
+		if(isset($_POST["modedc"])&&isset($_POST["filas"])){			
+			$niveles = ["Fp básica","Grado medio","Bachillerato","Grado superior","Grado Universitario",
+			"Máster","Certificado oficial","otro"];
+
+
+			$generacl = new General;
+			?>
+			<form method="post">
+				<input type="hidden" name="ideducacion" value="<?php echo $_POST['filas']['identificador']; ?>">
+				<div class="modal fade" id="modificarmodal" role="dialog">
+					<div class="modal-dialog modal-lg">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Modificar <?php echo $_POST["filas"]["titulo"]; ?></h4>
+							</div>
+
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Título</label>
+											<input type="text" class="form-control "  value="<?php echo $_POST['filas']['titulo']; ?>" disabled>
+										</div>    
+									</div>  
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Institución</label>
+											<input type="text" class="form-control " name="institucion" value="<?php echo $_POST['filas']['institucion']; ?>" >
+										</div>    
+									</div>                      
+								</div>                    
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Período</label><br>											
+											<select name="f1mes" class="conborde">
+												<?php 
+												
+												$mes1 = date("m",strtotime($_POST["filas"]["fecha_ini"]));
+												$anio1 = date("Y",strtotime($_POST["filas"]["fecha_ini"]));
+												$mes1 = $mes1-1;
+
+												
+												for ($i=1; $i < count($this->meses); $i++) {
+													$mes =  $this->meses[$i];
+													if($mes1 == $i){
+														echo "<option value='".($i)."' selected> ".$mes."</option>";
+													}else{
+														echo "<option value='".($i)."'> ".$mes."</option>";
+													}
+
+												}
+												?>
+											</select>
+											<input type="text" class="conborde text-center" name="f1anio" value="<?php echo $anio1;?>" placeholder="Año" required="required" maxlength="4" size="4" > - 
+
+											<select class="conborde selact" name="f2mes">                                        
+												<?php 
+												if($_POST["filas"]["fecha_fin"] != "actualmente"){
+													$mes2 = date("m",strtotime($_POST["filas"]["fecha_fin"]));
+													$anio2 = date("Y",strtotime($_POST["filas"]["fecha_fin"]));
+													$mes2 = $mes2-1;
+												}else{
+													$mes2 = 0;
+													$anio2 = "";
+												}
+												
+												
+												for ($i=0; $i < count($this->meses); $i++) {
+													$mes =  $this->meses[$i];
+													if($mes2 == $i){
+														echo "<option value='".($i)."' selected> ".$mes."</option>";
+													}else{
+														echo "<option value='".($i)."'> ".$mes."</option>";
+													}
+
+												}
+												?>
+												<!--<option value="0">actualmente</option>-->
+											</select>
+											<input type="text" name="f2anio" 
+
+											<?php 
+											if($_POST["filas"]["fecha_fin"] == "actualmente"){
+												echo "style='display:none;'";
+											}
+											?>
+
+											value="<?php echo $anio2;?>" class="conborde text-center" placeholder="Año"  maxlength="4" size="4" >
+
+										</div>    
+									</div>  
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Nivel</label><br>
+
+											<select class="conborde" name="nivel">
+												<?php 
+												for ($i=0; $i < count($niveles); $i++) { 
+													$nivel = $niveles[$i];
+													if($nivel == $_POST["filas"]["grado"]){
+														$nivel = $_POST["filas"]["grado"];
+													}
+													echo "<option value='".($i+1)."'> ".$nivel."</option>";
+												}
+												?>
+
+											</select>
+										</div>    
+									</div>                     
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Descripción</label><br>
+											<textarea name="desc" class="form-control" rows="5"><?php echo $_POST["filas"]["descripcion"]; ?></textarea>
+										</div>    
+									</div>                      
+								</div>
+							</div>
+							<div class="modal-footer">
+								<input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+								<input type="submit" name="modificarform" class="btn btn-green" value="Guardar">
+								<input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<?php
+			$_SESSION["modificar"] = "";
+		}
+	}
+
+	/** FIN FUNCION Mostrar modal MODIFICAR Educacion **/
+
+	/** FUNCION MODIFICAR Formacion **/
+	function modificarFormacion(){
+		if(isset($_POST["modificarform"])&&isset($_POST["ideducacion"])){
+
+			$institucion = null;
+
+			if(isset($_POST["institucion"])){
+				$institucion = $_POST["institucion"];
+			}
+
+			$clasificacion = null;
+
+			if(isset($_POST["nivel"])){
+				$clasificacion = $_POST["nivel"];
+			}
+
+			$descripcion = null;
+
+			if(isset($_POST["desc"])){
+				$descripcion = $_POST["desc"];
+			}
+
+			$fecha1 = null;
+
+			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
+				$mes = 1;
+				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12){
+					$mes = $_POST["f1mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
+					$anio = $_POST["f1anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha1 = date("Y-m-d H:i:s",$f);
+			}
+
+			$fecha2 = null;
+			$actualmente = null;
+
+			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
+				$mes = 1;
+				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12){
+					$mes = $_POST["f2mes"];
+				}
+				$t=time();				
+				$anio = date("Y",$t);
+
+				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
+					$anio = $_POST["f2anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha2 = date("Y-m-d H:i:s",$f);
+			}elseif(isset($_POST["f2mes"])&&$_POST["f2mes"]==0){
+				$actualmente = true;
+			}
+
+
+
+
+			$sql = "call modificarFormacion(?,?,?,?,?,?,?,?)";
+
+			$params = array($_SESSION["usuario"]->identificador,$_POST["ideducacion"],$institucion,$clasificacion,$descripcion,
+				$fecha1,$fecha2,$actualmente);
+
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+				if($row["resultado"]){
+					$mensaje = "Formación actualizada";
+				}else{
+					$mensaje = "No se ha actualizado la formación";
+				}
+
+				
+			}else{
+				$mensaje = "No se obtenido filas de la base de datos.";
+			}
+			$_SESSION["mensajeServidor"] = $mensaje;
+		}
+	}
+
+	/** FIN FUNCION MODIFICAR Formacion **/
+
+	/**Funcion select de skills estudiante **/
+
+	function listarSkillsSelect(){
+
+		$sql = "select * from listarSkills where usuario <> ? or
+		usuario is null";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$etiquetasSELECT = "";
+
+		while ($row = $consulta->fetch()) {
+			$etiquetas[] = $row;
+		}
+		$etiquetasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+		for ($i=0; $i < count($etiquetas) ; $i++) { 			
+			$etiquetasSELECT .= "<option value='".$etiquetas[$i]['nombre']."'>";
+			$etiquetasSELECT .= $etiquetas[$i]['nombre']."</option>";
+			
+			
+		}
+		return $etiquetasSELECT;
+
+	}
+
+	/** fin Funcion select de skills estudiante**/
+
+	/** FUNCIÓN LISTAR ETIQUETAS DEL ESTUDIANTE **/
+	function listarEtiquetasEst(){
+		$sql = "select * from listarSkills where usuario = ?";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+
+		while ($row = $consulta->fetch()) {
+			$etiquetas[] = $row;
+		}
+		$_SESSION["etiquetas"] = json_encode($etiquetas);
+		for ($i=0; $i < count($etiquetas); $i++) { 
+
+			?>
+			<div class="col-md-4 col-lg-3 form-group" id="<?php echo $etiquetas[$i]["nombre"].'elemento';?>">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<input type="checkbox" id="check<?php echo $etiquetas[$i]["nombre"];?>" name="etiquetasel[]" value="<?php echo $etiquetas[$i]["nombre"];?>">
+					</span>
+					<input type="text" class="form-control" name="etiquetas[]" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
+				</div>
+			</div>
+			<?php
+		}
+		
+
+	}
+
+	/** FIN FUNCIÓN LISTAR ETIQUETAS DEL ESTUDIANTE **/
+
+
+
+	/** FUNCIÓN AGREGAR ETIQUETAS **/
+
+	function agregarSkills(){		
+		if(isset($_POST["guardarskills"])&&isset($_POST["etiquetas"])){
+			$correcto = true;
+			$mensaje = "";
+			//$this->Idb->beginTransaction();
+			$sql = "call eliminarSkills(?)";
+
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($_SESSION["usuario"]->identificador));
+			//$this->Idb->commit();
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);
+			$row = $consulta->fetch();
+
+			if(!$row["resultado"]){				
+				//$this->Idb->rollBack();
+				$_SESSION["mensajeServidor"] = "No se ha podido completar la operación";
+			}else{
+				
+				//print_r($_POST["etiquetas"]);
+				for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
+					$sql = "call agregarSkills(?,?)";
+
+					$consulta = $this->Idb->prepare($sql);
+					$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["etiquetas"][$i]));
+					$consulta->setFetchMode(PDO::FETCH_ASSOC);
+					$row = $consulta->fetch();
+
+					if($row["resultado"]){
+						$mensaje .= $_POST["etiquetas"][$i]." guardada correctamente <br> ";
+					}else{
+						$correcto = false;
+					}
+
+				}
+				if($correcto){
+				
+					$_SESSION["mensajeServidor"] = $mensaje;
+				}else{
+					
+					$_SESSION["mensajeServidor"] = "No se ha podido completar la operación";
+				}
+
+			}
+
+
+			
+		}
+	}
+
+	/** FIN FUNCIÓN AGREGAR ETIQUETAS **/
+
 	/** FUNCIÓN LISTAR Idiomas **/
 
 	function listarIdiomas(){
@@ -679,12 +1251,12 @@ class estudianteBBDD extends singleton{
 					<form method="post">
 						<input type="hidden" name="ididio" value="<?php echo $idiomasfilas[$i]["identificador"];?>">
 						<?php 
-							foreach ($idiomasfilas[$i] as $valor) {
-								?>
-								<input type="hidden" name="filas[]" value="<?php echo $valor;?>">
+						foreach ($idiomasfilas[$i] as $valor) {
+							?>
+							<input type="hidden" name="filas[]" value="<?php echo $valor;?>">
 							
-								<?php
-							}
+							<?php
+						}
 						?>
 						
 						<input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
@@ -757,7 +1329,7 @@ class estudianteBBDD extends singleton{
 										<div class="form-group">
 											<label>Idioma</label>
 											<input type="text" class="form-control" value="<?php echo $_POST["filas"][1]; ?>" disabled> 
-												
+
 											
 										</div>    
 									</div>                     
@@ -767,13 +1339,13 @@ class estudianteBBDD extends singleton{
 											<label>Hablado</label>
 											<select name="nvh" class="form-control " >
 												<?php 
-													for ($i=0; $i < count($niveles); $i++) { 
-														if($niveles[$i] == $_POST["filas"][2]){
-															echo "<option value=".($i+1)." selected>".$niveles[$i]."</option>";
-														}else{
-															echo "<option value=".($i+1).">".$niveles[$i]."</option>";
-														}														
-													}
+												for ($i=0; $i < count($niveles); $i++) { 
+													if($niveles[$i] == $_POST["filas"][2]){
+														echo "<option value=".($i+1)." selected>".$niveles[$i]."</option>";
+													}else{
+														echo "<option value=".($i+1).">".$niveles[$i]."</option>";
+													}														
+												}
 												?>
 												
 											</select>
@@ -784,13 +1356,13 @@ class estudianteBBDD extends singleton{
 											<label>Escrito</label>
 											<select name="nve" class="form-control ">
 												<?php 
-													for ($i=0; $i < count($niveles); $i++) { 
-														if($niveles[$i] == $_POST["filas"][3]){
-															echo "<option value=".($i+1)." selected>".$niveles[$i]."</option>";
-														}else{
-															echo "<option value=".($i+1).">".$niveles[$i]."</option>";
-														}														
-													}
+												for ($i=0; $i < count($niveles); $i++) { 
+													if($niveles[$i] == $_POST["filas"][3]){
+														echo "<option value=".($i+1)." selected>".$niveles[$i]."</option>";
+													}else{
+														echo "<option value=".($i+1).">".$niveles[$i]."</option>";
+													}														
+												}
 												?>
 											</select>
 										</div>    

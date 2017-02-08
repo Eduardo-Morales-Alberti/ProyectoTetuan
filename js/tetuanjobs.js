@@ -1,7 +1,7 @@
 ﻿/** Datatable **/
 
 function cargarTabla(idtabla){
-  return $(idtabla).DataTable( {
+  return $(idtabla).DataTable( {   
     responsive: true,
     "language": {
       "decimal":        "",
@@ -54,13 +54,18 @@ function mensajeModal(mensaje){
 
 /** limpiar cadena **/
 function getCleanedString(cadena){
+  // Quito los espacios extras y lo dejo a uno
+  cadena = cadena.trim();
+  cadena = cadena.replace(/\s+/gi,' ');
    // Definimos los caracteres que queremos eliminar
-   var specialChars = "\'\"!@#$^&%*()+=-[]\/{}|:<>?,.";
+   //var specialChars = "\'\"!@#$^&%*()+=-[]\/{}|:<>?,.";
+
 
    // Los eliminamos todos
-   for (var i = 0; i < specialChars.length; i++) {
+   /*for (var i = 0; i < specialChars.length; i++) {
      cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-   }   
+   }   */
+   
 
    // Lo queremos devolver limpio en minusculas
    cadena = cadena.toLowerCase();
@@ -75,6 +80,7 @@ function getCleanedString(cadena){
    cadena = cadena.replace(/ó/gi,"o");
    cadena = cadena.replace(/ú/gi,"u");
    cadena = cadena.replace(/ñ/gi,"n");
+   cadena = cadena.replace(/\W/g,'');
    return cadena;
  }
  /** fin limpiar cadena**/
@@ -109,12 +115,28 @@ function anteriorHermano(x){
 
 /** Agregar tag **/
 
+
+var elementosreq = new Array();
+
+/** Agregar skills para borrarlas **/
+function agregarEtiquetas(etq){
+  for (var i = etq.length - 1; i >= 0; i--) {
+    var elment = "check"+etq[i].nombre;
+    elementosreq.push(elment);
+    
+  }
+}
+
+
 function agregarTag(selctid,divid,elementos,col){
   /** Obtengo el select con las etiquetas**/
   var x = document.getElementById(selctid);
   x.value = getCleanedString(x.value);
+  /** Compruebo que la etiqueta no existe **/
+  var existe = elementos.indexOf("check"+x.value);
+
   /** Compruebo que el option seleccionado es correcto**/
-  if(x.value != "nada"  && x.value.length >2){
+  if(x.value != "nada"  && x.value.length >2 && existe < 0){
     /** Obtengo el div donde voy a agregar la etiqueta**/
     var ele = document.getElementById(divid);
     /** Creo un div **/
@@ -124,12 +146,13 @@ function agregarTag(selctid,divid,elementos,col){
     divele.setAttribute("id",x.value+"elemento");
     var html = '<div class="input-group">'+
     '<span class="input-group-addon">'+
-    '<input type="checkbox" id="check'+x.value+'" name="'+x.value+'" value="'+x.value+'">'+
+    '<input type="checkbox" id="check'+x.value+'" name="etiquetasel[]" value="'+x.value+'">'+
     '</span>'+
-    '<input type="text" name="etiquetas[]" class="form-control" value="'+x.value+'" disabled="disabled">'+
+    '<input type="text" name="etiquetas[]" class="form-control" value="'+x.value+'" readonly>'+
     '</div>';
     divele.innerHTML = html;
     /** Agrego a elementos los id de los checkbox que he ido añadiendo al div**/
+
     elementos.push("check"+x.value);
     /** Agrego al div seleccionado, el div que acabo de crear**/
     ele.appendChild(divele);
@@ -141,9 +164,15 @@ function agregarTag(selctid,divid,elementos,col){
      x.value = "";
    }
 
+ }else{
+  mensajeModal("No se ha podido añadir la etiqueta");
+  if(x.nodeName == "INPUT"){
+   /** Si es un input lo dejo vacío**/ 
+   x.value = "";
  }
- /** Retorno el array de elementos **/
- return elementos;
+}
+/** Retorno el array de elementos **/
+return elementos;
 }
 
 /** Fin agregar tag**/
@@ -213,7 +242,9 @@ function login(){
 }
 
 /**Fin Login**/
-/**Perfil**/
+/**Perfil Estudiante **/
+
+
 
 function perfil(){
   /** Opcion fechas actualmente **/
@@ -232,7 +263,7 @@ function perfil(){
   /** Fin Opcion fechas actualmente **/
 
   /** Agregar etiquetas **/
-  var elementosreq = new Array();
+
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
