@@ -236,14 +236,15 @@ ob_start();
                             <div class="form-group">
                                 <label>Nivel</label><br>
                                 <select class="conborde" name="nivel">
-                                    <option value="1">Fp básica</option>
+                                   <!--<option value="1">Fp básica</option>
                                     <option value="2">Grado medio</option>
                                     <option value="3">Bachillerato</option>
                                     <option value="4">Grado superior</option>
                                     <option value="5">Grado Universitario</option>
                                     <option value="6">Máster</option>
                                     <option value="7">Certificado oficial</option>
-                                    <option value="8">otro</option>
+                                    <option value="8">otro</option>-->
+                                    <?php echo $estudiantecl->listarNiveles(); ?>
                                 </select>
                             </div>    
                         </div>                     
@@ -261,6 +262,7 @@ ob_start();
                     <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                     <input type="submit" name="nuevaform" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
+
                 </div>
 
             </div>

@@ -10,17 +10,25 @@ drop PROCEDURE if EXISTS tetuanjobs.obtenerEnum;
 
 delimiter //
 
-CREATE PROCEDURE tetuanjobs.obtenerEnum(nomCol varchar(20)) 
+CREATE PROCEDURE tetuanjobs.obtenerEnum(nomCol varchar(250), nomTbl varchar(250)) 
 BEGIN
-	SELECT SUBSTRING(SUBSTRING(COLUMN_TYPE,6),((-1)*(length(SUBSTRING(COLUMN_TYPE,5))-1)),((length(SUBSTRING(COLUMN_TYPE,5)))-2))
+	declare columna varchar(250);
+	declare size int;
+/*SUBSTRING(SUBSTRING(COLUMN_TYPE,6),((-1)*(length(SUBSTRING(COLUMN_TYPE,5))-1)),((length(SUBSTRING(COLUMN_TYPE,5)))-2)) as resultado*/
+	/*SELECT SUBSTRING(COLUMN_TYPE,6,(length(COLUMN_TYPE)-7)) as resultado	*/
+	select trim(SUBSTRING(trim(COLUMN_TYPE),6)) into columna
 		FROM information_schema.COLUMNS
 			WHERE TABLE_SCHEMA='tetuanjobs' 
-				AND TABLE_NAME='estudiantes'
+				AND TABLE_NAME=nomTbl
 				AND COLUMN_NAME=nomCol;
+	
+
+	select trim(replace(columna,")",'')) as resultado, size, length(SUBSTRING(columna,6));
+
 END//
 delimiter ;	
 
-/*call tetuanjobs.obtenerEnum('ciclo');*/
+/*call tetuanjobs.obtenerEnum('ciclo','estudiantes');*/
 
 /* Fin del procedimiento */
 

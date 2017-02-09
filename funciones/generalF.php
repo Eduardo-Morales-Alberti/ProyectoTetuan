@@ -159,6 +159,36 @@ class General extends singleton{
 
 	/** fin función listar Idiomas **/
 
+	/** función select listar empresas **/
+
+	function listarEmpresasSelect($seleccion = -1){
+
+		$sql = "select * from listarEmpresasSelect";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+		while ($row = $consulta->fetch()) {
+			$this->empresas[] = $row;
+		}
+		$empresasSELECT = " <option disabled selected value> -- Selecciona una opción -- </option>";
+		for ($i=0; $i < count($this->empresas) ; $i++) { 
+			if($seleccion == $this->empresas[$i]['identificador']){
+				$empresasSELECT .= "<option value='".$this->empresas[$i]['identificador']."' selected>";
+				$empresasSELECT .= $this->empresas[$i]['nombre']."</option>";
+			}else{
+				$empresasSELECT .= "<option value='".$this->empresas[$i]['identificador']."'>";
+				$empresasSELECT .= $this->empresas[$i]['nombre']."</option>";
+			}
+			
+		}
+		$empresasSELECT .= "";
+		return $empresasSELECT;
+
+	}
+
+	/** fin función select listar empresas **/
+
 	
 }
 

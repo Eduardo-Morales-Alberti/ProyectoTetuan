@@ -242,6 +242,33 @@ class estudianteBBDD extends singleton{
 	}
 	/** FUNCIÓN PARA ELIMINAR USUARIO **/
 
+	/** FUNCIÓN LISTAR CICLOS **/
+	function listarNiveles(){
+		$sql = "call obtenerEnum('formacion_clasificacion','formacion')";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$ciclosSELECT = "";
+
+		$row = $consulta->fetch();
+		if($row["resultado"]){
+			$ciclos = explode(",", $row["resultado"]) ;
+			//print_r($ciclos);
+			$ciclosSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+			for ($i=0; $i < count($ciclos) ; $i++) { 
+
+				$ciclosSELECT .= "<option value='".($i+1)."'>";
+				$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+				$ciclosSELECT .= $nombre."</option>";
+
+			}
+		}		
+		
+		return $ciclosSELECT;
+	}
+
+	/** FUNCIÓN LISTAR CICLOS **/
+
 	/** FUNCIÓN PARA AÑADIR UNA NUEVA EXPERIENCIA **/
 	function nuevaExperiencia(){
 		
@@ -1150,9 +1177,9 @@ class estudianteBBDD extends singleton{
 			<div class="col-md-4 col-lg-3 form-group" id="<?php echo $etiquetas[$i]["nombre"].'elemento';?>">
 				<div class="input-group">
 					<span class="input-group-addon">
-						<input type="checkbox" id="check<?php echo $etiquetas[$i]["nombre"];?>" name="etiquetasel[]" value="<?php echo $etiquetas[$i]["nombre"];?>">
+						<input type="checkbox" id="check<?php echo $this->limpiarRuta($etiquetas[$i]["nombre"]);?>" name="etiquetasel[]" value="<?php echo $this->limpiarRuta($etiquetas[$i]["nombre"]);?>">
 					</span>
-					<input type="text" class="form-control" name="etiquetas[]" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
+					<input type="text" class="form-control" id="input<?php echo $this->limpiarRuta($etiquetas[$i]["nombre"]);?>" name="etiquetas[]" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
 				</div>
 			</div>
 			<?php
@@ -1202,7 +1229,7 @@ class estudianteBBDD extends singleton{
 
 				}
 				if($correcto){
-				
+
 					$_SESSION["mensajeServidor"] = $mensaje;
 				}else{
 					

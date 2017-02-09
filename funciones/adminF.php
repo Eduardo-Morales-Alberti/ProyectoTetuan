@@ -76,7 +76,7 @@ class adminBBDD extends singleton{
 
 	function listarEmpresas(){
 		$html = "";
-		$sql = "select * from listarEmpresas";
+		$sql = "select nombre, identificador, web,correo,telefono,contacto from listarEmpresas";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute();
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
@@ -88,19 +88,19 @@ class adminBBDD extends singleton{
 		
 
 		for ($i=0; $i < count($usuarios); $i++) { 
-			echo "<tr>";
+			echo "<form method='post'><tr>";
 			foreach ($usuarios[$i] as $clave => $valor) {
 
 				if($clave == "identificador"){
-					echo "<td><input type='checkbox' name='ids[]' value='$valor'></td>";
-				}else if($clave == "nombre"){
-					echo "<td><b>$valor</b></td>";
+					echo "<td><input type='checkbox' name='ids[]' value='$valor'> &nbsp; <button type='submit' name='modemp' value='$valor' class='btn btn-success'>
+					<i class='fa fa-edit' aria-hidden='true'></i>
+					</button></td>";
 				}else{
-					echo "<td><input type='text' name='".$clave."[".$usuarios[$i]["identificador"]."]' value='$valor'> <span class='oculto'>$valor</span></td>";
+					echo "<td><input type='hidden' name='".$clave."[".$usuarios[$i]["identificador"]."]' value='$valor'>$valor</td>";
 				}
 
 			}
-			echo "</tr>";
+			echo "</tr></form>";
 		}	
 
 	}
@@ -115,10 +115,24 @@ class adminBBDD extends singleton{
 
 			for ($i=0; $i < count($_POST["ids"]); $i++) { 
 
-				$sql = "call eliminarEmpresa(?)";
+				$sql = "call eliminarEmpresa(?,?)";
 
 				$consulta = $this->Idb->prepare($sql);
-				$consulta->execute(array($_POST["ids"][$i]));
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["ids"][$i]));
+				if($consulta->rowCount() > 0){
+					$row = $consulta->fetch();
+					if($row["resultado"]){
+						$_SESSION["mensajeServidor"] = "Empresas eliminada";
+					}else{
+						$_SESSION["mensajeServidor"] = "No se ha podido eliminar las empresas";
+					}
+				
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha recibido respuesta.";
+				}
+
+
+				
 
 			}	
 		}
@@ -129,26 +143,25 @@ class adminBBDD extends singleton{
 
 	/** funcion modificar empresa **/
 
-	function modificarEmpresas(){
+	function modificarEmpresa(){
 
-		if(isset($_POST["modificaremp"])&&isset($_POST["ids"])&&isset($_POST["web"])){
+		if(isset($_POST["modificaremp"])&&isset($_POST["id"])&&isset($_POST["webemp"])){
 
-			for ($i=0; $i < count($_POST["ids"]); $i++) { 
 
-				$sql = "call modificarEmpresa(?,?,?,?,?)";
 
-				$id = $_POST["ids"][$i];
-				
+			$sql = "call modificarEmpresa(?,?,?,?,?)";
 
-				$web = $_POST["web"][$id];
-				$mail = $_POST["correo"][$id];
-				$telf = $_POST["telefono"][$id];
-				$cont = $_POST["contacto"][$id];
+			$id = $_POST["id"];	
+			$web = $_POST["webemp"];
+			$mail = $_POST["email"];
+			$telf = $_POST["telfemp"];
+			$cont = $_POST["contemp"];
 
-				$consulta = $this->Idb->prepare($sql);
-				$consulta->execute(array($id,$web,$mail, $telf,$cont));
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($id,$web,$mail, $telf,$cont));
 
-			}	
+			$_SESSION["mensajeServidor"] = "Empresa modificada";
+
 		}
 
 	}
@@ -156,7 +169,7 @@ class adminBBDD extends singleton{
 	/** funcion modificar empresa **/
 
 	/** FUNCION NUEVA EMPRESA**/
-	public function nuevaEmpresa(){
+	public function nuevaEmpresa(){	
 		if(isset($_POST['agregaremp'])&&isset($_POST['mailemp'])&&isset($_POST['nemp'])){			
 			
 			$nombre = "";
@@ -209,6 +222,63 @@ class adminBBDD extends singleton{
 	/** FUNCION NUEVA EMPRESA**/
 
 	/** FIN FILTRO EMPRESAS **/
+
+	/** FICHA PUESTOS **/
+
+	/** función listar etiquetas **/
+
+	function listarTodasEtiquetas(){
+
+		$sql = "select * from listarEtiquetas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$etiquetasSELECT = "";
+
+		while ($row = $consulta->fetch()) {
+			$etiquetas[] = $row;
+		}
+		$etiquetasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+		for ($i=0; $i < count($etiquetas) ; $i++) { 			
+			$etiquetasSELECT .= "<option value='".$etiquetas[$i]['nombre']."'>";
+			$etiquetasSELECT .= $etiquetas[$i]['nombre']."</option>";
+			
+			
+		}
+		return $etiquetasSELECT;
+
+	}
+
+	/** fin función listar etiquetas **/
+
+	/** función listar Idiomas **/
+
+	function listarIdiomas(){
+
+		$sql = "select * from listarIdiomas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$idiomasSELECT = "";
+
+		while ($row = $consulta->fetch()) {
+			$idiomas[] = $row;
+		}
+		$idiomasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+		for ($i=0; $i < count($idiomas) ; $i++) { 
+			
+				$idiomasSELECT .= "<option value='".$idiomas[$i]['nombre']."'>";
+				$idiomasSELECT .= $idiomas[$i]['nombre']."</option>";
+					
+			
+		}
+		return $idiomasSELECT;
+
+	}
+
+	/** fin función listar Idiomas **/
+
+	/** FIN FICHA PUESTOS **/
 }
 
 ?>

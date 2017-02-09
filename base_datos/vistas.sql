@@ -27,6 +27,15 @@ GRANT select on tetuanjobs.listarIdiomas To 'usertetuan'@'localhost';
 
 /** FIN VISTA LISTAR Idiomas **/
 
+/** VISTA LISTAR EMPRESAS **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarEmpresasSelect as 
+     select id_empresa as identificador, nombre_empresa as nombre from tetuanjobs.empresas order by nombre;
+
+GRANT select on tetuanjobs.listarEmpresasSelect To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR EMPRESAS **/
+
 /** VISTAS GENERALES **/
 
 /** FILTRO DE USUARIOS **/

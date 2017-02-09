@@ -52,8 +52,8 @@ function mensajeModal(mensaje){
 
 /** Fin Modal mensaje **/
 
-/** limpiar cadena **/
-function getCleanedString(cadena){
+/** crear id **/
+function crearId(cadena){
   // Quito los espacios extras y lo dejo a uno
   cadena = cadena.trim();
   cadena = cadena.replace(/\s+/gi,' ');
@@ -81,6 +81,28 @@ function getCleanedString(cadena){
    cadena = cadena.replace(/ú/gi,"u");
    cadena = cadena.replace(/ñ/gi,"n");
    cadena = cadena.replace(/\W/g,'');
+   return cadena.substring(0,5);
+ }
+ /** fin crear id**/
+
+ /** limpiar cadena **/
+ function limpiarCadena(cadena){
+  // Quitamos caracteres raros
+  var specialChars = "\'\"¿¡!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+
+   // Los eliminamos todos
+   for (var i = 0; i < specialChars.length; i++) {
+     cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+  // Quito los espacios extras y lo dejo a uno
+
+  cadena = cadena.trim();
+  cadena = cadena.replace(/\s+/gi,' ');
+
+   // Lo queremos devolver limpio en minusculas
+   //cadena = cadena.substring(0,1).toUpperCase()+cadena.substring(1,cadena.length).toLowerCase();
+   
    return cadena;
  }
  /** fin limpiar cadena**/
@@ -131,9 +153,12 @@ function agregarEtiquetas(etq){
 function agregarTag(selctid,divid,elementos,col){
   /** Obtengo el select con las etiquetas**/
   var x = document.getElementById(selctid);
-  x.value = getCleanedString(x.value);
+  //x.value = getCleanedString(x.value);
+  var id = crearId(x.value).substring(0,5);
   /** Compruebo que la etiqueta no existe **/
-  var existe = elementos.indexOf("check"+x.value);
+  var existe = elementos.indexOf("check"+id);
+
+  var etiqueta = limpiarCadena(x.value);
 
   /** Compruebo que el option seleccionado es correcto**/
   if(x.value != "nada"  && x.value.length >2 && existe < 0){
@@ -143,17 +168,17 @@ function agregarTag(selctid,divid,elementos,col){
     var divele = document.createElement("div");
     divele.setAttribute("class",col+" form-group");
     /** El id del div va a ser el de la etiqueta mas elemento**/
-    divele.setAttribute("id",x.value+"elemento");
+    divele.setAttribute("id",id+"elemento");
     var html = '<div class="input-group">'+
     '<span class="input-group-addon">'+
-    '<input type="checkbox" id="check'+x.value+'" name="etiquetasel[]" value="'+x.value+'">'+
+    '<input type="checkbox" id="check'+id+'"  value="'+id+'">'+
     '</span>'+
-    '<input type="text" name="etiquetas[]" class="form-control" value="'+x.value+'" readonly>'+
+    '<input type="text" id="input'+id+'" name="etiquetas[]" class="form-control" value="'+etiqueta+'" readonly>'+
     '</div>';
     divele.innerHTML = html;
     /** Agrego a elementos los id de los checkbox que he ido añadiendo al div**/
 
-    elementos.push("check"+x.value);
+    elementos.push("check"+id);
     /** Agrego al div seleccionado, el div que acabo de crear**/
     ele.appendChild(divele);
     /** Elimino el option que acabo agregar a las etiquetas**/
@@ -197,9 +222,10 @@ function eliminarTag(selctid,divid,elementos){
       if(x.type = "select-one"){
         /** Creo un option**/
         var opt = document.createElement("option");
-        /** Le pongo el valor del checkbox eliminado**/
-        opt.value = checkel.value;        
-        opt.innerHTML = checkel.value;
+        /** Le pongo el valor del input eliminado**/
+        var text = document.getElementById("input"+checkel.value).value;
+        opt.value = text;        
+        opt.innerHTML = text;
         /** Agrego el option a mi select **/
         x.appendChild(opt);
       }  
