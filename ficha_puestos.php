@@ -11,6 +11,7 @@ if(!isset($_SESSION["usuario"])){
 
 $generacl = new General;
 $admincl = new adminBBDD;
+$admincl->agregarPuesto();
 ob_start();?>
 <script type="text/javascript">
 fichapuestos();
@@ -23,6 +24,7 @@ ob_start();
 ?>
 <h1 >Ficha de puestos
 </h1>  
+<form method="post">
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4>Añadir un nuevo puesto
@@ -33,7 +35,7 @@ ob_start();
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Nombre de la empresa</label>
-                    <select class="form-control" name="etiqueta">
+                    <select class="form-control" name="empresa">
                         <?php echo $generacl->listarEmpresasSelect();?>
                     </select>
                 </div>
@@ -59,8 +61,7 @@ ob_start();
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Descripción del puesto</label><br>
-                    <textarea class="form-control" rows="5" name="descpuesto">
-                    </textarea>
+                    <textarea class="form-control" rows="5" name="descpuesto"></textarea>
                 </div>
             </div>
         </div>
@@ -198,9 +199,7 @@ ob_start();
             <div class="form-group">
                 <label>Experiencia</label>
                 <select class="form-control" name="experiencia">
-                    <option value="1">Sin experiencia</option>
-                    <option value="2">Con algo de experiencia</option>
-                    <option value="3">Más de un año trabajando</option>
+                    <?php echo $generacl->listarEnum("experiencia","puestos",1); ?>
                 </select>
             </div>
         </div>
@@ -210,10 +209,7 @@ ob_start();
             <div class="form-group">
                 <label>Tipo de contrado</label>
                 <select class="form-control" name="contrato">
-                    <option value="0">Sin especificar</option>
-                    <option value="indef">Indefinido</option>
-                    <option value="pract">Prácticas</option>
-                    <option value="obra">De obra</option>
+                    <?php echo $generacl->listarEnum("tipo_contrato","puestos",1); ?>
                 </select>
             </div>
         </div>
@@ -221,10 +217,7 @@ ob_start();
             <div class="form-group">
                 <label>Tipo de jornada</label>
                 <select class="form-control" name="jornada">
-                    <option value="0">Sin especificar</option>
-                    <option value="completa">Jornada completa</option>
-                    <option value="man">Horario de mañanas</option>
-                    <option value="tardes">Horario de tardes</option>
+                     <?php echo $generacl->listarEnum("jornada","puestos",1); ?>
                 </select>
             </div>
         </div>
@@ -235,14 +228,7 @@ ob_start();
                 <label>Titulación mínima</label>
 
                 <select class="form-control" name="nivel">
-                    <option value="1">FP básica</option>
-                    <option value="2">CF Grado medio</option>
-                    <option value="3">Bachillerato</option>
-                    <option value="4">CF Grado superior</option>
-                    <option value="5">Grado universitario</option>
-                    <option value="6">Master</option>
-                    <option value="7">Certificado oficial</option>
-                    <option value="8">Otro</option>
+                    <?php echo $generacl->listarEnum("titulacion_minima","puestos",1); ?>
                 </select>
 
             </div>
@@ -259,6 +245,7 @@ ob_start();
 </div>    
 
 </div>
+</form>
 
 <?php
 $page["cuerpo"] = ob_get_clean();

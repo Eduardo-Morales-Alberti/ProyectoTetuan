@@ -9,6 +9,8 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
+$generacl = new General;
+
 ob_start();?>
 <script type="text/javascript">
 filtropuestos();
@@ -120,14 +122,7 @@ ob_start();
                     <label>Titulación mínima</label>
 
                     <select class="form-control" name="nivel">
-                        <option value="1">FP básica</option>
-                        <option value="2">CF Grado medio</option>
-                        <option value="3">Bachillerato</option>
-                        <option value="4">CF Grado superior</option>
-                        <option value="5">Grado universitario</option>
-                        <option value="6">Master</option>
-                        <option value="7">Certificado oficial</option>
-                        <option value="8">Otro</option>
+                         <?php echo $generacl->listarEnum("formacion_clasificacion","formacion"); ?>
                     </select>
 
                 </div>

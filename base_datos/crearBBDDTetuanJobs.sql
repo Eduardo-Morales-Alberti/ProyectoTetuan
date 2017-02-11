@@ -229,14 +229,14 @@ DROP TABLE IF EXISTS `PUESTOS`;
 CREATE TABLE IF NOT EXISTS `PUESTOS` (
   `id_puesto` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `id_empresa` int(11) UNSIGNED NOT NULL,
-  `puesto_nombre` varchar(500) COLLATE utf8_general_ci NOT NULL,
+  `puesto_nombre` varchar(250) COLLATE utf8_general_ci NOT NULL,
   `puesto_desc` varchar(3000) COLLATE utf8_general_ci NOT NULL,
-  `puestos_carnet` boolean DEFAULT FALSE,
+  `puesto_carnet` boolean DEFAULT FALSE,
   `id_provincia` int(11) UNSIGNED,
   `experiencia` enum('Sin experiencia','Al menos un año','Más de un año') COLLATE utf8_general_ci NOT NULL,
   `tipo_contrato` enum('Sin determinar','Indefinido','En prácticas','Por obra o servicio') COLLATE utf8_general_ci NOT NULL DEFAULT 'Sin determinar',
   `jornada` enum('Sin determinar','Completa','Sólo mañanas','Sólo tardes') COLLATE utf8_general_ci NOT NULL DEFAULT 'Sin determinar',
-  `titulacion_minima` enum('F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_general_ci NOT NULL,
+  `titulacion_minima` enum('Sin importancia','F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_general_ci NOT NULL,
   `f_publicacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`id_empresa`) REFERENCES EMPRESAS(`id_empresa`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`id_provincia`) REFERENCES PROVINCIAS(`id_provincia`) ON DELETE CASCADE ON UPDATE CASCADE

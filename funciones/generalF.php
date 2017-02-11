@@ -24,9 +24,15 @@ class General extends singleton{
 	public $provinciasSELECT = "";
 
 	function __construct(){
+
 		parent::__construct();	
 		$this->listarProvincias();
 	}
+
+	/*function __destruct() {
+		session_set_cookie_params(0);
+		session_destroy();
+	}*/
 
 	//Función para enviar email
 	public static function enviarEmail($emails, $asunto, $cuerpo){
@@ -188,6 +194,38 @@ class General extends singleton{
 	}
 
 	/** fin función select listar empresas **/
+
+	/** FUNCIÓN LISTAR ENUM **/
+	function listarEnum($columna, $tabla,$seleccion = -1){
+		$sql = "call obtenerEnum(?,?)";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($columna, $tabla));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$ciclosSELECT = "";
+
+		$row = $consulta->fetch();
+		if($row["resultado"]){
+			$ciclos = explode(",", $row["resultado"]) ;
+			//print_r($ciclos);
+			$ciclosSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+			for ($i=0; $i < count($ciclos) ; $i++) { 
+				if($seleccion == $i+1){
+					$ciclosSELECT .= "<option value='".($i+1)."' selected>";
+					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+					$ciclosSELECT .= $nombre."</option>";
+				}else{
+					$ciclosSELECT .= "<option value='".($i+1)."'>";
+					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+					$ciclosSELECT .= $nombre."</option>";
+				}
+
+			}
+		}		
+
+		return $ciclosSELECT;
+	}
+
+	/** FUNCIÓN LISTAR ENUM **/
 
 	
 }

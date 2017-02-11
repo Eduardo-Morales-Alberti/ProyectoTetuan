@@ -819,6 +819,36 @@ delimiter ;
 
 /** FIN RUTINAS FILTRO DE EMPRESAS **/
 
+/** RUTINAS FICHA PUESTOS **/
 
+/** RUTINA PARA GUARDAR UN PUESTO **/
+drop PROCEDURE if EXISTS tetuanjobs.agregarPuesto;
 
+delimiter //
+CREATE PROCEDURE tetuanjobs.agregarPuesto(usid int, id_emp int, nombre varchar(250), pdesc varchar(3000), carnet boolean, idprov int,
+	exp int, tcontrato int, jorn int, titminima int) 
+	BEGIN
+	declare id int default -1;
+	declare idemp int default -1;	
 
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_empresa into idemp from tetuanjobs.empresas where id_empresa = id_emp;
+
+	if id >=0 and idemp >= 0 then
+		INSERT INTO PUESTOS (id_empresa, puesto_nombre, puesto_desc, puesto_carnet, id_provincia, experiencia, tipo_contrato,
+			jornada, titulacion_minima) values(idemp, nombre, pdesc, carnet, idprov, exp, tcontrato, jorn, titminima);
+
+		select true as resultado;
+	else
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+call agregarPuesto(1, 2, "Puesto de prueba", "Es un puesto muy majo", 1,5,1,3,1,5);
+
+/** FIN RUTINA PARA GUARDAR UN PUESTO **/
+
+/** FIN RUTINAS FICHA PUESTOS **/

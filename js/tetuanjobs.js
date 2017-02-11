@@ -150,7 +150,7 @@ function agregarEtiquetas(etq){
 }
 
 
-function agregarTag(selctid,divid,elementos,col){
+function agregarTag(selctid,divid,elementos,col,name){
   /** Obtengo el select con las etiquetas**/
   var x = document.getElementById(selctid);
   //x.value = getCleanedString(x.value);
@@ -173,7 +173,7 @@ function agregarTag(selctid,divid,elementos,col){
     '<span class="input-group-addon">'+
     '<input type="checkbox" id="check'+id+'"  value="'+id+'">'+
     '</span>'+
-    '<input type="text" id="input'+id+'" name="etiquetas[]" class="form-control" value="'+etiqueta+'" readonly>'+
+    '<input type="text" id="input'+id+'" name="'+name+'[]" class="form-control" value="'+etiqueta+'" readonly>'+
     '</div>';
     divele.innerHTML = html;
     /** Agrego a elementos los id de los checkbox que he ido añadiendo al div**/
@@ -293,12 +293,12 @@ function perfil(){
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3")
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
   });
 
   var btnet2 = document.getElementById("ageet");
   btnet2.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetasinput", "divetiquetas",elementosreq,"col-md-4 col-lg-3")
+    elementosreq = agregarTag("etiquetasinput", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
   });
 
   var btnelimex = document.getElementById("eliminarskills");
@@ -417,7 +417,7 @@ function busquedaofer(){
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3")
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
   });
 
   var btnelimex = document.getElementById("elimrequisito");
@@ -444,7 +444,7 @@ function filtropuestos(){
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3")
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
   });
 
   var btnelimex = document.getElementById("elimrequisito");
@@ -464,7 +464,7 @@ function fichapuestos(){
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3")
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3","etiquetas")
   });
 
   var btnelimex = document.getElementById("elimrequisito");
@@ -477,7 +477,7 @@ function fichapuestos(){
 
   var btnaidm = document.getElementById("ageidi");
   btnaidm.addEventListener("click", function(){
-    elementosidm = agregarTag("idiomas", "dividiomas",elementosidm,"col-md-4 col-lg-3")
+    elementosidm = agregarTag("idiomas", "dividiomas",elementosidm,"col-md-4 col-lg-3","idiomas")
   });
 
   var btnelimidm = document.getElementById("elimidi");
@@ -490,7 +490,7 @@ function fichapuestos(){
 
   var btnfunc = document.getElementById("afuncion");
   btnfunc.addEventListener("click", function(){
-    elementosfunc = agregarTag("funciones", "divfunciones",elementosfunc,"col-md-6")
+    elementosfunc = agregarTag("funciones", "divfunciones",elementosfunc,"col-md-6","funciones")
   });
 
   var btnelimfunc = document.getElementById("elimfunc");

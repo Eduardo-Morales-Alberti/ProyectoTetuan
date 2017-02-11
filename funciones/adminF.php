@@ -278,6 +278,93 @@ class adminBBDD extends singleton{
 
 	/** fin función listar Idiomas **/
 
+	/** función agregar puesto**/
+	function agregarPuesto(){
+		if(isset($_POST["guardarpuesto"])&&isset($_POST["titpuesto"])&&isset($_POST["empresa"])&&isset($_POST["descpuesto"])){
+			$sql = "call agregarPuesto(?,?,?,?,?,?,?,?,?,?)";
+			$consulta = $this->Idb->prepare($sql);	
+
+			$empresa = null;
+
+			if(isset($_POST["empresa"])){
+				$empresa = $_POST["empresa"];
+			}
+
+			$nombre = null;
+
+			if(isset($_POST["titpuesto"])){
+				$nombre = $_POST["titpuesto"];
+			}		
+
+				
+
+			$desc = null;
+
+			if(isset($_POST["descpuesto"])){
+				$desc = $_POST["descpuesto"];
+			}
+
+			$carnet = 0;
+
+			if(isset($_POST["carnet"])){
+				$carnet = 1;
+			}	
+
+			$provincia = null;
+
+			if(isset($_POST["provincia"])){
+				$provincia = $_POST["provincia"];
+			}
+
+			$exp = 1;
+
+			if(isset($_POST["experiencia"])){
+				$exp = $_POST["experiencia"];
+			}
+
+			$contrato = 1;
+
+			if(isset($_POST["contrato"])){
+				$contrato = $_POST["contrato"];
+			}
+
+			$jornada= 1;
+
+			if(isset($_POST["jornada"])){
+				$jornada = $_POST["jornada"];
+			}
+
+			$titulacion = 1;
+
+			if(isset($_POST["nivel"])){
+				$titulacion = $_POST["nivel"];
+			}
+
+			$params = array();
+			array_push($params,$_SESSION["usuario"]->identificador,$empresa,
+				$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion);
+			//print_r($params);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $consulta->fetch();
+
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Puesto agregado correctamente.";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido agregar el puesto.";
+				}
+
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado, puesto no insertado.";
+			}
+		}
+	}
+
+	/** fin función agregar puesto**/
+
 	/** FIN FICHA PUESTOS **/
 }
 

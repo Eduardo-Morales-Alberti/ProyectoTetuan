@@ -243,7 +243,7 @@ class estudianteBBDD extends singleton{
 	/** FUNCIÓN PARA ELIMINAR USUARIO **/
 
 	/** FUNCIÓN LISTAR CICLOS **/
-	function listarNiveles(){
+	/*function listarNiveles($seleccion = -1){
 		$sql = "call obtenerEnum('formacion_clasificacion','formacion')";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute();
@@ -256,26 +256,31 @@ class estudianteBBDD extends singleton{
 			//print_r($ciclos);
 			$ciclosSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
 			for ($i=0; $i < count($ciclos) ; $i++) { 
-
-				$ciclosSELECT .= "<option value='".($i+1)."'>";
-				$nombre = preg_replace('/\'/', '', $ciclos[$i]);
-				$ciclosSELECT .= $nombre."</option>";
+				if($seleccion == $i+1){
+					$ciclosSELECT .= "<option value='".($i+1)."' selected>";
+					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+					$ciclosSELECT .= $nombre."</option>";
+				}else{
+					$ciclosSELECT .= "<option value='".($i+1)."'>";
+					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+					$ciclosSELECT .= $nombre."</option>";
+				}
 
 			}
 		}		
-		
+
 		return $ciclosSELECT;
-	}
+	}*/
 
 	/** FUNCIÓN LISTAR CICLOS **/
 
 	/** FUNCIÓN PARA AÑADIR UNA NUEVA EXPERIENCIA **/
 	function nuevaExperiencia(){
-		
+
 		if(isset($_POST["nuevaexp"])&&isset($_POST["tituloEmp"])){
 			$sql = "call nuevaExperiencia(?,?,?,?,?,?,?)";
 			$consulta = $this->Idb->prepare($sql);			
-			
+
 			$empresa = null;
 
 			if(isset($_POST["nombreEmp"])){
@@ -343,7 +348,7 @@ class estudianteBBDD extends singleton{
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha podido insertar la experiencia";
 				}
-				
+
 			}else{
 				$_SESSION["mensajeServidor"] = "No se ha podido insertar la experiencia";
 			}
@@ -353,11 +358,11 @@ class estudianteBBDD extends singleton{
 
 	/** FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
 	function nuevaFormacion(){
-		
+
 		if(isset($_POST["nuevaform"])&&isset($_POST["tituloeduc"])){
 			$sql = "call nuevaFormacion(?,?,?,?,?,?,?,?)";
 			$consulta = $this->Idb->prepare($sql);			
-			
+
 			$institucion = null;
 
 			if(isset($_POST["institucion"])){
@@ -431,7 +436,7 @@ class estudianteBBDD extends singleton{
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
 				}
-				
+
 			}else{
 				$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
 			}
@@ -442,7 +447,7 @@ class estudianteBBDD extends singleton{
 	/** Función nuevo idioma **/
 
 	function nuevoIdioma(){
-		
+
 		if(isset($_POST["nuevoidioma"])&&isset($_POST["idioma"])){
 			$sql = "call nuevoIdioma(?,?,?,?)";
 			$consulta = $this->Idb->prepare($sql);		
@@ -472,7 +477,7 @@ class estudianteBBDD extends singleton{
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
 				}
-				
+
 			}else{
 				$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
 			}
@@ -484,7 +489,7 @@ class estudianteBBDD extends singleton{
 	/** FUNCIÓN LISTAR EXPERIENCIA **/
 
 	function listarExperiencia(){
-		
+
 		$sql = "select * from listarExperiencia where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute(array($_SESSION["usuario"]->identificador));
@@ -519,8 +524,8 @@ class estudianteBBDD extends singleton{
 					}else{
 						echo $fechafin;
 					}
-					
-					
+
+
 					?> </i></small>
 				</div>   
 				<div class="col-md-8">
@@ -535,7 +540,7 @@ class estudianteBBDD extends singleton{
 						foreach ($experienciafilas[$i] as $clave => $valor) {
 							?>
 							<input type="hidden" name="filas[<?php echo $clave;?>]" value="<?php echo $valor;?>">
-							
+
 							<?php
 						}
 						?>
@@ -551,7 +556,7 @@ class estudianteBBDD extends singleton{
 			}
 		}
 
-		
+
 	}
 
 
@@ -572,12 +577,12 @@ class estudianteBBDD extends singleton{
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha eliminado la experiencia";
 				}
-				
+
 			}else{
 				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado";
 			}
-			
-			
+
+
 		}
 	}
 
@@ -623,12 +628,12 @@ class estudianteBBDD extends singleton{
 											<label>Período</label><br>											
 											<select name="f1mes" class="conborde">
 												<?php 
-												
+
 												$mes1 = date("m",strtotime($_POST["filas"]["fecha_ini"]));
 												$anio1 = date("Y",strtotime($_POST["filas"]["fecha_ini"]));
 												$mes1 = $mes1-1;
 
-												
+
 												for ($i=1; $i < count($this->meses); $i++) {
 													$mes =  $this->meses[$i];
 													if($mes1 == $i){
@@ -652,8 +657,8 @@ class estudianteBBDD extends singleton{
 													$mes2 = 0;
 													$anio2 = "";
 												}
-												
-												
+
+
 												for ($i=0; $i < count($this->meses); $i++) {
 													$mes =  $this->meses[$i];
 													if($mes2 == $i){
@@ -783,7 +788,7 @@ class estudianteBBDD extends singleton{
 					$mensaje = "No se ha actualizado la experiencia";
 				}
 
-				
+
 			}else{
 				$mensaje = "No se obtenido filas de la base de datos.";
 			}
@@ -834,8 +839,8 @@ class estudianteBBDD extends singleton{
 					}else{
 						echo "actualmente";
 					}
-					
-					
+
+
 					?> </i></small>
 				</div>   
 				<div class="col-md-8">
@@ -850,7 +855,7 @@ class estudianteBBDD extends singleton{
 						foreach ($educacionfilas[$i] as $clave => $valor) {
 							?>
 							<input type="hidden" name="filas[<?php echo $clave;?>]" value="<?php echo $valor;?>">
-							
+
 							<?php
 						}
 						?>
@@ -866,7 +871,7 @@ class estudianteBBDD extends singleton{
 			}
 		}
 
-		
+
 	}
 
 
@@ -888,12 +893,12 @@ class estudianteBBDD extends singleton{
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha eliminado la formación";
 				}
-				
+
 			}else{
 				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado";
 			}
-			
-			
+
+
 		}
 	}
 
@@ -942,12 +947,12 @@ class estudianteBBDD extends singleton{
 											<label>Período</label><br>											
 											<select name="f1mes" class="conborde">
 												<?php 
-												
+
 												$mes1 = date("m",strtotime($_POST["filas"]["fecha_ini"]));
 												$anio1 = date("Y",strtotime($_POST["filas"]["fecha_ini"]));
 												$mes1 = $mes1-1;
 
-												
+
 												for ($i=1; $i < count($this->meses); $i++) {
 													$mes =  $this->meses[$i];
 													if($mes1 == $i){
@@ -971,8 +976,8 @@ class estudianteBBDD extends singleton{
 													$mes2 = 0;
 													$anio2 = "";
 												}
-												
-												
+
+
 												for ($i=0; $i < count($this->meses); $i++) {
 													$mes =  $this->meses[$i];
 													if($mes2 == $i){
@@ -1123,7 +1128,7 @@ class estudianteBBDD extends singleton{
 					$mensaje = "No se ha actualizado la formación";
 				}
 
-				
+
 			}else{
 				$mensaje = "No se obtenido filas de la base de datos.";
 			}
@@ -1151,8 +1156,8 @@ class estudianteBBDD extends singleton{
 		for ($i=0; $i < count($etiquetas) ; $i++) { 			
 			$etiquetasSELECT .= "<option value='".$etiquetas[$i]['nombre']."'>";
 			$etiquetasSELECT .= $etiquetas[$i]['nombre']."</option>";
-			
-			
+
+
 		}
 		return $etiquetasSELECT;
 
@@ -1184,7 +1189,7 @@ class estudianteBBDD extends singleton{
 			</div>
 			<?php
 		}
-		
+
 
 	}
 
@@ -1211,7 +1216,7 @@ class estudianteBBDD extends singleton{
 				//$this->Idb->rollBack();
 				$_SESSION["mensajeServidor"] = "No se ha podido completar la operación";
 			}else{
-				
+
 				//print_r($_POST["etiquetas"]);
 				for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
 					$sql = "call agregarSkills(?,?)";
@@ -1232,14 +1237,14 @@ class estudianteBBDD extends singleton{
 
 					$_SESSION["mensajeServidor"] = $mensaje;
 				}else{
-					
+
 					$_SESSION["mensajeServidor"] = "No se ha podido completar la operación";
 				}
 
 			}
 
 
-			
+
 		}
 	}
 
@@ -1248,7 +1253,7 @@ class estudianteBBDD extends singleton{
 	/** FUNCIÓN LISTAR Idiomas **/
 
 	function listarIdiomas(){
-		
+
 		$sql = "select * from listarIdiomasEst where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute(array($_SESSION["usuario"]->identificador));
@@ -1261,7 +1266,7 @@ class estudianteBBDD extends singleton{
 		for ($i=0; $i < count($idiomasfilas); $i++) { 			
 
 			?>
-			
+
 			<div class="row idiomas">                        
 				<div class="col-xs-4">
 					<?php echo $idiomasfilas[$i]["nombre"];?>
@@ -1281,23 +1286,23 @@ class estudianteBBDD extends singleton{
 						foreach ($idiomasfilas[$i] as $valor) {
 							?>
 							<input type="hidden" name="filas[]" value="<?php echo $valor;?>">
-							
+
 							<?php
 						}
 						?>
-						
+
 						<input type="submit" name="elimidio" value="Eliminar" class="btn btn-danger">
 						<input type="submit" name="modidio" value="Modificar" class="btn btn-green">
 					</form>
 				</div>
 
 			</div>
-			
+
 
 			<?php
 		}
 
-		
+
 	}
 
 
@@ -1309,7 +1314,7 @@ class estudianteBBDD extends singleton{
 		if(isset($_POST["elimidio"])&&isset($_POST["ididio"])){
 			$sql = "call eliminarIdioma(?,?)";
 			$consulta = $this->Idb->prepare($sql);
-			
+
 			$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["ididio"]));
 			if($consulta->rowCount() > 0){
 				$consulta->setFetchMode(PDO::FETCH_ASSOC);
@@ -1320,12 +1325,12 @@ class estudianteBBDD extends singleton{
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha eliminado el idioma";
 				}
-				
+
 			}else{
 				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado";
 			}
-			
-			
+
+
 		}
 	}
 
@@ -1357,7 +1362,7 @@ class estudianteBBDD extends singleton{
 											<label>Idioma</label>
 											<input type="text" class="form-control" value="<?php echo $_POST["filas"][1]; ?>" disabled> 
 
-											
+
 										</div>    
 									</div>                     
 
@@ -1374,7 +1379,7 @@ class estudianteBBDD extends singleton{
 													}														
 												}
 												?>
-												
+
 											</select>
 										</div>    
 									</div>  
@@ -1433,7 +1438,7 @@ class estudianteBBDD extends singleton{
 					$mensaje = "No se ha actualizado el idioma";
 				}
 
-				
+
 			}else{
 				$mensaje = "No se obtenido filas de la base de datos.";
 			}

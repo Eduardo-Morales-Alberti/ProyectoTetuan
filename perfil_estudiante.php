@@ -244,7 +244,7 @@ ob_start();
                                     <option value="6">Máster</option>
                                     <option value="7">Certificado oficial</option>
                                     <option value="8">otro</option>-->
-                                    <?php echo $estudiantecl->listarNiveles(); ?>
+                                     <?php echo $generacl->listarEnum("formacion_clasificacion","formacion"); ?>
                                 </select>
                             </div>    
                         </div>                     
