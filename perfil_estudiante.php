@@ -345,10 +345,10 @@ ob_start();
 <!--Panel Datos Personales -->
 <form method="post" enctype="multipart/form-data">
     <div class="panel panel-default">        
-        <div class="panel-heading">
+        <div class="panel-heading" data-toggle="collapse" data-target=".collinfo">
             <h4>Información del perfil </h4> 
         </div>
-        <div class="panel-body">
+        <div class="panel-body collapse in collinfo">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -442,7 +442,7 @@ ob_start();
                         </div> 
                     </div>
                 </div>
-                <div class="panel-footer">
+                <div class="panel-footer collapse in collinfo" >
                     <div class="row">
                         <div class="col-md-12 text-right">
                             <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
@@ -458,10 +458,10 @@ ob_start();
         <form method="post">
             <div class="panel panel-default">
 
-                <div class="panel-heading">
+                <div class="panel-heading" data-toggle="collapse" data-target=".collcontr">
                     <h4>Cambiar Contraseña</h4> 
                 </div>
-                <div class="panel-body">
+                <div class="panel-body collapse collcontr">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -483,7 +483,7 @@ ob_start();
                         </div>
                     </div>
                 </div>
-                <div class="panel-footer">
+                <div class="panel-footer collapse collcontr">
                     <div class="row">
                         <div class="col-md-12 text-right">
                             <input type="submit" name="modcontr" class="btn btn-green" value="Renovar">
@@ -497,14 +497,14 @@ ob_start();
         <!-- Fin panel Actualizar Contraseña -->
         <!-- Experiencia -->        
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" data-toggle="collapse" data-target=".collexp">
                 <h4>Experiencia</h4> 
             </div>
-            <div class="panel-body">
+            <div class="panel-body collapse collexp">
                 <?php echo $estudiantecl->listarExperiencia(); ?>
 
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer collapse collexp">
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button type="button" id="nexp" class="btn btn-green" data-toggle="modal" data-target="#modalexp">Añadir otro puesto de trabajo</button>
@@ -516,14 +516,14 @@ ob_start();
         <!-- Fin de Experiencia -->
         <!-- Educación -->
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" data-toggle="collapse" data-target=".colleduc">
                 <h4>Educación</h4> 
             </div>
-            <div class="panel-body">
+            <div class="panel-body collapse colleduc">
                 <?php echo $estudiantecl->listarEducacion(); ?>
 
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer collapse colleduc">
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modaleduc">Añadir otra educación</button>
@@ -535,10 +535,10 @@ ob_start();
         <!-- Skills -->
         <form method="POST">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" data-toggle="collapse" data-target=".collskills">
                     <h4>Skills</h4> 
                 </div>
-                <div class="panel-body">
+                <div class="panel-body collapse collskills">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -597,7 +597,7 @@ ob_start();
             </div>
         </div>                                 
     </div>
-    <div class="panel-footer">
+    <div class="panel-footer collapse collskills">
         <div class="row">
             <div class="col-md-12 text-right">
                 <input type="button"  class="btn btn-danger" id="eliminarskills" name="eliminarskills" value="Eliminar selección">
@@ -611,10 +611,10 @@ ob_start();
 <!-- Fin Skills -->
 <!-- Idiomas -->
 <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-heading" data-toggle="collapse" data-target=".collidiomas">
         <h4>Idiomas</h4> 
     </div>
-    <div class="panel-body">
+    <div class="panel-body collapse collidiomas">
         <div class="row">                        
             <div class="col-xs-4">
                 <h4>Idioma</h4>
@@ -632,7 +632,7 @@ ob_start();
 
     </div>
 
-    <div class="panel-footer">
+    <div class="panel-footer collapse collidiomas">
         <div class="row">
             <div class="col-md-12 text-right">
                 <button type="button"  class="btn btn-green" data-toggle="modal" data-target="#modalidioma">Añadir otro idioma</button>
