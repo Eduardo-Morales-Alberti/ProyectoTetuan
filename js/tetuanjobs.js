@@ -139,12 +139,18 @@ function anteriorHermano(x){
 
 
 var elementosreq = new Array();
+var n = 0;
 
 /** Agregar skills para borrarlas **/
-function agregarEtiquetas(etq){
-  for (var i = etq.length - 1; i >= 0; i--) {
-    var elment = "check"+etq[i].nombre;
-    elementosreq.push(elment);
+function agregarEtiquetas(etq){ 
+  for (var i = 0; i < etq.length; i++) {
+    var elment = etq[i].nombre.trim();
+    //var id = elment;
+
+    var id = crearId(elment).substring(0,5)+n;
+    n++;
+
+    elementosreq[id] = elment; 
     
   }
 }
@@ -154,14 +160,23 @@ function agregarTag(selctid,divid,elementos,col,name){
   /** Obtengo el select con las etiquetas**/
   var x = document.getElementById(selctid);
   //x.value = getCleanedString(x.value);
-  var id = crearId(x.value).substring(0,5);
+  var id = crearId(x.value).substring(0,5)+n;
+  n++;
   /** Compruebo que la etiqueta no existe **/
-  var existe = elementos.indexOf("check"+id);
-
+  var existe = false;
   var etiqueta = limpiarCadena(x.value);
+  for (v in elementos) {
+    if(elementos[v].trim() == etiqueta){
+      existe = true;
+    }
+  };
+
+  //var existe = elementos.indexOf(x.value.trim());
+
+  
 
   /** Compruebo que el option seleccionado es correcto**/
-  if(x.value != "nada"  && x.value.length >2 && existe < 0){
+  if(x.value != "nada"  && x.value.length >2 && !existe){
     /** Obtengo el div donde voy a agregar la etiqueta**/
     var ele = document.getElementById(divid);
     /** Creo un div **/
@@ -178,7 +193,8 @@ function agregarTag(selctid,divid,elementos,col,name){
     divele.innerHTML = html;
     /** Agrego a elementos los id de los checkbox que he ido añadiendo al div**/
 
-    elementos.push("check"+id);
+    //elementos.push(x.value);
+    elementos[id] = x.value.trim();
     /** Agrego al div seleccionado, el div que acabo de crear**/
     ele.appendChild(divele);
     /** Elimino el option que acabo agregar a las etiquetas**/
@@ -211,9 +227,11 @@ function eliminarTag(selctid,divid,elementos){
   /** Recorro elementos con los check que he agregado anteriormente**/
   
   //var longi = elementos.length;
-  for (var i = 0; i < elementos.length; i++) {
+  for (v in elementos) {
     /** Obtengo los elemento checkbox a partir de su id**/
-    var checkel = document.getElementById(elementos[i]);
+
+    var checkel = document.getElementById("check"+v);
+    //console.log("check"+v+"|"+checkel);
     /** Si el checkbox está seleccionado**/
     if(checkel.checked){
       /**A partir del value del checkbox obtengo el div que lo contiene**/
@@ -232,8 +250,9 @@ function eliminarTag(selctid,divid,elementos){
       /** Elimino el div de la etiqueta**/
       ele.removeChild(divelim);
       /** Elimino el elemento del array **/
-      elementos.splice(i,1);  
-      i = i-1;
+      /*elementos.splice(i,1);  
+      i = i-1;*/
+      delete elementos[v];
     }  
 
     
@@ -440,7 +459,7 @@ function filtrous(){
 /** Filtro Puestos**/
 function filtropuestos(){
   /** Opcion requisitos **/
-  var elementosreq = new Array();
+  /*var elementosreq = new Array();
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
@@ -450,8 +469,10 @@ function filtropuestos(){
   var btnelimex = document.getElementById("elimrequisito");
   btnelimex.addEventListener("click", function(){
     elementosreq = eliminarTag("etiquetas", "divetiquetas",elementosreq)
-  });
+  });*/
   /** Fin Opcion requisitos **/
+  /* Cargar tabla*/
+   var table = cargarTabla('#respuestos');
 }
 
 /** Fin Filtro Puestos**/

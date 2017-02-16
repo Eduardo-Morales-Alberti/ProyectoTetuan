@@ -852,3 +852,32 @@ call agregarPuesto(1, 2, "Puesto de prueba", "Es un puesto muy majo", 1,5,1,3,1,
 /** FIN RUTINA PARA GUARDAR UN PUESTO **/
 
 /** FIN RUTINAS FICHA PUESTOS **/
+
+/** RUTINAS FILTRO PUESTOS **/
+
+/** RUTINA PARA ELIMINAR UN PUESTO **/
+
+drop PROCEDURE if EXISTS tetuanjobs.eliminarPuesto;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.eliminarPuesto(id_us int, id_pst int) 
+	BEGIN
+	declare r boolean default false;
+	declare ext boolean default false;
+	select true into r from tetuanjobs.usuarios where id_usuario = id_us;
+	select true into ext from tetuanjobs.puestos where id_puesto = id_pst;
+
+	if r and ext then
+		delete from tetuanjobs.puestos where id_puesto = id_pst;
+		select true as resultado;
+	else 
+		select false as resultado;
+	end if;
+
+END//
+delimiter ;
+
+
+/** FIN RUTINA PARA ELIMINAR UN PUESTO **/
+
+/** FIN RUTINAS FILTRO PUESTOS **/

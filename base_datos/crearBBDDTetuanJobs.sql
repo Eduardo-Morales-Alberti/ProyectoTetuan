@@ -252,6 +252,7 @@ CREATE TABLE IF NOT EXISTS `FUNCIONES` (
   `id_funcion` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `id_puesto` int(11) UNSIGNED NOT NULL,
   `funcion_desc` varchar(250) COLLATE utf8_general_ci NOT NULL,
+   UNIQUE (`id_puesto`,`funcion_desc`),
   FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

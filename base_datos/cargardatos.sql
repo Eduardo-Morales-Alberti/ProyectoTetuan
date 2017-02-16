@@ -179,3 +179,24 @@ INSERT INTO tetuanjobs.estudiantes_idiomas(id_idioma, id_estudiante, hablado, es
 	values(4, 1, 2,1);
 
 /* fin insertar idiomas al estudiante */
+
+/* insertar puestos */
+INSERT INTO `tetuanjobs`.`puestos` (`id_puesto`, `id_empresa`, `puesto_nombre`, 
+	`puesto_desc`, `puesto_carnet`, `id_provincia`, `experiencia`, `tipo_contrato`, 
+	`jornada`, `titulacion_minima`, `f_publicacion`) 
+VALUES (NULL, '2', 'Desarrollo web', 'Crear páginas web', '1', '15', 
+	'Al menos un año', 'Indefinido', 'Completa', 'Bachillerato', CURRENT_TIMESTAMP);
+
+INSERT INTO `tetuanjobs`.`puestos` (`id_puesto`, `id_empresa`, `puesto_nombre`, 
+	`puesto_desc`, `puesto_carnet`, `id_provincia`, `experiencia`, `tipo_contrato`, 
+	`jornada`, `titulacion_minima`, `f_publicacion`) 
+VALUES (NULL, '3', 'Hacking etico', 'Descubir vulnerabilidades', '1', '5', 
+	'Al menos un año', 'Indefinido', 'Completa', 'Bachillerato', CURRENT_TIMESTAMP);
+
+INSERT INTO `tetuanjobs`.`puestos` (`id_puesto`, `id_empresa`, `puesto_nombre`, 
+	`puesto_desc`, `puesto_carnet`, `id_provincia`, `experiencia`, `tipo_contrato`, 
+	`jornada`, `titulacion_minima`, `f_publicacion`) 
+VALUES (NULL, '1', 'Arreglar ordenadores', 'Mantenimiento de equipos', '1', '28', 
+	'Al menos un año', 'Indefinido', 'Completa', 'Bachillerato', CURRENT_TIMESTAMP);
+
+/* fin insertar puestos */

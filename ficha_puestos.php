@@ -12,6 +12,7 @@ if(!isset($_SESSION["usuario"])){
 $generacl = new General;
 $admincl = new adminBBDD;
 $admincl->agregarPuesto();
+
 ob_start();?>
 <script type="text/javascript">
 fichapuestos();

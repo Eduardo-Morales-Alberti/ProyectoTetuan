@@ -366,6 +366,80 @@ class adminBBDD extends singleton{
 	/** fin función agregar puesto**/
 
 	/** FIN FICHA PUESTOS **/
+
+	/**Filtro puestos **/
+
+	/** funcion para listar los puestos **/
+
+	function listarPuestos(){
+		$html = "";
+		$sql = "select nombre, identificador, empresa,provincia,descripcion from listarPuestos";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+		$usuarios = array();
+		while ($row = $consulta->fetch()) {
+			$usuarios[] = $row;
+		}
+		
+
+		for ($i=0; $i < count($usuarios); $i++) { 
+			echo "<form method='post'><tr>";
+			foreach ($usuarios[$i] as $clave => $valor) {
+
+				if($clave == "identificador"){
+					echo "<td><input type='checkbox' name='ids[]' value='$valor'> &nbsp; <button type='submit' name='modpst' value='$valor' class='btn btn-success'>
+					<i class='fa fa-edit' aria-hidden='true'></i>
+					</button></td>";
+				}else{
+					echo "<td><input type='hidden' name='".$clave."[".$usuarios[$i]["identificador"]."]' value='$valor'>$valor</td>";
+				}
+
+			}
+			echo "</tr></form>";
+		}	
+
+	}
+
+	/** fin funcion para listar los puestos **/
+
+		/** funcion para eliminar los puestos **/
+
+	function eliminarPuestos(){
+
+		if(isset($_POST["eliminarpst"])&&isset($_POST["ids"])){
+
+			for ($i=0; $i < count($_POST["ids"]); $i++) { 
+
+				$sql = "call eliminarPuesto(?,?)";
+
+				$consulta = $this->Idb->prepare($sql);
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["ids"][$i]));
+				if($consulta->rowCount() > 0){
+					$row = $consulta->fetch();
+					if($row["resultado"]){
+						$_SESSION["mensajeServidor"] = "Puesto eliminado";
+					}else{
+						$_SESSION["mensajeServidor"] = "No se ha podido eliminar el puesto";
+					}
+				
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha recibido respuesta.";
+				}
+
+
+				
+
+			}	
+			//header("location:filtro_puestos.php");
+		}
+
+	}
+
+	/** funcion para eliminar los puestos **/
+
+	/** fin Filtro puestos **/
 }
 
 ?>

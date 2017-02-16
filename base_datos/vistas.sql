@@ -128,6 +128,20 @@ GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
 
 /** fin Perfil estudiante **/
 
+/** filtro puestos **/
+
+/** VISTA LISTAR empresas **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as 
+  select puesto_nombre as nombre, id_puesto as identificador, nombre_empresa as empresa, nombre_provincia as provincia, puesto_desc as descripcion
+             from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
+             join provincias prv on prv.id_provincia = pst.id_provincia;
+
+GRANT select on tetuanjobs.listarPuestos To 'usertetuan'@'localhost';
+
+/** FIN VISTA LISTAR empresas**/
+
+/** fin filtro puestos **/
 
 
 

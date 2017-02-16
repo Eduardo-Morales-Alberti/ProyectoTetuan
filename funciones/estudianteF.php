@@ -1176,19 +1176,24 @@ class estudianteBBDD extends singleton{
 			$etiquetas[] = $row;
 		}
 		$_SESSION["etiquetas"] = json_encode($etiquetas);
-		for ($i=0; $i < count($etiquetas); $i++) { 
 
+		$n = 0;
+		for ($i=0; $i < count($etiquetas); $i++) { 
+			$id = substr($this->limpiarRuta($etiquetas[$i]["nombre"]),0,5).$n;
+			$n++;
 			?>
-			<div class="col-md-4 col-lg-3 form-group" id="<?php echo $etiquetas[$i]["nombre"].'elemento';?>">
+			<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
 				<div class="input-group">
 					<span class="input-group-addon">
-						<input type="checkbox" id="check<?php echo $this->limpiarRuta($etiquetas[$i]["nombre"]);?>" name="etiquetasel[]" value="<?php echo $this->limpiarRuta($etiquetas[$i]["nombre"]);?>">
+						<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
 					</span>
-					<input type="text" class="form-control" id="input<?php echo $this->limpiarRuta($etiquetas[$i]["nombre"]);?>" name="etiquetas[]" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
+					<input type="text" class="form-control" id="input<?php echo $id;?>" name="etiquetas[]" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
 				</div>
 			</div>
 			<?php
 		}
+
+	
 
 
 	}

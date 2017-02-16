@@ -175,7 +175,7 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                     </a>   
                                     <ul class="nav collapse out">
                                         <li>
-                                            <a href="ficha_puestos.php?Id=nuevo" title="Nuevo" data-toggle="" class="no-submenu subitem">
+                                            <a href="ficha_puestos.php" title="Nuevo" data-toggle="" class="no-submenu subitem">
 
                                                 <span class="item-text">Nuevo puesto</span>
                                             </a>
