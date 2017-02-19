@@ -851,6 +851,138 @@ call agregarPuesto(1, 2, "Puesto de prueba", "Es un puesto muy majo", 1,5,1,3,1,
 
 /** FIN RUTINA PARA GUARDAR UN PUESTO **/
 
+/** funcion para cargar información de un puesto por id **/
+
+drop PROCEDURE if EXISTS tetuanjobs.cargarInfoPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.cargarInfoPuesto(idpuesto int, usid int) 
+	BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+		select true as resultado, puesto_nombre as nombre, id_puesto as identificador, emp.id_empresa as id_emp,  nombre_empresa as empresa, 
+		  pst.id_provincia as idprov, nombre_provincia as provincia, puesto_desc as descripcion,puesto_carnet as carnet, cast(experiencia as unsigned) experiencia, 
+		  cast(tipo_contrato as unsigned) contrato, cast(jornada as unsigned) jornada, cast(titulacion_minima as unsigned) titulacion
+		  from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
+             join provincias prv on prv.id_provincia = pst.id_provincia where id_puesto = idpst;
+
+		/*select true as resultado;*/
+	else
+		select false as resultado;
+	end if;
+			
+		
+	END//
+delimiter ;
+
+
+/** fin funcion para cargar información de un puesto por id **/
+
+/** listar skills del puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.listarSkillsPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarSkillsPuesto(idpuesto int, usid int) 
+	BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+		select etq.id_etiqueta as identificador, nombre_etiqueta as nombre
+     from tetuanjobs.etiquetas etq left join 
+     tetuanjobs.puestos_etiquetas pstetq on etq.id_etiqueta = pstetq.id_etiqueta left join tetuanjobs.puestos pst
+     on pstetq.id_puesto = pst.id_puesto where pst.id_puesto = idpst
+      order by etq.id_etiqueta;
+
+		/*select true as resultado;*/
+	else
+		select false as resultado;
+	end if;
+			
+		
+	END//
+delimiter ;
+
+/** fin listar skills del puesto **/
+
+/** listar Idiomas del puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.listarIdiomasPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarIdiomasPuesto(idpuesto int, usid int) 
+	BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+		select idm.id_idioma as identificador, nombre_idioma as nombre
+     from tetuanjobs.idiomas idm left join 
+     tetuanjobs.puestos_idiomas pstidm on idm.id_idioma = pstidm.id_idioma left join tetuanjobs.puestos pst
+     on pstidm.id_puesto = pst.id_puesto where pst.id_puesto = idpst
+      order by idm.id_idioma;
+
+		/*select true as resultado;*/
+	else
+		select false as resultado;
+	end if;
+			
+		
+	END//
+delimiter ;
+
+/** fin listar Idiomas del puesto **/
+
+/** listar funciones del puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.listarFuncionesPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarFuncionesPuesto(idpuesto int, usid int) 
+	BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+		select func.id_funcion as identificador, funcion_desc as nombre
+     from tetuanjobs.funciones func  left join tetuanjobs.puestos pst
+     on func.id_puesto = pst.id_puesto where pst.id_puesto = idpst
+      order by func.id_funcion;
+
+		/*select true as resultado;*/
+	else
+		select false as resultado;
+	end if;
+			
+		
+	END//
+delimiter ;
+
+/** fin listar funciones del puesto **/
+
 /** FIN RUTINAS FICHA PUESTOS **/
 
 /** RUTINAS FILTRO PUESTOS **/

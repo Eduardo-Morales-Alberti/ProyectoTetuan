@@ -2,9 +2,20 @@
 include_once("conexion.php");
 
 class adminBBDD extends singleton{
-	
+	private $n = 0;
 	function __construct(){
 		parent::__construct();		
+	}
+
+
+	function limpiarRuta($string) {
+		$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
+		$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
+		$string = str_replace($no_permitidas, $permitidas ,$string);
+		$string = preg_replace('/[^A-Za-z0-9\-\_]/', '_', $string);
+		$string = preg_replace ('/[ ]+/', '_', $string);
+
+		return strtolower($string); 
 	}
 
 	/** FILTRO USUARIOS**/
@@ -126,7 +137,7 @@ class adminBBDD extends singleton{
 					}else{
 						$_SESSION["mensajeServidor"] = "No se ha podido eliminar las empresas";
 					}
-				
+
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha recibido respuesta.";
 				}
@@ -225,13 +236,57 @@ class adminBBDD extends singleton{
 
 	/** FICHA PUESTOS **/
 
+	/** FUNCIÓN LISTAR Funciones DEL puesto **/
+	function listarFuncionesPst(){
+		if(isset($_SESSION["idpst"])){
+			$sql = "call listarFuncionesPuesto(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+			//echo $_SESSION["idpst"]."<br>";
+			//echo $_SESSION["usuario"]->identificador."<br>";
+			$consulta->execute(array($_SESSION["idpst"],$_SESSION["usuario"]->identificador));
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+			$funciones = array();
+			while ($row = $consulta->fetch()) {
+				$funciones[] = $row;
+			}
+			$_SESSION["funciones"] = json_encode($funciones);
+			//print_r($etiquetas);
+			//$this->$n;
+			for ($i=0; $i < count($funciones); $i++) { 
+				$id = substr($this->limpiarRuta($funciones[$i]["nombre"]),0,5).$this->n;
+				$this->n++;
+				?>
+				<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
+						</span>
+						<input type="text" class="form-control" id="input<?php echo $id;?>" name="funciones[]" value="<?php echo $funciones[$i]["nombre"];?>" readonly>
+					</div>
+				</div>
+				<?php
+			}
+
+		}
+
+
+	}
+
+	/** FIN FUNCIÓN LISTAR Funciones DEL puesto **/
+
 	/** función listar etiquetas **/
 
 	function listarTodasEtiquetas(){
 
-		$sql = "select * from listarEtiquetas";
+		$sql = "select * from listarSkillsPuesto where puesto <> ? or
+		puesto is null";
 		$consulta = $this->Idb->prepare($sql);
-		$consulta->execute();
+		if(isset($_SESSION["idpst"])){
+			$consulta->execute(array($_SESSION["idpst"]));
+		}else{
+			$consulta->execute(array(-1));
+		}
+		
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$etiquetasSELECT = "";
 
@@ -251,13 +306,56 @@ class adminBBDD extends singleton{
 
 	/** fin función listar etiquetas **/
 
+	/** FUNCIÓN LISTAR ETIQUETAS DEL puesto **/
+	function listarEtiquetasPst(){
+		if(isset($_SESSION["idpst"])){
+			$sql = "call listarSkillsPuesto(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+			//echo $_SESSION["idpst"]."<br>";
+			//echo $_SESSION["usuario"]->identificador."<br>";
+			$consulta->execute(array($_SESSION["idpst"],$_SESSION["usuario"]->identificador));
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+			$etiquetas = array();
+			while ($row = $consulta->fetch()) {
+				$etiquetas[] = $row;
+			}
+			$_SESSION["etiquetas"] = json_encode($etiquetas);
+			//print_r($etiquetas);
+			//$this->$n;
+			for ($i=0; $i < count($etiquetas); $i++) { 
+				$id = substr($this->limpiarRuta($etiquetas[$i]["nombre"]),0,5).$this->n;
+				$this->n++;
+				?>
+				<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
+						</span>
+						<input type="text" class="form-control" id="input<?php echo $id;?>" name="etiquetas[]" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
+					</div>
+				</div>
+				<?php
+			}
+
+		}
+
+
+	}
+
+	/** FIN FUNCIÓN LISTAR ETIQUETAS DEL puesto **/
+
 	/** función listar Idiomas **/
 
 	function listarIdiomas(){
 
-		$sql = "select * from listarIdiomas";
+		$sql = "select * from listarIdiomasPuesto where puesto <> ? or
+		puesto is null";
 		$consulta = $this->Idb->prepare($sql);
-		$consulta->execute();
+		if(isset($_SESSION["idpst"])){
+			$consulta->execute(array($_SESSION["idpst"]));
+		}else{
+			$consulta->execute(array(-1));
+		}
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$idiomasSELECT = "";
 
@@ -267,9 +365,9 @@ class adminBBDD extends singleton{
 		$idiomasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
 		for ($i=0; $i < count($idiomas) ; $i++) { 
 			
-				$idiomasSELECT .= "<option value='".$idiomas[$i]['nombre']."'>";
-				$idiomasSELECT .= $idiomas[$i]['nombre']."</option>";
-					
+			$idiomasSELECT .= "<option value='".$idiomas[$i]['nombre']."'>";
+			$idiomasSELECT .= $idiomas[$i]['nombre']."</option>";
+
 			
 		}
 		return $idiomasSELECT;
@@ -278,9 +376,46 @@ class adminBBDD extends singleton{
 
 	/** fin función listar Idiomas **/
 
+	/** FUNCIÓN LISTAR ETIQUETAS DEL puesto **/
+	function listarIdiomasPst(){
+		if(isset($_SESSION["idpst"])){
+			$sql = "call listarIdiomasPuesto(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+		
+			$consulta->execute(array($_SESSION["idpst"],$_SESSION["usuario"]->identificador));
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+			$idiomas = array();
+			while ($row = $consulta->fetch()) {
+				$idiomas[] = $row;
+			}			
+
+			$_SESSION["idiomas"] = json_encode($idiomas);
+		
+			for ($i=0; $i < count($idiomas); $i++) { 
+				$id = substr($this->limpiarRuta($idiomas[$i]["nombre"]),0,5).$this->n;
+				$this->n++;
+				?>
+				<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
+						</span>
+						<input type="text" class="form-control" id="input<?php echo $id;?>" name="idiomas[]" value="<?php echo $idiomas[$i]["nombre"];?>" readonly>
+					</div>
+				</div>
+				<?php
+			}
+
+		}
+
+
+	}
+
+	/** FIN FUNCIÓN LISTAR ETIQUETAS DEL puesto **/
+
 	/** función agregar puesto**/
 	function agregarPuesto(){
-		if(isset($_POST["guardarpuesto"])&&isset($_POST["titpuesto"])&&isset($_POST["empresa"])&&isset($_POST["descpuesto"])){
+		if(isset($_POST["guardarpuesto"])&& !isset($_SESSION["idpst"])&&isset($_POST["titpuesto"])&&isset($_POST["empresa"])&&isset($_POST["descpuesto"])){
 			$sql = "call agregarPuesto(?,?,?,?,?,?,?,?,?,?)";
 			$consulta = $this->Idb->prepare($sql);	
 
@@ -296,7 +431,7 @@ class adminBBDD extends singleton{
 				$nombre = $_POST["titpuesto"];
 			}		
 
-				
+
 
 			$desc = null;
 
@@ -365,6 +500,37 @@ class adminBBDD extends singleton{
 
 	/** fin función agregar puesto**/
 
+	/** FUNCIÓN PARA LISTAR INFORMACION Puesto **/
+
+	function listarInformacionPuesto(){
+		if(isset($_SESSION["idpst"])){
+
+			$sql = "call cargarInfoPuesto(?,?)";
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($_SESSION["idpst"],$_SESSION["usuario"]->identificador));
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);			
+
+			return $consulta->fetch();
+		}
+
+	}
+
+
+	/** FIN FUNCIÓN PARA LISTAR INFORMACION Puesto **/
+
+	/** función para cancelar modificaciones puesto **/
+
+	function cancelarPuesto(){
+		if(isset($_POST["cancelarpuesto"])){
+			unset($_SESSION["idpst"]);
+		}
+	}
+
+	
+
+
+	/** fin función para cancelar modificaciones puesto **/
+
 	/** FIN FICHA PUESTOS **/
 
 	/**Filtro puestos **/
@@ -404,7 +570,7 @@ class adminBBDD extends singleton{
 
 	/** fin funcion para listar los puestos **/
 
-		/** funcion para eliminar los puestos **/
+	/** funcion para eliminar los puestos **/
 
 	function eliminarPuestos(){
 
@@ -423,7 +589,7 @@ class adminBBDD extends singleton{
 					}else{
 						$_SESSION["mensajeServidor"] = "No se ha podido eliminar el puesto";
 					}
-				
+
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha recibido respuesta.";
 				}
@@ -437,7 +603,20 @@ class adminBBDD extends singleton{
 
 	}
 
+
+
 	/** funcion para eliminar los puestos **/
+
+	/* funcion para enviar id a modificar a la ficha */
+
+	function modificarPuesto(){
+		if(isset($_POST["modpst"])){
+			$_SESSION["idpst"] = $_POST["modpst"];
+			header("location:ficha_puestos.php");
+		}
+	}
+
+	/* fin funcion para enviar id a modificar a la ficha */
 
 	/** fin Filtro puestos **/
 }

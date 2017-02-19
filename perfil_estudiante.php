@@ -41,14 +41,7 @@ $estudiantecl->agregarSkills();
 /*print_r($generacl->provincias);*/
 
 
-/**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
-Se le llama en el cuerpo en las últimas líneas**/
-ob_start();?>
-<script type="text/javascript">
-perfil();
-</script>
-<?php
-$page["js"] = ob_get_clean();
+
 /*Modal experiencia*/
 /** Abro un buffer para alamacenar el html en el buffer**/
 ob_start();?>
@@ -244,7 +237,7 @@ ob_start();
                                     <option value="6">Máster</option>
                                     <option value="7">Certificado oficial</option>
                                     <option value="8">otro</option>-->
-                                     <?php echo $generacl->listarEnum("formacion_clasificacion","formacion"); ?>
+                                    <?php echo $generacl->listarEnum("formacion_clasificacion","formacion"); ?>
                                 </select>
                             </div>    
                         </div>                     
@@ -655,6 +648,21 @@ ob_start();
 <?php 
 /** Guardamos el buffer del cuerpo del perfil **/
 $page["cuerpo"] = ob_get_clean();
+/**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
+Se le llama en el cuerpo en las últimas líneas**/
+ob_start();?>
+<script type="text/javascript">
+perfil();
+<?php 
+if(isset($_SESSION["etiquetas"])){
+    echo 'agregarEtiquetas('.$_SESSION["etiquetas"].',elementosreq);';
+    unset($_SESSION["etiquetas"]);
+}
+?>
+</script>
+<?php
+$page["js"] = ob_get_clean();
+
 /** Incluimos el fichero cuerpo **/
 include_once("cuerpo.php");
 ?>

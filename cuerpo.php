@@ -305,12 +305,12 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                         unset($_SESSION["modificar"]);
                     }
 
-                    if(isset($_SESSION["etiquetas"])){
+                    /*if(isset($_SESSION["etiquetas"])){
                         echo '<script type="text/javascript">
                         agregarEtiquetas('.$_SESSION["etiquetas"].');
                         </script>';
                         unset($_SESSION["etiquetas"]);
-                    }
+                    }*/
 
                     
                     ?>   

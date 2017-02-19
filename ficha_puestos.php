@@ -12,39 +12,36 @@ if(!isset($_SESSION["usuario"])){
 $generacl = new General;
 $admincl = new adminBBDD;
 $admincl->agregarPuesto();
-
-ob_start();?>
-<script type="text/javascript">
-fichapuestos();
-
-</script>
-<?php
-$page["js"] = ob_get_clean();
+$admincl->cancelarPuesto();
+$puesto = $admincl->listarInformacionPuesto();
+//print_r($puesto);
 
 ob_start();
 ?>
 <h1 >Ficha de puestos
 </h1>  
 <form method="post">
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Añadir un nuevo puesto
-        </h4> 
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Nombre de la empresa</label>
-                    <select class="form-control" name="empresa">
-                        <?php echo $generacl->listarEmpresasSelect();?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Añadir un nuevo puesto
+            </h4> 
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nombre de la empresa</label>
+                        <select class="form-control" name="empresa">
+                            <?php if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
+                        }else{echo $generacl->listarEmpresasSelect();
+                        } ?>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Título del puesto</label>
-                    <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="" >
+                    <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="<?php if(isset($puesto["nombre"])){echo $puesto["nombre"];}?>" >
                 </div>
             </div>
         </div>
@@ -53,6 +50,7 @@ ob_start();
                 <div class="form-group">
                     <label>Provincia</label>
                     <select class="form-control" name="provincia">
+                        <?php if(isset($puesto["idprov"])){$generacl->listarProvincias($puesto["idprov"]);}?>
                         <?php echo $generacl->provinciasSELECT;?>
                     </select>
                 </div>
@@ -62,7 +60,7 @@ ob_start();
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Descripción del puesto</label><br>
-                    <textarea class="form-control" rows="5" name="descpuesto"></textarea>
+                    <textarea class="form-control" rows="5" name="descpuesto"><?php if(isset($puesto["descripcion"])){echo $puesto["descripcion"];}?></textarea>
                 </div>
             </div>
         </div>
@@ -83,6 +81,7 @@ ob_start();
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="divfunciones">
+                        <?php echo $admincl->listarFuncionesPst();?>
                         <!--<div class="col-md-6 form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -123,6 +122,7 @@ ob_start();
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="divetiquetas">
+                        <?php $admincl->listarEtiquetasPst(); ?>
                         <!--<div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -163,6 +163,7 @@ ob_start();
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="dividiomas">
+                        <?php $admincl->listarIdiomasPst(); ?>
                         <!--<div class="col-md-4 col-lg-3 form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -185,12 +186,12 @@ ob_start();
         </div>
         <div class="row">
             <div class="col-md-6">
-               <div class="form-group">
+             <div class="form-group">
                 <label>Carnet de conducir</label> <br>
 
                 <div class="input-group">
                     <span class="input-group-addon">
-                        <input type="checkbox" name="carnet" value="carnet">
+                        <input type="checkbox" name="carnet" value="carnet" <?php if(isset($puesto["carnet"])&&$puesto["carnet"]){echo "checked";}?> >
                     </span>
                     <input type="text" class="form-control" value="Requiere carnet de conducir" disabled="disabled">                        
                 </div>
@@ -200,7 +201,10 @@ ob_start();
             <div class="form-group">
                 <label>Experiencia</label>
                 <select class="form-control" name="experiencia">
-                    <?php echo $generacl->listarEnum("experiencia","puestos",1); ?>
+                    <?php
+                    $exp = 1;
+                    if(isset($puesto["experiencia"])){$exp = $puesto["experiencia"];}?>
+                    <?php echo $generacl->listarEnum("experiencia","puestos",$exp); ?>
                 </select>
             </div>
         </div>
@@ -210,7 +214,10 @@ ob_start();
             <div class="form-group">
                 <label>Tipo de contrado</label>
                 <select class="form-control" name="contrato">
-                    <?php echo $generacl->listarEnum("tipo_contrato","puestos",1); ?>
+                    <?php
+                    $contr = 1;
+                    if(isset($puesto["contrato"])){$contr = $puesto["contrato"];}?>
+                    <?php echo $generacl->listarEnum("tipo_contrato","puestos",$contr); ?>
                 </select>
             </div>
         </div>
@@ -218,7 +225,10 @@ ob_start();
             <div class="form-group">
                 <label>Tipo de jornada</label>
                 <select class="form-control" name="jornada">
-                     <?php echo $generacl->listarEnum("jornada","puestos",1); ?>
+                    <?php
+                    $jorn = 1;
+                    if(isset($puesto["jornada"])){$jorn = $puesto["jornada"];}?>
+                    <?php echo $generacl->listarEnum("jornada","puestos",$jorn); ?>
                 </select>
             </div>
         </div>
@@ -229,7 +239,10 @@ ob_start();
                 <label>Titulación mínima</label>
 
                 <select class="form-control" name="nivel">
-                    <?php echo $generacl->listarEnum("titulacion_minima","puestos",1); ?>
+                    <?php
+                    $tit = 1;
+                    if(isset($puesto["titulacion"])){$tit = $puesto["titulacion"];}?>
+                    <?php echo $generacl->listarEnum("titulacion_minima","puestos",$tit); ?>
                 </select>
 
             </div>
@@ -238,10 +251,16 @@ ob_start();
 </div>
 <div class="panel-footer">
     <div class="row">
-     <div class="col-md-12 text-right">
-      <input type="submit" class="btn btn-danger" name="limpiar" value="Limpiar">
-      <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
-  </div>
+       <div class="col-md-12 text-right">
+        <?php 
+        if(isset($_SESSION["idpst"])){
+            echo '<input type="submit" class="btn btn-danger" name="cancelarpuesto" value="Cancelar">';
+        }
+        ?>
+        <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
+        <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
+
+    </div>
 </div>
 </div>    
 
@@ -250,6 +269,31 @@ ob_start();
 
 <?php
 $page["cuerpo"] = ob_get_clean();
+
+ob_start();?>
+<script type="text/javascript">
+fichapuestos();
+<?php 
+if(isset($_SESSION["funciones"])){
+    echo 'agregarEtiquetas('.$_SESSION["funciones"].',elementosfunc);';
+    unset($_SESSION["funciones"]);
+}
+
+
+if(isset($_SESSION["etiquetas"])){
+    echo 'agregarEtiquetas('.$_SESSION["etiquetas"].',elementosreq);';
+    unset($_SESSION["etiquetas"]);
+}
+if(isset($_SESSION["idiomas"])){
+    echo 'agregarEtiquetas('.$_SESSION["idiomas"].',elementosidm);';
+    unset($_SESSION["idiomas"]);
+}
+
+?>
+</script>
+<?php
+$page["js"] = ob_get_clean();
+
 /** Incluimos el fichero cuerpo **/
 include_once("cuerpo.php");
 ?>

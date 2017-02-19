@@ -142,7 +142,7 @@ var elementosreq = new Array();
 var n = 0;
 
 /** Agregar skills para borrarlas **/
-function agregarEtiquetas(etq){ 
+function agregarEtiquetas(etq,elementos){ 
   for (var i = 0; i < etq.length; i++) {
     var elment = etq[i].nombre.trim();
     //var id = elment;
@@ -150,7 +150,7 @@ function agregarEtiquetas(etq){
     var id = crearId(elment).substring(0,5)+n;
     n++;
 
-    elementosreq[id] = elment; 
+    elementos[id] = elment; 
     
   }
 }
@@ -478,14 +478,18 @@ function filtropuestos(){
 /** Fin Filtro Puestos**/
 
 /** Ficha Puestos **/
+
+var elementosidm = new Array();
+var elementosfunc = new Array();
 function fichapuestos(){
 
   /** Opcion requisitos **/
-  var elementosreq = new Array();
+  //elementosreq = new Array();
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3","etiquetas")
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3","etiquetas");
+    //console.log(ele);
   });
 
   var btnelimex = document.getElementById("elimrequisito");
@@ -494,7 +498,7 @@ function fichapuestos(){
   });
   /** Fin Opcion requisitos **/
   /** Opción idiomas **/
-  var elementosidm = new Array();
+  //var elementosidm = new Array();
 
   var btnaidm = document.getElementById("ageidi");
   btnaidm.addEventListener("click", function(){
@@ -507,7 +511,7 @@ function fichapuestos(){
   });
   /** Fin Opción idiomas **/
   /** Opción funciones **/
-  var elementosfunc = new Array();
+  //var elementosfunc = new Array();
 
   var btnfunc = document.getElementById("afuncion");
   btnfunc.addEventListener("click", function(){

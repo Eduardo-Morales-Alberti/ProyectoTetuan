@@ -11,15 +11,10 @@ if(!isset($_SESSION["usuario"])){
 
 $generacl = new General;
 include_once("funciones/adminF.php");
-$adminclass = new adminBBDD;
-$adminclass->eliminarPuestos();
-ob_start();?>
-<script type="text/javascript">
-filtropuestos();
+$admincl = new adminBBDD;
+$admincl->eliminarPuestos();
+$admincl->modificarPuesto();
 
-</script>
-<?php
-$page["js"] = ob_get_clean();
 
 ob_start();
 ?>
@@ -55,7 +50,7 @@ ob_start();
             <tbody>
                 
                 <?php 
-                $adminclass->listarPuestos();                
+                $admincl->listarPuestos();                
                 ?>
             </tbody>
         </table>               
@@ -74,6 +69,20 @@ ob_start();
 </form>
 
 <?php
+
+ob_start();?>
+<script type="text/javascript">
+filtropuestos();
+<?php 
+if(isset($_SESSION["etiquetas"])){
+    echo 'agregarEtiquetas('.$_SESSION["etiquetas"].');';
+    unset($_SESSION["etiquetas"]);
+}
+?>
+</script>
+<?php
+$page["js"] = ob_get_clean();
+
 $page["cuerpo"] = ob_get_clean();
 /** Incluimos el fichero cuerpo **/
 include_once("cuerpo.php");

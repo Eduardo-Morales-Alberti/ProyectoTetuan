@@ -130,7 +130,7 @@ GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
 
 /** filtro puestos **/
 
-/** VISTA LISTAR empresas **/
+/** VISTA LISTAR puesto  **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as 
   select puesto_nombre as nombre, id_puesto as identificador, nombre_empresa as empresa, nombre_provincia as provincia, puesto_desc as descripcion
@@ -139,9 +139,46 @@ CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as
 
 GRANT select on tetuanjobs.listarPuestos To 'usertetuan'@'localhost';
 
-/** FIN VISTA LISTAR empresas**/
+/** FIN VISTA LISTAR puesto **/
 
 /** fin filtro puestos **/
+
+/** ficha puestos **/
+
+/*CREATE OR REPLACE VIEW tetuanjobs.listarPuestoId as 
+  select puesto_nombre as nombre, id_puesto as identificador, emp.id_empresa as id_emp,  nombre_empresa as empresa, 
+  pst.id_provincia as idprov, nombre_provincia as provincia, puesto_desc as descripcion,puesto_carnet, experiencia, 
+  tipo_contrato, jornada, titulacion_minima 
+  from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
+             join provincias prv on prv.id_provincia = pst.id_provincia;
+
+GRANT select on tetuanjobs.listarPuestoId To 'usertetuan'@'localhost';*/
+
+/** vista listar skills puesto **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarSkillsPuesto as 
+     select etq.id_etiqueta as identificador, nombre_etiqueta as nombre, pst.id_puesto puesto 
+     from tetuanjobs.etiquetas etq left join tetuanjobs.puestos_etiquetas pstetq on etq.id_etiqueta = pstetq.id_etiqueta
+     left join tetuanjobs.puestos pst on pstetq.id_puesto = pst.id_puesto
+      order by etq.id_etiqueta;
+
+GRANT select on tetuanjobs.listarSkillsPuesto To 'usertetuan'@'localhost';
+
+/** fin vista listar skills puesto **/
+
+/** vista listar idiomas puesto **/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarIdiomasPuesto as 
+     select idm.id_idioma as identificador, nombre_idioma as nombre, pst.id_puesto puesto 
+     from tetuanjobs.idiomas idm left join tetuanjobs.puestos_idiomas pstidm on idm.id_idioma = pstidm.id_idioma
+     left join tetuanjobs.puestos pst on pstidm.id_puesto = pst.id_puesto
+      order by idm.id_idioma;
+
+GRANT select on tetuanjobs.listarIdiomasPuesto To 'usertetuan'@'localhost';
+
+/** fin vista listar idiomas puesto **/
+
+/** fin ficha puestos **/
 
 
 
