@@ -31,11 +31,12 @@ ob_start();
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nombre de la empresa</label>
-                        <select class="form-control" name="empresa">
+                        <select class="form-control"   <?php if(isset($puesto["id_emp"])){ echo "disabled";}else{echo 'name="empresa"';}?> >
                             <?php if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
                         }else{echo $generacl->listarEmpresasSelect();
                         } ?>
                     </select>
+                    <?php if(isset($puesto["id_emp"])){ echo '<input type="hidden" name="empresa" value="'.$puesto["id_emp"].'" >';} ?>
                 </div>
             </div>
             <div class="col-md-6">
@@ -255,6 +256,8 @@ ob_start();
         <?php 
         if(isset($_SESSION["idpst"])){
             echo '<input type="submit" class="btn btn-danger" name="cancelarpuesto" value="Cancelar">';
+            echo '<input type="hidden" name="idpuesto" value="'.$_SESSION["idpst"].'">';
+            unset($_SESSION["idpst"]);
         }
         ?>
         <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">

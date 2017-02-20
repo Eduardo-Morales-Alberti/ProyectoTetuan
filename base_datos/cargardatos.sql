@@ -199,4 +199,24 @@ INSERT INTO `tetuanjobs`.`puestos` (`id_puesto`, `id_empresa`, `puesto_nombre`,
 VALUES (NULL, '1', 'Arreglar ordenadores', 'Mantenimiento de equipos', '1', '28', 
 	'Al menos un año', 'Indefinido', 'Completa', 'Bachillerato', CURRENT_TIMESTAMP);
 
+
+
 /* fin insertar puestos */
+
+/* insertar etiquetas al puesto*/
+INSERT into `tetuanjobs`.`puestos_etiquetas`(`id_puesto`,`id_etiqueta`)
+	values(4,5),(4,1);
+/* fin insertar etiquetas al puesto*/
+
+/* insertar funciones al puesto*/
+INSERT into `tetuanjobs`.`funciones`(`id_puesto`,`funcion_desc`)
+	values(4,"Imprimir fotocopias"),(4,"Limpiar los baños");
+/* fin insertar funciones al puesto*/
+
+/* insertar idiomas al puesto*/
+
+INSERT into `tetuanjobs`.`puestos_idiomas`(`id_puesto`,`id_idioma`)
+	values(4,4),(4,1);
+/* fin insertar idiomas al puesto*/
+
+

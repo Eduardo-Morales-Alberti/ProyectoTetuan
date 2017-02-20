@@ -381,7 +381,7 @@ class adminBBDD extends singleton{
 		if(isset($_SESSION["idpst"])){
 			$sql = "call listarIdiomasPuesto(?,?)";
 			$consulta = $this->Idb->prepare($sql);
-		
+
 			$consulta->execute(array($_SESSION["idpst"],$_SESSION["usuario"]->identificador));
 			$consulta->setFetchMode(PDO::FETCH_ASSOC);		
 			$idiomas = array();
@@ -390,7 +390,7 @@ class adminBBDD extends singleton{
 			}			
 
 			$_SESSION["idiomas"] = json_encode($idiomas);
-		
+
 			for ($i=0; $i < count($idiomas); $i++) { 
 				$id = substr($this->limpiarRuta($idiomas[$i]["nombre"]),0,5).$this->n;
 				$this->n++;
@@ -415,8 +415,14 @@ class adminBBDD extends singleton{
 
 	/** función agregar puesto**/
 	function agregarPuesto(){
-		if(isset($_POST["guardarpuesto"])&& !isset($_SESSION["idpst"])&&isset($_POST["titpuesto"])&&isset($_POST["empresa"])&&isset($_POST["descpuesto"])){
-			$sql = "call agregarPuesto(?,?,?,?,?,?,?,?,?,?)";
+		if(isset($_POST["guardarpuesto"])&&isset($_POST["titpuesto"])&&isset($_POST["empresa"])&&isset($_POST["descpuesto"])){
+			
+			if(!isset($_POST["idpuesto"])){
+				$sql = "call agregarPuesto(?,?,?,?,?,?,?,?,?,?)";
+			}else if(isset($_POST["idpuesto"])){
+				$sql = "call modificarPuesto(?,?,?,?,?,?,?,?,?,?)";
+			}
+
 			$consulta = $this->Idb->prepare($sql);	
 
 			$empresa = null;
@@ -476,8 +482,20 @@ class adminBBDD extends singleton{
 			}
 
 			$params = array();
-			array_push($params,$_SESSION["usuario"]->identificador,$empresa,
-				$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion);
+
+			if(!isset($_POST["idpuesto"])){
+
+				array_push($params,$_SESSION["usuario"]->identificador,$empresa,
+					$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion);
+
+			}else if(isset($_POST["idpuesto"])){
+
+				array_push($params,$_POST["idpuesto"],$_SESSION["usuario"]->identificador,
+					$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion);
+			}
+			
+
+
 			//print_r($params);
 			$consulta->execute($params);
 
@@ -487,13 +505,140 @@ class adminBBDD extends singleton{
 				$row = $consulta->fetch();
 
 				if($row["resultado"]){
-					$_SESSION["mensajeServidor"] = "Puesto agregado correctamente.";
+					$id;
+					$mensaje = "";
+					if(isset($_POST["idpuesto"])){
+						$mensaje = "Puesto modificado correctamente."."<br>";
+						$_SESSION["idpst"] = $_POST["idpuesto"];
+						$id = $_SESSION["idpst"];
+					}else{
+						$mensaje = "Puesto agregado correctamente."."<br>";
+						$id = $row["identificador"];
+					}
+
+					$correcto = true;
+					
+
+					$sql = "call eliminarSkillsPuesto(?,?)";
+
+					$consulta = $this->Idb->prepare($sql);
+					$consulta->execute(array($_SESSION["usuario"]->identificador,$id));
+
+					$consulta->setFetchMode(PDO::FETCH_ASSOC);
+					$row = $consulta->fetch();
+
+					/** Agregar etiquetas al puesto **/
+					if(isset($_POST["etiquetas"])){
+						for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
+							$sql = "call agregarSkillsPuesto(?,?,?)";
+
+							$consulta = $this->Idb->prepare($sql);
+							$consulta->execute(array($_SESSION["usuario"]->identificador,$id,$_POST["etiquetas"][$i]));
+							$consulta->setFetchMode(PDO::FETCH_ASSOC);
+							$row = $consulta->fetch();
+
+							if($row["resultado"]){
+								$mensaje .= $_POST["etiquetas"][$i]." guardada correctamente <br> ";
+							}else{
+								$correcto = false;
+							}
+
+						}
+						if($correcto){
+							if(strlen($mensaje)>0){
+								$mensaje .= "<br>";
+							}else{
+								$mensaje .="Sin etiquetas"."<br>";
+							}
+						}else{
+
+							$mensaje .="No se ha podido agregar bien las etiquetas <br>";
+						}
+					}else{
+						$mensaje .="Sin etiquetas"."<br>";
+					}
+
+					/** Fin Agregar etiquetas al puesto **/
+
+					/** Agregar idiomas al puesto **/
+
+					if(isset($_POST["idiomas"])){
+						for ($i=0; $i < count($_POST["idiomas"]); $i++) { 
+							$sql = "call agregarIdiomaPuesto(?,?,?)";
+
+							$consulta = $this->Idb->prepare($sql);
+							$consulta->execute(array($_SESSION["usuario"]->identificador,$id,$_POST["idiomas"][$i]));
+							$consulta->setFetchMode(PDO::FETCH_ASSOC);
+							$row = $consulta->fetch();
+
+							if($row["resultado"]){
+								$mensaje .= $_POST["idiomas"][$i]." guardado correctamente <br> ";
+							}else{
+								$correcto = false;
+							}
+
+						}
+						if($correcto){
+							if(strlen($mensaje)>0){
+								$mensaje .="<br>";
+							}else{
+								$mensaje .="Sin idiomas"."<br>";
+							}
+						}else{
+
+							$mensaje .="No se ha podido agregar bien los idiomas <br>";
+						}
+					}else{
+						$mensaje .="Sin idiomas"."<br>";
+					}
+
+					/** Fin Agregar idiomas al puesto **/
+
+					if(isset($_POST["funciones"])){
+						for ($i=0; $i < count($_POST["funciones"]); $i++) { 
+							$sql = "call agregarFuncionPuesto(?,?,?)";
+
+							$consulta = $this->Idb->prepare($sql);
+							$consulta->execute(array($_SESSION["usuario"]->identificador,$id,$_POST["funciones"][$i]));
+							$consulta->setFetchMode(PDO::FETCH_ASSOC);
+							$row = $consulta->fetch();
+
+							if($row["resultado"]){
+								$mensaje .= $_POST["funciones"][$i]." guardado correctamente <br> ";
+							}else{
+								$correcto = false;
+							}
+
+						}
+						if($correcto){
+							if(strlen($mensaje)>0){
+								$mensaje .="<br>";
+							}else{
+								$mensaje .="Sin funciones"."<br>";
+							}
+						}else{
+
+							$mensaje .="No se ha podido agregar bien las funciones <br>";
+						}
+					}else{
+						$mensaje .="Sin funciones"."<br>";
+					}
+
+					/*}*/
+
+					$_SESSION["mensajeServidor"] = $mensaje;
+
 				}else{
-					$_SESSION["mensajeServidor"] = "No se ha podido agregar el puesto.";
+					if(isset($_POST["idpuesto"])){
+						$_SESSION["mensajeServidor"] = "No se ha podido modificar el puesto.";
+					}else{
+						$_SESSION["mensajeServidor"] = "No se ha podido agregar el puesto.";
+					}
+
 				}
 
 			}else{
-				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado, puesto no insertado.";
+				$_SESSION["mensajeServidor"] = "No se ha obtenido ningún resultado.";
 			}
 		}
 	}
@@ -526,7 +671,7 @@ class adminBBDD extends singleton{
 		}
 	}
 
-	
+
 
 
 	/** fin función para cancelar modificaciones puesto **/
@@ -548,7 +693,7 @@ class adminBBDD extends singleton{
 		while ($row = $consulta->fetch()) {
 			$usuarios[] = $row;
 		}
-		
+
 
 		for ($i=0; $i < count($usuarios); $i++) { 
 			echo "<form method='post'><tr>";
@@ -595,7 +740,7 @@ class adminBBDD extends singleton{
 				}
 
 
-				
+
 
 			}	
 			//header("location:filtro_puestos.php");

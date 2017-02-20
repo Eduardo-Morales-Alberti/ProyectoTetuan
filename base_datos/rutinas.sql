@@ -610,10 +610,10 @@ CREATE PROCEDURE tetuanjobs.agregarSkills(usid int, etiqueta varchar(250))
 
 		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
 
-		select id_etiqueta into id_etq from tetuanjobs.etiquetas where nombre_etiqueta = etiqueta;
+		select id_etiqueta into id_etq from tetuanjobs.etiquetas where nombre_etiqueta = lower(etiqueta);
 
-		if id_etq < 0 then
-			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(etiqueta);
+		if id_etq < 0 and id >=0 then
+			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(lower(etiqueta));
 			select @@IDENTITY into id_etq;
 		end if;
 
@@ -839,7 +839,7 @@ CREATE PROCEDURE tetuanjobs.agregarPuesto(usid int, id_emp int, nombre varchar(2
 		INSERT INTO PUESTOS (id_empresa, puesto_nombre, puesto_desc, puesto_carnet, id_provincia, experiencia, tipo_contrato,
 			jornada, titulacion_minima) values(idemp, nombre, pdesc, carnet, idprov, exp, tcontrato, jorn, titminima);
 
-		select true as resultado;
+		select true as resultado, @@IDENTITY as identificador;
 	else
 		select false as resultado;
 	end if;
@@ -847,7 +847,7 @@ CREATE PROCEDURE tetuanjobs.agregarPuesto(usid int, id_emp int, nombre varchar(2
 END//
 delimiter ;
 
-call agregarPuesto(1, 2, "Puesto de prueba", "Es un puesto muy majo", 1,5,1,3,1,5);
+/*call agregarPuesto(1, 2, "Puesto de prueba", "Es un puesto muy majo", 1,5,1,3,1,5);*/
 
 /** FIN RUTINA PARA GUARDAR UN PUESTO **/
 
@@ -884,6 +884,162 @@ delimiter ;
 
 
 /** fin funcion para cargar información de un puesto por id **/
+
+/** Rutina para eliminar todas las etiquetas, funciones e idiomas de un puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.eliminarSkillsPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.eliminarSkillsPuesto(usid int, pst int) 
+	BEGIN
+		declare id int default -1;
+		declare idpst int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios
+		 where id_usuario = usid and tipo_usuario = "administrador";
+
+		 SELECT id_puesto into idpst from tetuanjobs.puestos 
+		 where id_puesto = pst;
+
+		if id >=0 and idpst >= 0 then
+
+			delete from tetuanjobs.puestos_etiquetas where id_puesto = idpst;
+				delete from tetuanjobs.puestos_idiomas where id_puesto = idpst;
+					delete from tetuanjobs.funciones where id_puesto = idpst;
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+/*call eliminarSkillsPuesto(1,4);*/
+/** Fin Rutina para eliminar todas las etiquetas, funciones e idiomas de un puesto **/
+
+/** Rutina para modificar skills Puesto**/
+
+drop PROCEDURE if EXISTS tetuanjobs.agregarSkillsPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.agregarSkillsPuesto(usid int,idpst int, etiqueta varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_etq int default -1;
+		declare pst int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_etiqueta into id_etq from tetuanjobs.etiquetas where nombre_etiqueta = lower(etiqueta);
+
+		select id_puesto into pst from tetuanjobs.puestos where id_puesto = idpst;
+
+		if id_etq < 0 and id >=0 and pst >=0 then
+			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(lower(etiqueta));
+			select @@IDENTITY into id_etq;
+		end if;
+
+		if id_etq >=0 and id >=0 and pst >=0 then
+
+			INSERT INTO tetuanjobs.puestos_etiquetas (id_puesto,id_etiqueta) 
+			values(pst,id_etq);
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/*call agregarSkillsPuesto(1,4,"javascript");*/
+
+/** Fin Rutina para modificar skills Puesto**/
+
+/** Rutina para modificar idiomas Puesto**/
+
+drop PROCEDURE if EXISTS tetuanjobs.agregarIdiomaPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.agregarIdiomaPuesto(usid int,idpst int, idioma varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_idm int default -1;
+		declare pst int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_idioma into id_idm from tetuanjobs.idiomas  where nombre_idioma = lower(idioma);
+
+		select id_puesto into pst from tetuanjobs.puestos where id_puesto = idpst;
+
+		if id_idm < 0 and id >=0 and pst >=0 then
+			INSERT INTO tetuanjobs.idiomas  (nombre_idioma) values(lower(idioma));
+			select @@IDENTITY into id_idm;
+		end if;
+
+		if id_idm >=0 and id >=0 and pst >=0 then
+
+			INSERT INTO tetuanjobs.puestos_idiomas  (id_puesto,id_idioma) 
+			values(pst,id_idm);
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+/*call agregarIdiomaPuesto(1,4,"frances");*/
+
+/** Fin Rutina para modificar idiomas Puesto**/
+
+/** Rutina para modificar funciones Puesto**/
+
+drop PROCEDURE if EXISTS tetuanjobs.agregarFuncionPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.agregarFuncionPuesto(usid int,idpst int, funcion varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_func int default -1;
+		declare pst int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_funcion into id_func from tetuanjobs.funciones  where lower(funcion_desc) = lower(funcion);
+
+		select id_puesto into pst from tetuanjobs.puestos where id_puesto = idpst;		
+
+		if id_func < 0 and id >=0 and pst >=0 then
+
+			INSERT INTO tetuanjobs.funciones  (id_puesto,funcion_desc) 
+			values(pst,funcion);
+
+			select true as resultado;			
+			
+		else 
+			select false as resultado;
+		end if;
+		
+		
+	END//
+delimiter ;
+
+call agregarFuncionPuesto(1,4,"Hacer los deberes");
+
+/** Fin Rutina para modificar funciones Puesto**/
 
 /** listar skills del puesto **/
 
@@ -982,6 +1138,43 @@ CREATE PROCEDURE tetuanjobs.listarFuncionesPuesto(idpuesto int, usid int)
 delimiter ;
 
 /** fin listar funciones del puesto **/
+
+/** modficar puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.modificarPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.modificarPuesto(idpuesto int, usid int, nombre varchar(250), pdesc varchar(3000), carnet boolean, idprov int,
+	exp int, tcontrato int, jorn int, titminima int) 
+	BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+		update tetuanjobs.puestos set 
+			puesto_nombre = if(nombre is not null, nombre,puesto_nombre), puesto_desc = if(pdesc is not null, pdesc,puesto_desc), 
+			puesto_carnet = if(carnet is not null, carnet,puesto_carnet),id_provincia = if(idprov is not null, idprov,id_provincia), 
+			experiencia = if(exp is not null,exp ,experiencia),tipo_contrato = if(tcontrato is not null,tcontrato ,tipo_contrato),
+			 jornada = if(jorn is not null,jorn ,jornada), titulacion_minima = if(titminima is not null,titminima ,titulacion_minima)
+			where id_puesto = idpst;
+
+		select true as resultado;
+	else
+		select false as resultado;
+	end if;
+			
+		
+	END//
+delimiter ;
+
+/*call modificarPuesto(4,1,null, "Prueba de modificacion", null, 5, null,null,null,null);*/
+
+/** fin modficar puesto **/
 
 /** FIN RUTINAS FICHA PUESTOS **/
 
