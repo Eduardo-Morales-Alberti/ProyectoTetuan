@@ -277,15 +277,20 @@ class adminBBDD extends singleton{
 	/** función listar etiquetas **/
 
 	function listarTodasEtiquetas(){
-
-		$sql = "select * from listarSkillsPuesto where puesto <> ? or
-		puesto is null";
-		$consulta = $this->Idb->prepare($sql);
 		if(isset($_SESSION["idpst"])){
+			$sql = "select * from listarSkillsPuesto where puesto <> ? or
+		puesto is null";
+			$consulta = $this->Idb->prepare($sql);
+
 			$consulta->execute(array($_SESSION["idpst"]));
 		}else{
-			$consulta->execute(array(-1));
+			$sql = "select * from listarEtiquetas";
+			$consulta = $this->Idb->prepare($sql);			
+			$consulta->execute();
 		}
+		
+		
+		
 		
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$etiquetasSELECT = "";
@@ -309,6 +314,7 @@ class adminBBDD extends singleton{
 	/** FUNCIÓN LISTAR ETIQUETAS DEL puesto **/
 	function listarEtiquetasPst(){
 		if(isset($_SESSION["idpst"])){
+
 			$sql = "call listarSkillsPuesto(?,?)";
 			$consulta = $this->Idb->prepare($sql);
 			//echo $_SESSION["idpst"]."<br>";
@@ -347,15 +353,19 @@ class adminBBDD extends singleton{
 	/** función listar Idiomas **/
 
 	function listarIdiomas(){
-
-		$sql = "select * from listarIdiomasPuesto where puesto <> ? or
-		puesto is null";
-		$consulta = $this->Idb->prepare($sql);
 		if(isset($_SESSION["idpst"])){
+			$sql = "select * from listarIdiomasPuesto where puesto <> ? or
+			puesto is null";
+			$consulta = $this->Idb->prepare($sql);
+
 			$consulta->execute(array($_SESSION["idpst"]));
 		}else{
-			$consulta->execute(array(-1));
+			$sql = "select * from listarIdiomas";
+			$consulta = $this->Idb->prepare($sql);			
+			$consulta->execute();
 		}
+		
+		
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 		$idiomasSELECT = "";
 

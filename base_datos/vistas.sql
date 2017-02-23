@@ -133,9 +133,13 @@ GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
 /** VISTA LISTAR puesto  **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as 
-  select puesto_nombre as nombre, id_puesto as identificador, nombre_empresa as empresa, nombre_provincia as provincia, puesto_desc as descripcion
-             from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
-             join provincias prv on prv.id_provincia = pst.id_provincia;
+  select puesto_nombre as nombre, id_puesto as identificador, nombre_empresa as empresa, nombre_provincia as provincia, puesto_desc as descripcion,
+      f_publicacion as publicacion, emp.id_empresa as idempresa, prv.id_provincia as idprovincia, puesto_carnet as carnet, email, 
+      persona_contacto as contacto,tipo_contrato as contrato, cast(tipo_contrato as unsigned) idcontrato,
+      experiencia, cast(experiencia as unsigned) idexperiencia,
+      jornada, cast(jornada as unsigned) idjornada
+     from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
+     join provincias prv on prv.id_provincia = pst.id_provincia;
 
 GRANT select on tetuanjobs.listarPuestos To 'usertetuan'@'localhost';
 

@@ -5,7 +5,11 @@
 $page["nombrePag"] = "Búsqueda de ofertas";
 
 include_once("funciones/generalF.php");
+
 session_start();
+include_once('funciones/estudianteF.php');
+$estudiantecl = new estudianteBBDD;
+
 
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
@@ -13,40 +17,64 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
+/* Con esto limpiamos el formulario*/
+if(isset($_POST["limpiar"])){
+    $_POST = array();
+}
+
+$generacl = new General;
+
+
+
 /**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
 Se le llama en el cuerpo en las últimas líneas**/
 ob_start();?>
 <script type="text/javascript">
 busquedaofer();
 
+<?php if(isset($_POST["antiguedad"])){ 
+    echo "";
+    ?>
+
+ $("#antiguedad").val(<?php echo $_POST["antiguedad"];?>);
+<?php
+}
+?>
+
 </script>
 <?php
 $page["js"] = ob_get_clean();
 ob_start();?>
 <h1>Búsqueda de ofertas
-</h1>      
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Encuentra un empleo
-        </h4> 
-    </div>
-    <div class="panel-body">
-        <div class="row">                
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Título del puesto</label>
-                    <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="">
+</h1>
+<form method="post">      
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Encuentra un empleo
+            </h4> 
+        </div>
+        <div class="panel-body">
+            <div class="row">                
+                <div class="col-md-6">
+                   <div class="form-group">
+                    <label>Provincia</label>
+                    <select class="form-control" name="provincia">
+                        <?php
+
+                        if(isset($_POST["provincia"])){$prov = $_POST["provincia"];}?>
+                        <?php $generacl->listarProvincias($prov); 
+                        echo $generacl->provinciasSELECT;?>
+                    </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Nombre de la empresa</label>
-                    <select class="form-control" name="etiqueta">
-                        <option value="todas">Todas</option>
-                        <option value="coritel">Coritel</option>
-                        <option value="kpmg">Kpmg</option>
-                        <option value="microsoft">Microsoft</option>
-                        <option value="apple">Apple</option>
+                    <select class="form-control" name="empresa">
+
+                        <?php 
+                        if(isset($_POST["empresa"])){$emp = $_POST["empresa"];}
+                        echo $generacl->listarEmpresasSelect($emp); ?>
                     </select>
                 </div>
             </div>
@@ -55,46 +83,41 @@ ob_start();?>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Titulación mínima</label>                       
-                    <select class="form-control" name="nivel">
-                        <option value="0">Cualquiera</option>
-                        <option value="1">FP básica</option>
-                        <option value="2">CF Grado medio</option>
-                        <option value="3">Bachillerato</option>
-                        <option value="4">CF Grado superior</option>
-                        <option value="5">Grado universitario</option>
-                        <option value="6">Master</option>
-                        <option value="7">Certificado oficial</option>
-                        <option value="8">Otro</option>
+                    <label>Tipo de contrato</label>                       
+                    <select class="form-control" name="contrato">
+                        <?php
+                        if(isset($_POST["contrato"])){$cont = $_POST["contrato"];}
+                         echo $generacl->listarEnum("tipo_contrato","puestos",$cont); ?>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
-             <div class="form-group">
+               <div class="form-group">
                 <label>
-                    Carnet de conducir
+                    Experiencia
                 </label>                     
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <input type="checkbox" name="carnet" value="carnet">
-                    </span>
-                    <input type="text" class="form-control" value="Requiere carnet de conducir" disabled="disabled">
-                </div>
+                <select class="form-control" name="experiencia">
+
+                    <?php 
+                    if(isset($_POST["experiencia"])){$exp = $_POST["experiencia"];}
+                    echo $generacl->listarEnum("experiencia","puestos",$exp); ?>
+                </select>
             </div>
         </div>			
     </div>
 
     <div class="row">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label>Etiquetas</label>
-                    <div class="input-group">
-                        <select class="form-control" id="etiquetas" name="etiqueta">
-                            <option value="nada">Ninguna</option>
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Etiquetas</label>
+                <div class="input-group">
+                    <select class="form-control" id="etiquetas" name="etiqueta">
+                            <!--<option value="nada">Ninguna</option>
                             <option value="php">php</option>
                             <option value="java">java</option>
                             <option value="html">html</option>
-                            <option value="css">css</option>
+                            <option value="css">css</option>-->
+                            <?php echo $generacl->listarTodasEtiquetas(); ?>
                         </select>
                         <span class="input-group-btn">
                             <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
@@ -107,38 +130,15 @@ ob_start();?>
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="divetiquetas">
-                        <div class="col-md-4 col-lg-3 form-group" id="php">
+                        <!--<div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="php" value="php">
                                 </span>
                                 <input type="text" class="form-control" value="php" disabled="disabled">
                             </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3 form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" name="javascript" value="javascript" >
-                                </span>
-                                <input type="text" class="form-control" value="javascript" disabled="disabled">
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3 form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" name="html" value="html">
-                                </span>
-                                <input type="text" class="form-control" value="html" disabled="disabled">
-                            </div>
-                        </div>                           
-                        <div class="col-md-4 col-lg-3 form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" name="css" value="css">
-                                </span>
-                                <input type="text" class="form-control" value="css" disabled="disabled">
-                            </div>
-                        </div>
+                        </div>-->
+                        
                     </div>  
                 </div>
 
@@ -151,15 +151,28 @@ ob_start();?>
                 </div>
             </div>
         </div>
-    <div class="row">
-        <div class="col-md-4">
+        <div class="row">
+           <div class="col-md-6">
+               <div class="form-group">
+                <label>
+                    Jornada
+                </label>                     
+                <select class="form-control" name="jornada">
+                    <?php 
+                    if(isset($_POST["jornada"])){$jorn = $_POST["jornada"];}
+                    echo $generacl->listarEnum("jornada","puestos",$jorn); ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <label>Fecha de publicación</label>
-                <select class="form-control" name="antiguedadoferta">
-                    <option value="php">Hace 24 horas</option>
-                    <option value="php">Última semana</option>
-                    <option value="php">Último mes</option>
-                    <option value="php">Indiferente</option>
+                <select class="form-control" name="antiguedad" id="antiguedad" >
+                    <option disabled selected value='nada'> -- Selecciona una opción -- </option>
+                    <option value="1">Hace 24 horas</option>
+                    <option value="2">Última semana</option>
+                    <option value="3">Último mes</option>
+                    <option value="4">Indiferente</option>
                 </select>
             </div>
         </div>		
@@ -167,13 +180,15 @@ ob_start();?>
 </div>
 <div class="panel-footer">
     <div class="row">
-       <div class="col-md-12 text-right">
-          <input type="button" class="btn btn-warning" name="limpiarfiltros" value="Limpiar filtros">
-          <input type="submit" class="btn btn-green" name="buscarofertas" value="Buscar ofertas">
-      </div>
+     <div class="col-md-12 text-right">
+        
+        <input type="submit" class="btn btn-warning" name="limpiar" value="Limpiar filtros">
+      
+      <input type="submit" class="btn btn-green" name="buscarofertas" value="Buscar ofertas">
   </div>
+</div>
 </div>	
-
+</form>
 </div>
 
 <!-- Fin panel Busqueda -->
@@ -183,7 +198,7 @@ ob_start();?>
         <h4>Resultado de la búsqueda</h4> 
     </div>
     <div class="panel-body">
-        <div class="row">                        
+        <!--<div class="row">                        
             <div class="col-md-8">
                 <h4>Título del puesto <br>
                     <small>Empresa</small>
@@ -223,7 +238,9 @@ ob_start();?>
                     <input type="submit" name="aplicar" value="Aplicar" class="btn btn-success">
                 </form>
             </div>
-        </div>
+        </div>-->
+
+        <?php $estudiantecl->listarPuestos();?>
 
     </div>  
 </div> 
