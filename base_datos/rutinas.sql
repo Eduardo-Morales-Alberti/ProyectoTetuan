@@ -568,6 +568,37 @@ delimiter ;
 
 /** RUTINA PARA MODIFICAR UNA FORMACION **/
 
+/** Rutina para listar skills del usuario **/
+
+drop PROCEDURE if EXISTS tetuanjobs.listarEtiquetasEst;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarEtiquetasEst(usid int, selct boolean) 
+	BEGIN
+	declare id int default -1;	
+	
+	SELECT est.id_estudiante into id from tetuanjobs.estudiantes est join tetuanjobs.estudiantes_etiquetas etq
+		on est.id_estudiante = etq.id_estudiante  where id_usuario = usid limit 1;
+
+		if id >=0 then
+			if selct then
+				SELECT etq.id_etiqueta as identificador, nombre_etiqueta as nombre from etiquetas etq
+				where id_etiqueta not in (select id_etiqueta from estudiantes_etiquetas where id_estudiante = id);	
+			else 
+				select etq.id_etiqueta as identificador, nombre_etiqueta as nombre 
+				from estudiantes_etiquetas est join etiquetas etq on est.id_etiqueta = etq.id_etiqueta
+				 where id_estudiante = id;
+			end if;	
+		end if;
+		
+	END//
+delimiter ;
+
+/*call listarEtiquetasEst(2,true);*/
+
+/** Fin Rutina para listar skills del usuario **/
+
 /** Rutina para eliminar todas las etiquetas de un estudiante **/
 
 drop PROCEDURE if EXISTS tetuanjobs.eliminarSkills;
@@ -885,6 +916,68 @@ delimiter ;
 
 /** fin funcion para cargar información de un puesto por id **/
 
+/** Rutina para listar skills del puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.listarEtiquetasPst;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarEtiquetasPst(pst int, selct boolean) 
+	BEGIN
+	declare id int default -1;	
+	
+	SELECT psto.id_puesto into id from tetuanjobs.puestos psto join tetuanjobs.puestos_etiquetas etq
+		on psto.id_puesto = etq.id_puesto  where psto.id_puesto = pst limit 1;
+
+		if id >=0 then
+			if selct then
+				SELECT etq.id_etiqueta as identificador, nombre_etiqueta as nombre from etiquetas etq
+				where id_etiqueta not in (select id_etiqueta from puestos_etiquetas where id_puesto = id);	
+			else 
+				select etq.id_etiqueta as identificador, nombre_etiqueta as nombre 
+				from puestos_etiquetas psto join etiquetas etq on psto.id_etiqueta = etq.id_etiqueta
+				 where id_puesto = id;
+			end if;	
+		end if;
+		
+	END//
+delimiter ;
+
+/*call listarEtiquetasPst(3,true);*/
+
+/** Fin Rutina para listar skills del puesto **/
+
+/** Rutina para listar idiomas del puesto **/
+
+drop PROCEDURE if EXISTS tetuanjobs.listarIdiomasPst;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarIdiomasPst(pst int, selct boolean) 
+	BEGIN
+	declare id int default -1;	
+	
+	SELECT psto.id_puesto into id from tetuanjobs.puestos psto join tetuanjobs.puestos_idiomas idm
+		on psto.id_puesto = idm.id_puesto  where psto.id_puesto = pst limit 1;
+
+		if id >=0 then
+			if selct then
+				SELECT idm.id_idioma as identificador, nombre_idioma as nombre from idiomas idm
+				where id_idioma not in (select id_idioma from puestos_idiomas where id_puesto = id);	
+			else 
+				select idm.id_idioma as identificador, nombre_idioma as nombre 
+				from puestos_idiomas psto join idiomas idm on psto.id_idioma = idm.id_idioma
+				 where id_puesto = id;
+			end if;	
+		end if;
+		
+	END//
+delimiter ;
+
+/*call listarIdiomasPst(3,true);*/
+
+/** Fin Rutina para listar idiomas del puesto **/
+
 /** Rutina para eliminar todas las etiquetas, funciones e idiomas de un puesto **/
 
 drop PROCEDURE if EXISTS tetuanjobs.eliminarSkillsPuesto;
@@ -1037,7 +1130,7 @@ CREATE PROCEDURE tetuanjobs.agregarFuncionPuesto(usid int,idpst int, funcion var
 	END//
 delimiter ;
 
-call agregarFuncionPuesto(1,4,"Hacer los deberes");
+/*call agregarFuncionPuesto(1,4,"Hacer los deberes");*/
 
 /** Fin Rutina para modificar funciones Puesto**/
 

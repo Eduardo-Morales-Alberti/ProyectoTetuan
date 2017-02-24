@@ -138,8 +138,8 @@ CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as
       persona_contacto as contacto,tipo_contrato as contrato, cast(tipo_contrato as unsigned) idcontrato,
       experiencia, cast(experiencia as unsigned) idexperiencia,
       jornada, cast(jornada as unsigned) idjornada
-     from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
-     join provincias prv on prv.id_provincia = pst.id_provincia;
+     from tetuanjobs.puestos pst join tetuanjobs.empresas emp on pst.id_empresa = emp.id_empresa
+     join tetuanjobs.provincias prv on prv.id_provincia = pst.id_provincia;
 
 GRANT select on tetuanjobs.listarPuestos To 'usertetuan'@'localhost';
 

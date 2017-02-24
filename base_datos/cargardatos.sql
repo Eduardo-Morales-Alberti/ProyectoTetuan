@@ -205,18 +205,18 @@ VALUES (NULL, '1', 'Arreglar ordenadores', 'Mantenimiento de equipos', '1', '28'
 
 /* insertar etiquetas al puesto*/
 INSERT into `tetuanjobs`.`puestos_etiquetas`(`id_puesto`,`id_etiqueta`)
-	values(4,5),(4,1);
+	values(3,5),(3,1);
 /* fin insertar etiquetas al puesto*/
 
 /* insertar funciones al puesto*/
 INSERT into `tetuanjobs`.`funciones`(`id_puesto`,`funcion_desc`)
-	values(4,"Imprimir fotocopias"),(4,"Limpiar los baños");
+	values(3,"Imprimir fotocopias"),(3,"Limpiar los baños");
 /* fin insertar funciones al puesto*/
 
 /* insertar idiomas al puesto*/
 
 INSERT into `tetuanjobs`.`puestos_idiomas`(`id_puesto`,`id_idioma`)
-	values(4,4),(4,1);
+	values(3,4),(3,1);
 /* fin insertar idiomas al puesto*/
 
 

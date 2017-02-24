@@ -278,8 +278,7 @@ class adminBBDD extends singleton{
 
 	function listarTodasEtiquetas(){
 		if(isset($_SESSION["idpst"])){
-			$sql = "select * from listarSkillsPuesto where puesto <> ? or
-		puesto is null";
+			$sql = "call listarEtiquetasPst(?,true);";
 			$consulta = $this->Idb->prepare($sql);
 
 			$consulta->execute(array($_SESSION["idpst"]));
@@ -354,8 +353,7 @@ class adminBBDD extends singleton{
 
 	function listarIdiomas(){
 		if(isset($_SESSION["idpst"])){
-			$sql = "select * from listarIdiomasPuesto where puesto <> ? or
-			puesto is null";
+			$sql = "call listarIdiomasPst(?,true);";
 			$consulta = $this->Idb->prepare($sql);
 
 			$consulta->execute(array($_SESSION["idpst"]));

@@ -1144,8 +1144,7 @@ class estudianteBBDD extends singleton{
 
 	function listarSkillsSelect(){
 
-		$sql = "select * from listarSkills where usuario <> ? or
-		usuario is null";
+		$sql = "call listarEtiquetasEst(?,true)";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute(array($_SESSION["usuario"]->identificador));
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
@@ -1172,7 +1171,7 @@ class estudianteBBDD extends singleton{
 
 	/** FUNCIÓN LISTAR ETIQUETAS DEL ESTUDIANTE **/
 	function listarEtiquetasEst(){
-		$sql = "select * from listarSkills where usuario = ?";
+		$sql = "call listarEtiquetasEst(?,false)";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute(array($_SESSION["usuario"]->identificador));
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);		
