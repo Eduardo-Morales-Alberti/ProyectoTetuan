@@ -1508,11 +1508,35 @@ class estudianteBBDD extends singleton{
 						$condicion = " idjornada =".$_POST["jornada"];
 					}
 				}
+
+				if(isset($_POST["etiquetas"])){
+					if(strlen($condicion)>0){
+						$condicion .= " and ";
+						for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
+							if($i == 0){
+								$condicion .= " lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+							}else{
+								$condicion .= " or lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+							}
+							
+						}
+					}else{
+						$condicion = " ";
+						for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
+							if($i == 0){
+								$condicion .= " lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+							}else{
+								$condicion .= " or lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+							}
+							
+						}
+					}
+				}
 				
 
 				if(strlen($condicion)>0){
 					$sql = "select * from listarPuestos where ".$condicion;
-					//echo $condicion;
+					//echo $sql;
 				}else{
 					$sql = "select * from listarPuestos";
 				}
@@ -1524,154 +1548,217 @@ class estudianteBBDD extends singleton{
 				while ($row = $consulta->fetch()) {
 					$puestosfilas[] = $row;
 				}
-		//print_r($puestosfilas);
-				for ($i=0; $i < count($puestosfilas); $i++) { 			
+				$nombres = array();
+				for ($i=0; $i < count($puestosfilas); $i++) { 		
+					if(!in_array($puestosfilas[$i]["nombre"], $nombres)){
 
-					?>
-					<div class="panel panel-default">
-						<div class="panel-heading" data-toggle="collapse" data-target=".puesto<?php echo $i;?>">
-							<div class="row">
-								<div class="col-md-8"><h4><?php echo $puestosfilas[$i]["nombre"];?><br>
-									<small><b>Empresa: </b> <?php echo $puestosfilas[$i]["empresa"]; ?> -
-										<b>Correo: </b> <?php echo $puestosfilas[$i]["email"]; ?> - 
-										<b>Contacto: </b> <?php echo $puestosfilas[$i]["contacto"]; ?>
-									</small></h4>
-								</div>						
-								<div class="col-md-4">
-									<small class="femp ">Fecha Publicación: <i> <?php 
+						array_push($nombres, $puestosfilas[$i]["nombre"]);
+						?>
+						<div class="panel panel-default">
+							<div class="panel-heading" data-toggle="collapse" data-target=".puesto<?php echo $i;?>">
+								<div class="row">
+									<div class="col-md-8"><h4><?php echo $puestosfilas[$i]["nombre"];?><br>
+										<small><b>Empresa: </b> <?php echo $puestosfilas[$i]["empresa"]; ?> -
+											<b>Correo: </b> <?php echo $puestosfilas[$i]["email"]; ?> - 
+											<b>Contacto: </b> <?php echo $puestosfilas[$i]["contacto"]; ?>
+										</small></h4>
+									</div>						
+									<div class="col-md-4">
+										<small class="femp ">Fecha Publicación: <i> <?php 
 
-									$fecha = $puestosfilas[$i]["publicacion"];
-									$mes = date("n",strtotime($fecha));
-									$anio = date("Y",strtotime($fecha));
-									echo $this->meses[$mes].", ".$anio;
+										$fecha = $puestosfilas[$i]["publicacion"];
+										$mes = date("n",strtotime($fecha));
+										$anio = date("Y",strtotime($fecha));
+										echo $this->meses[$mes].", ".$anio;
 
-									?> </i></small>
+										?> </i></small>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="panel-body collapse puesto<?php echo $i;?>" >		   
-							
-							<p>  
-								<b>Descripción del puesto:</b><br>
-								<?php echo $puestosfilas[$i]["descripcion"];?><br><br>
-								<b>Condiciones:</b><br>
-								<?php
+							<div class="panel-body collapse puesto<?php echo $i;?>" >		   
 
-								if($puestosfilas[$i]["idcontrato"] != 0){
-									echo "<i>Contrato: </i> ".$puestosfilas[$i]["contrato"]."<br>";
-								} 
+								<p>  
+									<b>Descripción del puesto:</b><br>
+									<?php echo $puestosfilas[$i]["descripcion"];?><br><br>
+									<b>Condiciones:</b><br>
+									<?php
 
-								if($puestosfilas[$i]["idexperiencia"] != 0){
-									echo "<i>Experiencia: </i> ".$puestosfilas[$i]["experiencia"]."<br>";
+									if($puestosfilas[$i]["idcontrato"] != 0){
+										echo "<i>Contrato: </i> ".$puestosfilas[$i]["contrato"]."<br>";
+									} 
+
+									if($puestosfilas[$i]["idexperiencia"] != 0){
+										echo "<i>Experiencia: </i> ".$puestosfilas[$i]["experiencia"]."<br>";
+									}
+
+									if($puestosfilas[$i]["idjornada"] != 0){
+										echo "<i>Jornada: </i> ".$puestosfilas[$i]["jornada"]."<br>";
+									}
+
+									?> 
+								</p>
+								<?php 
+								$sql = "call listarFuncionesPuesto(?,?)";
+								$consulta = $this->Idb->prepare($sql);
+
+								$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+								$funciones = array();
+								if($consulta->rowCount() > 0){
+									while ($row = $consulta->fetch()) {
+										$funciones[] = $row;
+									}
+									echo "<p> <b>Funciones:</b><br><ul>";
+									for ($o=0; $o < count($funciones); $o++) { 
+										echo "<li>".$funciones[$o]["nombre"]."</li>";
+									}
+									echo "</ul></p>";
+								}
+								?>
+								<p>  
+									<b>Provincia:</b>
+									<?php echo $puestosfilas[$i]["provincia"];?>
+								</p>
+								<?php 
+								$sql = "call listarIdiomasPuesto(?,?)";
+								$consulta = $this->Idb->prepare($sql);
+
+								$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+								$idiomas = array();
+
+								if($consulta->rowCount() > 0){
+
+									while ($row = $consulta->fetch()) {
+										$idiomas[] = $row;
+									}		
+
+
+									echo "<p> <b>Idiomas:</b><br>";
+									for ($o=0; $o < count($idiomas); $o++) { 
+										echo $idiomas[$o]["nombre"]." / ";
+									}
+									echo "</p>";
+
 								}
 
-								if($puestosfilas[$i]["idjornada"] != 0){
-									echo "<i>Jornada: </i> ".$puestosfilas[$i]["jornada"]."<br>";
+								$sql = "call listarSkillsPuesto(?,?)";
+								$consulta = $this->Idb->prepare($sql);
+
+								$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+								$etiquetas = array();
+								if($consulta->rowCount() > 0){
+									while ($row = $consulta->fetch()) {
+										$etiquetas[] = $row;
+									}
+
+									echo "<p> <b>Skills:</b><br>";
+									for ($o=0; $o < count($etiquetas); $o++) { 
+										echo $etiquetas[$o]["nombre"]." / ";
+									}
+									echo "</p>";
 								}
 
-								?> 
-							</p>
-							<?php 
-							$sql = "call listarFuncionesPuesto(?,?)";
-							$consulta = $this->Idb->prepare($sql);
-
-							$consulta->execute(array($puestosfilas[$i]["identificador"],1));
-							$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-							$funciones = array();
-							if($consulta->rowCount() > 0){
-								while ($row = $consulta->fetch()) {
-									$funciones[] = $row;
-								}
-								echo "<p> <b>Funciones:</b><br><ul>";
-								for ($o=0; $o < count($funciones); $o++) { 
-									echo "<li>".$funciones[$o]["nombre"]."</li>";
-								}
-								echo "</ul></p>";
-							}
-							?>
-							<p>  
-								<b>Provincia:</b>
-								<?php echo $puestosfilas[$i]["provincia"];?>
-							</p>
-							<?php 
-							$sql = "call listarIdiomasPuesto(?,?)";
-							$consulta = $this->Idb->prepare($sql);
-
-							$consulta->execute(array($puestosfilas[$i]["identificador"],1));
-							$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-							$idiomas = array();
-
-							if($consulta->rowCount() > 0){
-
-								while ($row = $consulta->fetch()) {
-									$idiomas[] = $row;
-								}		
-
-
-								echo "<p> <b>Idiomas:</b><br>";
-								for ($o=0; $o < count($idiomas); $o++) { 
-									echo $idiomas[$o]["nombre"]." / ";
-								}
-								echo "</p>";
-
-							}
-
-							$sql = "call listarSkillsPuesto(?,?)";
-							$consulta = $this->Idb->prepare($sql);
-
-							$consulta->execute(array($puestosfilas[$i]["identificador"],1));
-							$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-							$etiquetas = array();
-							if($consulta->rowCount() > 0){
-								while ($row = $consulta->fetch()) {
-									$etiquetas[] = $row;
+								if($puestosfilas[$i]["carnet"]){
+									echo "<b>Requiere carnet de conducir</b><br>";
 								}
 
-								echo "<p> <b>Skills:</b><br>";
-								for ($o=0; $o < count($etiquetas); $o++) { 
-									echo $etiquetas[$o]["nombre"]." / ";
-								}
-								echo "</p>";
-							}
-
-							if($puestosfilas[$i]["carnet"]){
-								echo "<b>Requiere carnet de conducir</b><br>";
-							}
 
 
+								?>
 
-							?>
 
-							
-						</div>
-						<div class="panel-footer collapse puesto<?php echo $i;?>">
-							<div class="row">
-								<div class="col-md-12 pie-acciones">
-									<form method="post">
-										<input type="hidden" name="idpuesto" value="<?php echo $puestosfilas[$i]["identificador"];?>">								
+							</div>
+							<div class="panel-footer collapse puesto<?php echo $i;?>">
+								<div class="row">
+									<div class="col-md-12 pie-acciones">
+										<form method="post" class="aplicarform">
+											<input type="hidden" name="idpuesto" value="<?php echo $puestosfilas[$i]["identificador"];?>">								
 
-										<input type="submit" name="aplicar" value="Aplicar" class="btn btn-success">
-									</form>
+											<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success">
+										</form>
+									</div>
 								</div>
 							</div>
+
 						</div>
 
-					</div>
-
-					<?php
+						<?php
 					/*if($i<count($puestosfilas)-1){
 						echo "<hr>";
 					}*/
 				}
+			}	
 
-
-			}
-
-
-			/** FIN FUNCIÓN LISTAR Puestos **/
-
-			/** Fin Busqueda de puestos **/
 
 		}
 
-		?>
+
+		/** FIN FUNCIÓN LISTAR Puestos **/
+
+		/* FUNCION LISTAR ETIQUETAS OFERTAS*/
+		function listarEtiquetasOfer(){
+			if(isset($_POST["etiquetas"])){
+				$n = 0;
+				$etiquetas = array();				
+				for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
+					$id = substr($this->limpiarRuta($_POST["etiquetas"][$i]),0,5).$n;
+					$n++;
+					?>
+					<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
+							</span>
+							<input type="text" class="form-control" id="input<?php echo $id;?>" name="etiquetas[]" value="<?php echo $_POST["etiquetas"][$i];?>" readonly>
+						</div>
+					</div>
+					<?php
+					$etiquetas[$i]["nombre"] = $_POST["etiquetas"][$i];
+				}
+
+				$_SESSION["etiquetas"] = json_encode($etiquetas);
+			}
+		}
+		/* fin FUNCION LISTAR ETIQUETAS OFERTAS*/
+
+		/* funcion para aplicar a un puesto */
+
+		function aplicarPuesto(){
+			if(isset($_POST["aplicar"])&&isset($_POST["idpuesto"])){
+				$sql = "call aplicarPuesto(?,?)";
+				$consulta = $this->Idb->prepare($sql);
+				include_once("generalF.php");
+				session_start();
+				//echo "Usuario: ".$_SESSION["usuario"]->identificador." // Puesto: ".$_POST["idpuesto"];
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idpuesto"]));
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);	
+
+				if($consulta->rowCount() > 0){
+					$row = $consulta->fetch();
+					if($row["resultado"]){
+						echo "correcto";
+					}else{
+						echo "fallo";
+					}
+				}else{
+					echo "fallo";
+				}
+			}
+		}
+
+		/* fin funcion para aplicar a un puesto */
+
+		/** Fin Busqueda de puestos **/
+
+	}
+
+
+	
+	$estudiantecl = new estudianteBBDD;
+
+	$estudiantecl->aplicarPuesto();
+	
+
+	?>

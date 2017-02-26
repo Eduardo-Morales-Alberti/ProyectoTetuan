@@ -303,5 +303,20 @@ CREATE TABLE IF NOT EXISTS `PUESTOS_IDIOMAS` (
 
 -- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `PUESTOS_ESTUDIANTES`
+--
+DROP TABLE IF EXISTS `PUESTOS_ESTUDIANTES`;
+CREATE TABLE IF NOT EXISTS `PUESTOS_ESTUDIANTES` (
+  `id_puesto` int(11) UNSIGNED NOT NULL,
+  `id_estudiante` int(11) UNSIGNED NOT NULL,
+  `f_seleccion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`id_estudiante`) REFERENCES ESTUDIANTES(`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`id_puesto`) REFERENCES PUESTOS(`id_puesto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (`id_estudiante`,`id_puesto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
 /** FIN DE PUESTOS **/
 

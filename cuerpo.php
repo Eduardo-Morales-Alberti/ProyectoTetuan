@@ -10,6 +10,11 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
     ?>
     <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+
+        <meta http-equiv="Expires" content="0">
+        <meta http-equiv="Last-Modified" content="0">
+        <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+        <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -213,37 +218,37 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                         <!--<app:footer ID="footer" runat="server" />-->
                         <footer class="text-center">&copy; 2018 - Copyright - Desarrollado por: Eduardo Morales<br /></footer>
 
-                        </section>
-                        <!-- CONTENIDO FIN -->
-                    </div>
+                    </section>
+                    <!-- CONTENIDO FIN -->
+                </div>
 
-                    <!-- Modal -->
-                    <?php         
-                    if (isset($page["modal"])) {
+                <!-- Modal -->
+                <?php         
+                if (isset($page["modal"])) {
 
-                        for ($i=0; $i <count($page["modal"]) ; $i++) { 
-                            echo $page["modal"][$i];
-                        }
-
+                    for ($i=0; $i <count($page["modal"]) ; $i++) { 
+                        echo $page["modal"][$i];
                     }
-                    ?> 
-                    <!-- Modal mensaje del servidor -->
-                    <div class="modal fade" id="modalmensaje" >
-                        <div class="modal-dialog modal-lg">
 
-                            <!-- Contenido del modal // Un modal es una ventana que se muestra encima del contenido -->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <!-- Este boton sirve para cerrar el modal -->
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <!-- Este es el título de la cabecera del modal -->
-                                    <h4 class="modal-title"><span id="titexp">Aviso</span></h4>
-                                </div>
+                }
+                ?> 
+                <!-- Modal mensaje del servidor -->
+                <div class="modal fade" id="modalmensaje" >
+                    <div class="modal-dialog modal-lg">
 
-                                <!-- Este es el cuerpo del modal -->
-                                <div class="modal-body">
-                                    <p><?php //echo $_REQUEST["mensaje"]; ?>
-                                        <span id="mensajeserv"></span></p>
+                        <!-- Contenido del modal // Un modal es una ventana que se muestra encima del contenido -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!-- Este boton sirve para cerrar el modal -->
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <!-- Este es el título de la cabecera del modal -->
+                                <h4 class="modal-title"><span id="titexp">Aviso</span></h4>
+                            </div>
+
+                            <!-- Este es el cuerpo del modal -->
+                            <div class="modal-body">
+                                <p><?php //echo $_REQUEST["mensaje"]; ?>
+                                    <span id="mensajeserv"></span></p>
                                 </div>
                                 <!-- Este es el pie del modal -->
                                 <div class="modal-footer"> 

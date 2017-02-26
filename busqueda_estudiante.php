@@ -26,24 +26,7 @@ $generacl = new General;
 
 
 
-/**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
-Se le llama en el cuerpo en las últimas líneas**/
-ob_start();?>
-<script type="text/javascript">
-busquedaofer();
 
-<?php if(isset($_POST["antiguedad"])){ 
-    echo "";
-    ?>
-
- $("#antiguedad").val(<?php echo $_POST["antiguedad"];?>);
-<?php
-}
-?>
-
-</script>
-<?php
-$page["js"] = ob_get_clean();
 ob_start();?>
 <h1>Búsqueda de ofertas
 </h1>
@@ -56,7 +39,7 @@ ob_start();?>
         <div class="panel-body">
             <div class="row">                
                 <div class="col-md-6">
-                   <div class="form-group">
+                 <div class="form-group">
                     <label>Provincia</label>
                     <select class="form-control" name="provincia">
                         <?php
@@ -87,12 +70,12 @@ ob_start();?>
                     <select class="form-control" name="contrato">
                         <?php
                         if(isset($_POST["contrato"])){$cont = $_POST["contrato"];}
-                         echo $generacl->listarEnum("tipo_contrato","puestos",$cont); ?>
+                        echo $generacl->listarEnum("tipo_contrato","puestos",$cont); ?>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
-               <div class="form-group">
+             <div class="form-group">
                 <label>
                     Experiencia
                 </label>                     
@@ -130,6 +113,9 @@ ob_start();?>
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="divetiquetas">
+                        <?php 
+                        echo $estudiantecl->listarEtiquetasOfer();
+                        ?>
                         <!--<div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -152,8 +138,8 @@ ob_start();?>
             </div>
         </div>
         <div class="row">
-           <div class="col-md-6">
-               <div class="form-group">
+         <div class="col-md-6">
+             <div class="form-group">
                 <label>
                     Jornada
                 </label>                     
@@ -180,12 +166,12 @@ ob_start();?>
 </div>
 <div class="panel-footer">
     <div class="row">
-     <div class="col-md-12 text-right">
-        
+       <div class="col-md-12 text-right">
+
         <input type="submit" class="btn btn-warning" name="limpiar" value="Limpiar filtros">
-      
-      <input type="submit" class="btn btn-green" name="buscarofertas" value="Buscar ofertas">
-  </div>
+
+        <input type="submit" class="btn btn-green" name="buscarofertas" value="Buscar ofertas">
+    </div>
 </div>
 </div>	
 </form>
@@ -249,6 +235,32 @@ ob_start();?>
 <?php 
 /** Guardamos el buffer del cuerpo de la busqueda **/
 $page["cuerpo"] = ob_get_clean();
+
+/**Llamada a la función perfil definida en el fichero /js/tetuanjobs.js
+Se le llama en el cuerpo en las últimas líneas**/
+ob_start();?>
+<script type="text/javascript">
+
+<?php 
+if(isset($_SESSION["etiquetas"])){
+    echo 'agregarEtiquetas('.$_SESSION["etiquetas"].',elementosreq);';
+    unset($_SESSION["etiquetas"]);
+}
+?>
+busquedaofer();
+<?php if(isset($_POST["antiguedad"])){ 
+    echo "";
+    ?>
+
+    $("#antiguedad").val(<?php echo $_POST["antiguedad"];?>);
+    <?php
+}
+?>
+
+</script>
+<?php
+$page["js"] = ob_get_clean();
+
 /** Incluimos el fichero cuerpo **/
 include_once("cuerpo.php");
 ?>

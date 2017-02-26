@@ -3,7 +3,7 @@ include_once("funciones/generalF.php");
 
 session_start();
 include_once('funciones/estudianteF.php');
-$estudiantecl = new estudianteBBDD;
+/*$estudiantecl = new estudianteBBDD;*/
 $estudiantecl->eliminarUsuario();
 
 

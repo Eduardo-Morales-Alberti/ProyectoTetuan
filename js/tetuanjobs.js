@@ -432,7 +432,7 @@ function modificarModal(){
 /** Búsqueda de ofertas **/
 function busquedaofer(){
   /** Opcion requisitos **/
-  var elementosreq = new Array();
+  //var elementosreq = new Array();
 
   var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
@@ -445,7 +445,54 @@ function busquedaofer(){
   });
   /** Fin Opcion requisitos **/
 
+  /* Eliminar elementos repetidos del select de etiquetas*/
+  
+  for (v in elementosreq ) {     
+    $("#etiquetas option[value='"+elementosreq[v]+"']").remove();
+  };  
+
+  /* fin Eliminar elementos repetidos del select de etiquetas*/
+
+
+/* Aplicar a un puesto */
+  $(".aplicarform").each(function(){
+    console.log($(this));
+    $(this).submit(function() {
+      event.preventDefault();
+      var input = $(this).children("input[name='aplicar']");
+      input.prop( "disabled", true );
+      
+      var xhr = $.post( "funciones/estudianteF.php", 
+        { aplicar: $(this).children("input[name='aplicar']").eq(0).val(), 
+        idpuesto:  $(this).children("input[name='idpuesto']").eq(0).val() } );
+
+      xhr.done(function( data ) {
+        alert(data);
+        if(data == "correcto"){
+          input.prop( "value", "Se ha aplicado correctamente" );
+          mensajeModal("Ha seleccionado el puesto correctamente");
+        }else{
+          input.removeAttr( "disabled");
+          mensajeModal("No ha podido aplicar al puesto");
+        }
+
+      }).fail(function() {
+        input.removeAttr("disabled");
+        mensajeModal("Error: No ha podido aplicar al puesto");
+      });
+
+      
+    });
+
+  }); 
+
+
+
+  /* Fin Aplicar a un puesto */
+
 }
+
+
 
 /**Fin Búsqueda de ofertas **/
 /**Filtro de usuarios**/
@@ -470,9 +517,9 @@ function filtropuestos(){
   btnelimex.addEventListener("click", function(){
     elementosreq = eliminarTag("etiquetas", "divetiquetas",elementosreq)
   });*/
-  /** Fin Opcion requisitos **/
-  /* Cargar tabla*/
-   var table = cargarTabla('#respuestos');
+/** Fin Opcion requisitos **/
+/* Cargar tabla*/
+var table = cargarTabla('#respuestos');
 }
 
 /** Fin Filtro Puestos**/
