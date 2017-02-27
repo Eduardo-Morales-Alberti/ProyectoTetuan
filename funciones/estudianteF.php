@@ -1509,7 +1509,7 @@ class estudianteBBDD extends singleton{
 					}
 				}
 
-				if(isset($_POST["etiquetas"])){
+				/*if(isset($_POST["etiquetas"])){
 					if(strlen($condicion)>0){
 						$condicion .= " and ";
 						for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
@@ -1531,7 +1531,7 @@ class estudianteBBDD extends singleton{
 							
 						}
 					}
-				}
+				}*/
 				
 
 				if(strlen($condicion)>0){
@@ -1548,143 +1548,179 @@ class estudianteBBDD extends singleton{
 				while ($row = $consulta->fetch()) {
 					$puestosfilas[] = $row;
 				}
-				$nombres = array();
+
+				//$nombres = array();
+				$sql = 'select true as existe from listarPstEtqEst where identificador = ? and lower(nombre_etiqueta) = lower(?)';
+				
 				for ($i=0; $i < count($puestosfilas); $i++) { 		
-					if(!in_array($puestosfilas[$i]["nombre"], $nombres)){
+					/*if(!in_array($puestosfilas[$i]["nombre"], $nombres)){*/
 
-						array_push($nombres, $puestosfilas[$i]["nombre"]);
-						?>
-						<div class="panel panel-default">
-							<div class="panel-heading" data-toggle="collapse" data-target=".puesto<?php echo $i;?>">
-								<div class="row">
-									<div class="col-md-8"><h4><?php echo $puestosfilas[$i]["nombre"];?><br>
-										<small><b>Empresa: </b> <?php echo $puestosfilas[$i]["empresa"]; ?> -
-											<b>Correo: </b> <?php echo $puestosfilas[$i]["email"]; ?> - 
-											<b>Contacto: </b> <?php echo $puestosfilas[$i]["contacto"]; ?>
-										</small></h4>
-									</div>						
-									<div class="col-md-4">
-										<small class="femp ">Fecha Publicación: <i> <?php 
+						$id = $puestosfilas[$i]["identificador"];
+						$existe = true;
+						if(isset($_POST["etiquetas"])){
+							$existe = false;
+							for ($o=0; $o < count($_POST["etiquetas"])&&!$existe; $o++) {
+								$consulta = $this->Idb->prepare($sql);
+								$consulta->execute(array($id,$_POST["etiquetas"][$o]));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);
+								$row = $consulta->fetch();
+								if($row["existe"]){
+									$existe = true;
+								}
+							}
+						}
 
-										$fecha = $puestosfilas[$i]["publicacion"];
-										$mes = date("n",strtotime($fecha));
-										$anio = date("Y",strtotime($fecha));
-										echo $this->meses[$mes].", ".$anio;
+						$sql = 'select true as aplicado from listarPstEtqEst where identificador = ? and idusuario = ?';
+						$aplicado = false;	
+						$consulta = $this->Idb->prepare($sql);
+						$consulta->execute(array($id,$_SESSION["usuario"]->identificador));
+						$consulta->setFetchMode(PDO::FETCH_ASSOC);
+						$row = $consulta->fetch();
+						if($row["aplicado"]){
+							$aplicado = true;
+						}
 
-										?> </i></small>
+						if($existe){
+
+							/*array_push($nombres, $puestosfilas[$i]["nombre"]);*/
+							?>
+							<div class="panel <?php if($aplicado){echo 'panel-success';}else{echo 'panel-default';}?>">
+								<div class="panel-heading " data-toggle="collapse" data-target=".puesto<?php echo $i;?>">
+									<div class="row">
+										<div class="col-md-8"><h4><?php echo $puestosfilas[$i]["nombre"];?><br>
+											<small><b>Empresa: </b> <?php echo $puestosfilas[$i]["empresa"]; ?> -
+												<b>Correo: </b> <?php echo $puestosfilas[$i]["email"]; ?> - 
+												<b>Contacto: </b> <?php echo $puestosfilas[$i]["contacto"]; ?>
+											</small></h4>
+										</div>						
+										<div class="col-md-4">
+											<small class="femp ">Fecha Publicación: <i> <?php 
+
+											$fecha = $puestosfilas[$i]["publicacion"];
+											$mes = date("n",strtotime($fecha));
+											$anio = date("Y",strtotime($fecha));
+											echo $this->meses[$mes].", ".$anio;
+
+											?> </i></small>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="panel-body collapse puesto<?php echo $i;?>" >		   
+								<div class="panel-body collapse puesto<?php echo $i;?>" >		   
 
-								<p>  
-									<b>Descripción del puesto:</b><br>
-									<?php echo $puestosfilas[$i]["descripcion"];?><br><br>
-									<b>Condiciones:</b><br>
-									<?php
+									<p>  
+										<b>Descripción del puesto:</b><br>
+										<?php echo $puestosfilas[$i]["descripcion"];?><br><br>
+										<b>Condiciones:</b><br>
+										<?php
 
-									if($puestosfilas[$i]["idcontrato"] != 0){
-										echo "<i>Contrato: </i> ".$puestosfilas[$i]["contrato"]."<br>";
-									} 
+										if($puestosfilas[$i]["idcontrato"] != 0){
+											echo "<i>Contrato: </i> ".$puestosfilas[$i]["contrato"]."<br>";
+										} 
 
-									if($puestosfilas[$i]["idexperiencia"] != 0){
-										echo "<i>Experiencia: </i> ".$puestosfilas[$i]["experiencia"]."<br>";
+										if($puestosfilas[$i]["idexperiencia"] != 0){
+											echo "<i>Experiencia: </i> ".$puestosfilas[$i]["experiencia"]."<br>";
+										}
+
+										if($puestosfilas[$i]["idjornada"] != 0){
+											echo "<i>Jornada: </i> ".$puestosfilas[$i]["jornada"]."<br>";
+										}
+
+										?> 
+									</p>
+									<?php 
+									$sql = "call listarFuncionesPuesto(?,?)";
+									$consulta = $this->Idb->prepare($sql);
+
+									$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+									$funciones = array();
+									if($consulta->rowCount() > 0){
+										while ($row = $consulta->fetch()) {
+											$funciones[] = $row;
+										}
+										echo "<p> <b>Funciones:</b><br><ul>";
+										for ($o=0; $o < count($funciones); $o++) { 
+											echo "<li>".$funciones[$o]["nombre"]."</li>";
+										}
+										echo "</ul></p>";
+									}
+									?>
+									<p>  
+										<b>Provincia:</b>
+										<?php echo $puestosfilas[$i]["provincia"];?>
+									</p>
+									<?php 
+									$sql = "call listarIdiomasPuesto(?,?)";
+									$consulta = $this->Idb->prepare($sql);
+
+									$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+									$idiomas = array();
+
+									if($consulta->rowCount() > 0){
+
+										while ($row = $consulta->fetch()) {
+											$idiomas[] = $row;
+										}		
+
+
+										echo "<p> <b>Idiomas:</b><br>";
+										for ($o=0; $o < count($idiomas); $o++) { 
+											echo $idiomas[$o]["nombre"]." / ";
+										}
+										echo "</p>";
+
 									}
 
-									if($puestosfilas[$i]["idjornada"] != 0){
-										echo "<i>Jornada: </i> ".$puestosfilas[$i]["jornada"]."<br>";
+									$sql = "call listarSkillsPuesto(?,?)";
+									$consulta = $this->Idb->prepare($sql);
+
+									$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+									$etiquetas = array();
+									if($consulta->rowCount() > 0){
+										while ($row = $consulta->fetch()) {
+											$etiquetas[] = $row;
+										}
+
+										echo "<p> <b>Skills:</b><br>";
+										for ($o=0; $o < count($etiquetas); $o++) { 
+											echo $etiquetas[$o]["nombre"]." / ";
+										}
+										echo "</p>";
 									}
 
-									?> 
-								</p>
-								<?php 
-								$sql = "call listarFuncionesPuesto(?,?)";
-								$consulta = $this->Idb->prepare($sql);
-
-								$consulta->execute(array($puestosfilas[$i]["identificador"],1));
-								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-								$funciones = array();
-								if($consulta->rowCount() > 0){
-									while ($row = $consulta->fetch()) {
-										$funciones[] = $row;
-									}
-									echo "<p> <b>Funciones:</b><br><ul>";
-									for ($o=0; $o < count($funciones); $o++) { 
-										echo "<li>".$funciones[$o]["nombre"]."</li>";
-									}
-									echo "</ul></p>";
-								}
-								?>
-								<p>  
-									<b>Provincia:</b>
-									<?php echo $puestosfilas[$i]["provincia"];?>
-								</p>
-								<?php 
-								$sql = "call listarIdiomasPuesto(?,?)";
-								$consulta = $this->Idb->prepare($sql);
-
-								$consulta->execute(array($puestosfilas[$i]["identificador"],1));
-								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-								$idiomas = array();
-
-								if($consulta->rowCount() > 0){
-
-									while ($row = $consulta->fetch()) {
-										$idiomas[] = $row;
-									}		
-
-
-									echo "<p> <b>Idiomas:</b><br>";
-									for ($o=0; $o < count($idiomas); $o++) { 
-										echo $idiomas[$o]["nombre"]." / ";
-									}
-									echo "</p>";
-
-								}
-
-								$sql = "call listarSkillsPuesto(?,?)";
-								$consulta = $this->Idb->prepare($sql);
-
-								$consulta->execute(array($puestosfilas[$i]["identificador"],1));
-								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-								$etiquetas = array();
-								if($consulta->rowCount() > 0){
-									while ($row = $consulta->fetch()) {
-										$etiquetas[] = $row;
+									if($puestosfilas[$i]["carnet"]){
+										echo "<b>Requiere carnet de conducir</b><br>";
 									}
 
-									echo "<p> <b>Skills:</b><br>";
-									for ($o=0; $o < count($etiquetas); $o++) { 
-										echo $etiquetas[$o]["nombre"]." / ";
-									}
-									echo "</p>";
-								}
-
-								if($puestosfilas[$i]["carnet"]){
-									echo "<b>Requiere carnet de conducir</b><br>";
-								}
 
 
+									?>
 
-								?>
 
-
-							</div>
-							<div class="panel-footer collapse puesto<?php echo $i;?>">
-								<div class="row">
-									<div class="col-md-12 pie-acciones">
-										<form method="post" class="aplicarform">
-											<input type="hidden" name="idpuesto" value="<?php echo $puestosfilas[$i]["identificador"];?>">								
-
-											<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success">
-										</form>
+								</div>
+								<div class="panel-footer collapse puesto<?php echo $i;?>">
+									<div class="row">
+										<div class="col-md-12 pie-acciones">
+											<form method="post" class="aplicarform">
+												<input type="hidden" name="idpuesto" value="<?php echo $puestosfilas[$i]["identificador"];?>">								
+												<?php 
+												if($aplicado){
+													echo '<input type="button" disabled value="Puesto ya aplicado" class="btn btn-success">';
+												}else{
+													echo '<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success">';
+												}
+												?>
+												
+											</form>
+										</div>
 									</div>
 								</div>
+
 							</div>
 
-						</div>
-
-						<?php
+							<?php
 					/*if($i<count($puestosfilas)-1){
 						echo "<hr>";
 					}*/

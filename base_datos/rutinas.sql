@@ -218,38 +218,7 @@ delimiter ;
 
 /* Fin de funcion */
 
-/* FUNCION PARA APLICAR A UN PUESTO */
 
-
-DROP PROCEDURE IF EXISTS tetuanjobs.aplicarPuesto;
-
-delimiter //
-
-CREATE PROCEDURE tetuanjobs.aplicarPuesto(idusuario int, idpuesto int) 
-BEGIN	
-	declare id int default -1;
-	declare idpst int default -1;	
-
-	SELECT id_estudiante into id from tetuanjobs.usuarios usu join tetuanjobs.estudiantes est
-	on usu.id_usuario = est.id_usuario
-	where est.id_usuario = idusuario and activo = 1;
-
-	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
-
-	if id >=0 and idpst >= 0 then
-		INSERT into tetuanjobs.puestos_estudiantes (id_puesto, id_estudiante) values(idpst, id);
-		
-		select true as resultado;
-	else
-		select false as resultado;
-	end if;
-			
-
-
-END//
-delimiter ;	
-
-/* FIN FUNCION PARA APLICAR A UN PUESTO */
 
 /** FUNCION NUEVA EMPRESA **/
 
@@ -804,7 +773,46 @@ delimiter ;
 /** fin funcion para cargar información de estudiante por id **/
 
 
+
 /** FIN RUTINAS PERFIL ESTUDIANTE **/
+
+/** RUTINAS BUSQUEDA ESTUDIANTE **/
+
+/* FUNCION PARA APLICAR A UN PUESTO */
+
+
+DROP PROCEDURE IF EXISTS tetuanjobs.aplicarPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.aplicarPuesto(idusuario int, idpuesto int) 
+BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_estudiante into id from tetuanjobs.usuarios usu join tetuanjobs.estudiantes est
+	on usu.id_usuario = est.id_usuario
+	where est.id_usuario = idusuario and activo = 1;
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+		INSERT into tetuanjobs.puestos_estudiantes (id_puesto, id_estudiante) values(idpst, id);
+		
+		select true as resultado;
+	else
+		select false as resultado;
+	end if;
+			
+
+
+END//
+delimiter ;	
+
+/* FIN FUNCION PARA APLICAR A UN PUESTO */
+
+
+/** RUTINAS BUSQUEDA ESTUDIANTE **/
 
 /** RUTINAS FILTRO DE USUARIOS **/
 

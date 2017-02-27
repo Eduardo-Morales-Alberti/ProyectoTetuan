@@ -23,66 +23,69 @@ ob_start();
 <form method="post">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Añadir un nuevo puesto
-            </h4> 
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Nombre de la empresa</label>
-                        <select class="form-control"   <?php if(isset($puesto["id_emp"])){ echo "disabled";}else{echo 'name="empresa"';}?> >
-                            <?php if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
-                        }else{echo $generacl->listarEmpresasSelect();
-                        } ?>
-                    </select>
-                    <?php if(isset($puesto["id_emp"])){ echo '<input type="hidden" name="empresa" value="'.$puesto["id_emp"].'" >';} ?>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Título del puesto</label>
-                    <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="<?php if(isset($puesto["nombre"])){echo $puesto["nombre"];}?>" >
-                </div>
-            </div>
-        </div>
+            <h4>
+               <?php 
+               if(isset($_SESSION["idpst"])){echo "Modificar Puesto '".$puesto['nombre']."'";}else{echo "Añadir un nuevo puesto";}
+            ?>
+        </h4> 
+    </div>
+    <div class="panel-body">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Provincia</label>
-                    <select class="form-control" name="provincia">
-                        <?php if(isset($puesto["idprov"])){$generacl->listarProvincias($puesto["idprov"]);}?>
-                        <?php echo $generacl->provinciasSELECT;?>
-                    </select>
+                    <label>Nombre de la empresa</label>
+                    <select class="form-control"   <?php if(isset($puesto["id_emp"])){ echo "disabled";}else{echo 'name="empresa"';}?> >
+                        <?php if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
+                    }else{echo $generacl->listarEmpresasSelect();
+                    } ?>
+                </select>
+                <?php if(isset($puesto["id_emp"])){ echo '<input type="hidden" name="empresa" value="'.$puesto["id_emp"].'" >';} ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Título del puesto</label>
+                <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="<?php if(isset($puesto["nombre"])){echo $puesto["nombre"];}?>" >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Provincia</label>
+                <select class="form-control" name="provincia">
+                    <?php if(isset($puesto["idprov"])){$generacl->listarProvincias($puesto["idprov"]);}?>
+                    <?php echo $generacl->provinciasSELECT;?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Descripción del puesto</label><br>
+                <textarea class="form-control" rows="5" name="descpuesto"><?php if(isset($puesto["descripcion"])){echo $puesto["descripcion"];}?></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Funciones</label><br>
+                <div class="input-group">
+                    <input type="text" class="form-control " id="funciones" name="funciones" value="" >                            
+                    <span class="input-group-btn">
+                        <input type="button" class="btn btn-success" id="afuncion" name="afuncion" value="Agregar función">
+                    </span>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Descripción del puesto</label><br>
-                    <textarea class="form-control" rows="5" name="descpuesto"><?php if(isset($puesto["descripcion"])){echo $puesto["descripcion"];}?></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <label>Funciones</label><br>
-                    <div class="input-group">
-                        <input type="text" class="form-control " id="funciones" name="funciones" value="" >                            
-                        <span class="input-group-btn">
-                            <input type="button" class="btn btn-success" id="afuncion" name="afuncion" value="Agregar función">
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 form-group">                    
-                <div class="col-lg-12 conborde etiquetas">
-                    <div class="row" id="divfunciones">
-                        <?php echo $admincl->listarFuncionesPst();?>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 form-group">                    
+            <div class="col-lg-12 conborde etiquetas">
+                <div class="row" id="divfunciones">
+                    <?php echo $admincl->listarFuncionesPst();?>
                         <!--<div class="col-md-6 form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -187,7 +190,7 @@ ob_start();
         </div>
         <div class="row">
             <div class="col-md-6">
-             <div class="form-group">
+               <div class="form-group">
                 <label>Carnet de conducir</label> <br>
 
                 <div class="input-group">
@@ -252,7 +255,7 @@ ob_start();
 </div>
 <div class="panel-footer">
     <div class="row">
-       <div class="col-md-12 text-right">
+     <div class="col-md-12 text-right">
         <?php 
         if(isset($_SESSION["idpst"])){
             echo '<input type="submit" class="btn btn-danger" name="cancelarpuesto" value="Cancelar">';
