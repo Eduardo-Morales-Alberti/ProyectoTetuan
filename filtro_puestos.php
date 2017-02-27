@@ -35,7 +35,8 @@ ob_start();
                     <th>Acciones</th>                   
                     <th>Empresa</th>
                     <th>Provincia</th>
-                    <th>Descripción</th>                                   
+                    <th>Descripción</th>   
+                    <th>Interesados</th>                                
                 </tr>
             </thead>
             <tfoot>
@@ -44,7 +45,8 @@ ob_start();
                     <th>Acciones</th>                   
                     <th>Empresa</th>
                     <th>Provincia</th>
-                    <th>Descripción</th>                                   
+                    <th>Descripción</th>   
+                    <th>Interesados</th>                                 
                 </tr>
             </tfoot>
             <tbody>

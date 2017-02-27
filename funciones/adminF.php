@@ -692,27 +692,27 @@ class adminBBDD extends singleton{
 
 	function listarPuestos(){
 		$html = "";
-		$sql = "select nombre, identificador, empresa,provincia,descripcion from listarPuestos";
+		$sql = "select nombre, identificador, empresa,provincia,descripcion, interesados from listarPuestos";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute();
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
 
-		$usuarios = array();
+		$puestos = array();
 		while ($row = $consulta->fetch()) {
-			$usuarios[] = $row;
+			$puestos[] = $row;
 		}
 
 
-		for ($i=0; $i < count($usuarios); $i++) { 
+		for ($i=0; $i < count($puestos); $i++) { 
 			echo "<form method='post'><tr>";
-			foreach ($usuarios[$i] as $clave => $valor) {
+			foreach ($puestos[$i] as $clave => $valor) {
 
 				if($clave == "identificador"){
 					echo "<td><input type='checkbox' name='ids[]' value='$valor'> &nbsp; <button type='submit' name='modpst' value='$valor' class='btn btn-success'>
 					<i class='fa fa-edit' aria-hidden='true'></i>
 					</button></td>";
 				}else{
-					echo "<td><input type='hidden' name='".$clave."[".$usuarios[$i]["identificador"]."]' value='$valor'>$valor</td>";
+					echo "<td><input type='hidden' name='".$clave."[".$puestos[$i]["identificador"]."]' value='$valor'>$valor</td>";
 				}
 
 			}
