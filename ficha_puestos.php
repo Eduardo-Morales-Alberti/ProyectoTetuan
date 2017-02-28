@@ -22,14 +22,14 @@ ob_start();
 </h1>  
 <form method="post">
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading" <?php  if(isset($_SESSION["idpst"])&&isset($puesto["interesados"])&&$puesto["interesados"]>0){echo 'data-toggle="collapse" data-target=".modificarpst"';} ?> >
             <h4>
                <?php 
                if(isset($_SESSION["idpst"])){echo "Modificar Puesto '".$puesto['nombre']."'";}else{echo "Añadir un nuevo puesto";}
-            ?>
-        </h4> 
-    </div>
-    <div class="panel-body">
+               ?>
+           </h4> 
+       </div>
+       <div class="panel-body <?php  if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} ?>">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -253,14 +253,14 @@ ob_start();
         </div>          
     </div>
 </div>
-<div class="panel-footer">
+<div class="panel-footer <?php  if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} ?>">
     <div class="row">
      <div class="col-md-12 text-right">
         <?php 
         if(isset($_SESSION["idpst"])){
             echo '<input type="submit" class="btn btn-danger" name="cancelarpuesto" value="Cancelar">';
             echo '<input type="hidden" name="idpuesto" value="'.$_SESSION["idpst"].'">';
-            unset($_SESSION["idpst"]);
+            //unset($_SESSION["idpst"]);
         }
         ?>
         <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
@@ -274,7 +274,17 @@ ob_start();
 </form>
 
 <?php
+    $admincl->listarEstudiantesPuesto($puesto);
+?>
+
+
+<?php
 $page["cuerpo"] = ob_get_clean();
+
+if(isset($_SESSION["idpst"])){
+
+    unset($_SESSION["idpst"]);
+}
 
 ob_start();?>
 <script type="text/javascript">

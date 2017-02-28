@@ -939,11 +939,14 @@ CREATE PROCEDURE tetuanjobs.cargarInfoPuesto(idpuesto int, usid int)
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
 	if id >=0 and idpst >= 0 then
-		select true as resultado, puesto_nombre as nombre, id_puesto as identificador, emp.id_empresa as id_emp,  nombre_empresa as empresa, 
+		select true as resultado, puesto_nombre as nombre, pst.id_puesto as identificador, emp.id_empresa as id_emp,  nombre_empresa as empresa, 
 		  pst.id_provincia as idprov, nombre_provincia as provincia, puesto_desc as descripcion,puesto_carnet as carnet, cast(experiencia as unsigned) experiencia, 
-		  cast(tipo_contrato as unsigned) contrato, cast(jornada as unsigned) jornada, cast(titulacion_minima as unsigned) titulacion
+		  cast(tipo_contrato as unsigned) contrato, cast(jornada as unsigned) jornada, cast(titulacion_minima as unsigned) titulacion,
+		  count(pstest.id_estudiante) as interesados
 		  from tetuanjobs.puestos pst join empresas emp on pst.id_empresa = emp.id_empresa
-             join provincias prv on prv.id_provincia = pst.id_provincia where id_puesto = idpst;
+            join provincias prv on prv.id_provincia = pst.id_provincia 
+            left join tetuanjobs.puestos_estudiantes pstest on pstest.id_puesto = pst.id_puesto
+     		where pst.id_puesto = idpst group by pst.id_puesto ;
 
 		/*select true as resultado;*/
 	else
@@ -1273,7 +1276,7 @@ delimiter ;
 
 /** fin listar funciones del puesto **/
 
-/** modficar puesto **/
+/** modificar puesto **/
 
 drop PROCEDURE if EXISTS tetuanjobs.modificarPuesto;
 
@@ -1308,7 +1311,36 @@ delimiter ;
 
 /*call modificarPuesto(4,1,null, "Prueba de modificacion", null, 5, null,null,null,null);*/
 
-/** fin modficar puesto **/
+/** fin modificar puesto **/
+
+/** Rutina para listar los estudiantes de un puesto **/
+drop PROCEDURE if EXISTS tetuanjobs.listarEstPuesto;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.listarEstPuesto(idpuesto int, usid int) 
+	BEGIN	
+	declare id int default -1;
+	declare idpst int default -1;	
+
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+
+	if id >=0 and idpst >= 0 then
+	select *from puestos_estudiantes pstest join listarUsuarios lus
+	on pstest.id_estudiante = lus.idestudiante where id_puesto = 3;
+
+		/*select true as resultado;*/
+	else
+		select false as resultado, idpuesto, usid;
+	end if;
+			
+		
+	END//
+delimiter ;
+
+/** fin Rutina para listar los estudiantes de un puesto **/
 
 /** FIN RUTINAS FICHA PUESTOS **/
 

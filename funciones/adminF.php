@@ -22,7 +22,7 @@ class adminBBDD extends singleton{
 
 	function listarUsuarios(){
 		$html = "";
-		$sql = "select * from listarUsuarios";
+		$sql = "select identificador,email, nombre, apellidos, ciclo, estado from listarUsuarios";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute();
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
@@ -683,6 +683,118 @@ class adminBBDD extends singleton{
 
 
 	/** fin función para cancelar modificaciones puesto **/
+
+	/* Función para listar los estudiantes que tiene un puesto*/
+	function listarEstudiantesPuesto($puesto){
+
+		if(isset($_SESSION["idpst"])&&isset($puesto["interesados"])&&$puesto["interesados"]>0){
+			?>
+			<div class="panel panel-default">
+				<div class="panel-heading" data-toggle="collapse" data-target=".interesados"><h4>Lista de interesados</h4></div>
+				<div class="panel-body collapse interesados out">
+
+					<?php
+
+					$sql = "call listarEstPuesto(?,?)";
+					$consulta = $this->Idb->prepare($sql);
+					$consulta->execute(array($_SESSION["idpst"],$_SESSION["usuario"]->identificador));
+					$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+			//$usuarios = array();
+					$cont = 1;
+					while ($usuario = $consulta->fetch()) {
+				//print_r($usuario);
+				//$usuarios[] = $row;
+
+
+						?>
+
+
+						<div class="panel panel-default">
+							<div class="panel-heading" data-toggle="collapse" data-target=".est<?php echo $cont;?>">
+								<div class="row">
+									<div class="col-md-8"><h4><?php echo $usuario["nombre"];?><br>
+										<small><b><?php echo $usuario["email"];?></b>
+											<?php
+											if(isset($usuario["telefono"])){
+												echo " - <b>".$usuario["telefono"]."</b>";
+											}
+											?>
+											<?php
+											if(isset($usuario["provincia"])){
+												echo " - <b>".$usuario["provincia"]."</b>";
+											}
+											?>
+										</small></h4>
+									</div> 
+
+								</div>
+							</div>
+							<div class="panel-body collapse out est<?php echo $cont; $cont++;?>" >          
+								<?php
+								if(isset($usuario["foto"])&&isset($usuario["descripcion"])){
+									?>
+									
+									<p>  
+										<b>Sobre el estudiante:</b><br><br>
+										<?php
+										if(isset($usuario["foto"])){
+											echo '<img src="subidas/'.$usuario["foto"].'" style="float:left; padding-right:10px">';
+										}
+
+										if(isset($usuario["descripcion"])){
+											echo $usuario["descripcion"];
+										}
+										?>
+										<br style="clear: left;"><br>
+										<?php
+										if(isset($usuario["cv"])){
+											echo '<a href="subidas/'.$usuario["cv"].'" target="_blank">Mostrar Currículum vitae </a>';
+										}
+										?>
+									</p>
+									<?php
+								}
+								?> 
+								<p>
+									<b>Experiencia:</b><br>
+									Experiencia<br>
+								</p> 
+								<p>
+									<b>Educación:</b><br>
+									Educación<br>
+								</p> 
+
+								<p> 
+									<b>Idiomas:</b><br>
+									nombre / 
+								</p>
+
+								<p> 
+									<b>Skills:</b><br>
+									nombre / 
+								</p>
+								<?php
+								if(isset($usuario["carnet"])){
+									echo "<b>Tiene carnet de conducir</b><br>";
+								}
+								?>
+								
+							</div>                               
+
+						</div>
+
+
+
+						<?php 
+					} ?>
+				</div>
+			</div>
+			<?php
+		}
+	}
+
+	/* fin Función para listar los estudiantes que tiene un puesto*/
 
 	/** FIN FICHA PUESTOS **/
 

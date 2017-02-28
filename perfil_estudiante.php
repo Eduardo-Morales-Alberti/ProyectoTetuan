@@ -404,9 +404,11 @@ ob_start();
                         <div class="form-group">
                             <label>Currículum Vitae (Sólo pdf hasta 500KB)</label><br>
                             <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
-                            <input type="file" id="cv" name="cv" style="display:none"> 
+                            <input type="file" id="cv" name="cv" style="display:none">
+                            <?php if(isset($informacion["curriculum"])){?> 
                             <input type="hidden" id="dircv" value="<?php if(isset($informacion["curriculum"])){echo $informacion["curriculum"];}?>">
                             <input type="button" class="btn btn-primary" id="mostrarcv" value="Mostrar CV">
+                            <?php }?>
                         </div>
                     </div>
                 </div>

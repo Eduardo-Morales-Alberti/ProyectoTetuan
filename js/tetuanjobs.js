@@ -415,6 +415,8 @@ function perfil(){
 
 }
 
+
+
 /** Modificar modal **/
 
 function modificarModal(){
@@ -467,7 +469,7 @@ function busquedaofer(){
         idpuesto:  $(this).children("input[name='idpuesto']").eq(0).val() } );
 
       xhr.done(function( data ) {
-        alert(data);
+        //alert(data);
         if(data == "correcto"){
           input.prop( "value", "Se ha aplicado correctamente" );
           mensajeModal("Ha seleccionado el puesto correctamente");
@@ -570,6 +572,8 @@ function fichapuestos(){
     elementosfunc = eliminarTag("funciones", "divfunciones",elementosfunc)
   });
   /** Fin opción funciones**/
+
+  
 }
 
 

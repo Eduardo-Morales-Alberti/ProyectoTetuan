@@ -43,14 +43,16 @@ GRANT select on tetuanjobs.listarEmpresasSelect To 'usertetuan'@'localhost';
 /** VISTA LISTAR USUARIOS **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarUsuarios as 
-	select us.id_usuario as identificador,email, nombre, apellidos, ciclo,
+	select us.id_usuario as identificador,email, nombre, apellidos, ciclo, cv, carnet,
+      descripcion, foto,
              CASE 
                   WHEN activo = 1 
                   THEN "Activo" 
                   ELSE "Pendiente" 
-             END as estado
+             END as estado, id_estudiante as idestudiante, telefono, nombre_provincia as provincia
              from tetuanjobs.usuarios as us join tetuanjobs.estudiantes as est 
-             on us.id_usuario = est.id_usuario 
+             on us.id_usuario = est.id_usuario  
+             left join provincias prov on est.id_provincia = prov.id_provincia
              where tipo_usuario = "estudiante";
 
 GRANT select on tetuanjobs.listarUsuarios To 'usertetuan'@'localhost';
