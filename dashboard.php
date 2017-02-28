@@ -61,8 +61,8 @@ ob_start();
 
         ?>  
         <!-- Usuarios -->
-        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut">
-            <a href="filtro_usuarios.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut"> 
+        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut2">
+            <a href="filtro_usuarios.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut2"> 
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
@@ -77,8 +77,8 @@ ob_start();
         </div>
         <!-- Fin de Usuarios-->
         <!-- Empresas -->
-        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut1">
-            <a href="filtro_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
+        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut3">
+            <a href="filtro_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut3">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
@@ -93,8 +93,8 @@ ob_start();
         </div>
         <!-- Fin de Empresas -->  
         <!-- Puestos -->
-        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut1">
-            <a href="ficha_puestos.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
+        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut4">
+            <a href="ficha_puestos.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut4">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
