@@ -52,7 +52,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarUsuarios as
              END as estado, id_estudiante as idestudiante, telefono, nombre_provincia as provincia
              from tetuanjobs.usuarios as us join tetuanjobs.estudiantes as est 
              on us.id_usuario = est.id_usuario  
-             left join provincias prov on est.id_provincia = prov.id_provincia
+             left join tetuanjobs.provincias prov on est.id_provincia = prov.id_provincia
              where tipo_usuario = "estudiante";
 
 GRANT select on tetuanjobs.listarUsuarios To 'usertetuan'@'localhost';
@@ -201,7 +201,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarPstEtqEst as
   id_usuario as idusuario   
      from tetuanjobs.puestos pst 
      left join tetuanjobs.puestos_etiquetas pstetq on pst.id_puesto = pstetq.id_puesto
-     left join etiquetas etq on pstetq.id_etiqueta = etq.id_etiqueta
+     left join tetuanjobs.etiquetas etq on pstetq.id_etiqueta = etq.id_etiqueta
      left join tetuanjobs.puestos_estudiantes pstest on pstest.id_puesto = pst.id_puesto
      left join tetuanjobs.estudiantes est on est.id_estudiante = pstest.id_estudiante;
 GRANT select on tetuanjobs.listarPstEtqEst To 'usertetuan'@'localhost';
