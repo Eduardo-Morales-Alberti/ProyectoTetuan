@@ -65,12 +65,11 @@ class loginBBDD extends singleton{
 
 					$emails = [$_POST['mail']];
 					$mensaje = "Para restablecer su contraseña vaya al siguiente enlace 
-					<a href='http://localhost/proyectofinal/restablecercontr.php?
-					email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
+					<a href='http://localhost/proyectofinal/restablecercontr.php?email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
 					Restablecer Contraseña</a>";
 					$enviado = General::enviarEmail($emails,"Restablecer la contraseña", $mensaje);
 
-					if($enviado){
+					if($enviado == "correcto"){
 
 						$_SESSION["mensajeServidor"] = "Instrucciones enviadas al email para restablecer la contraseña.";
 
@@ -100,9 +99,9 @@ class loginBBDD extends singleton{
 
 	/** Funcion para establecer una nueva contraseña con el enlace del email recibido **/
 	public function restContr(){
-
+		print_r($_GET);
 		if(isset($_GET["email"])&&isset($_GET["clave"])){
-
+			
 			if(isset($_SESSION["email"])&&isset($_SESSION["clave"])
 				&&isset($_POST["restcontr"])&&isset($_POST["ncontr"])
 				&&isset($_POST["ccontr"])){
@@ -133,7 +132,7 @@ class loginBBDD extends singleton{
 						}else{
 
 							
-							$_SESSION["mensajeServidor"] = "No se ha podido restablecer la contraseña";
+							$_SESSION["mensajeServidor"] = "No se ha podido restablecer la contraseña, error en la consulta";
 							header("location:login.php");
 
 						}
@@ -141,7 +140,7 @@ class loginBBDD extends singleton{
 						
 					}else{
 
-						$_SESSION["mensajeServidor"] = "No se ha podido restablecer la contraseña";
+						$_SESSION["mensajeServidor"] = "No se ha podido restablecer la contraseña, no se ha obtenido resultado";
 						header("location:login.php");
 
 					}
@@ -150,13 +149,13 @@ class loginBBDD extends singleton{
 				}else{
 					
 					return '<script type="text/javascript">
-					mensajeModal("Las constraseñas no coinciden");
+					mensajeModal("Las contraseñas no coinciden");
 					</script>';
 				}
 				
 
 			}else{
-
+				/*echo $_GET["email"]." clave: ".$_GET["clave"];*/
 				$query = "call testRestContr('".$_GET["email"]."','".$_GET["clave"]."')";
 				$consulta = $this->Idb->prepare($query);				
 				$consulta->execute();
@@ -169,6 +168,7 @@ class loginBBDD extends singleton{
 
 						$_SESSION["email"] = $_GET["email"];
 						$_SESSION["clave"] = $_GET["clave"];
+
 
 					}else{
 
@@ -184,12 +184,12 @@ class loginBBDD extends singleton{
 				}
 			}
 
-		}/*else{
+		}else{
 
 			session_destroy();
 			header("location:login.php");			
 
-		}*/
+		}
 
 	}
 
@@ -199,14 +199,14 @@ class loginBBDD extends singleton{
 
 	public function nvEstudiante(){
 		if(isset($_POST['registrar'])&&isset($_POST['mail'])&&isset($_POST['nombre'])&&isset($_POST['modulo'])&&isset($_POST['tipo'])&&
-			$_POST['tipo'] == "estudiante"){
+			$_POST['tipo'] == "estudiante"&&isset($_POST['password'])&&isset($_POST['comppassword'])&&$_POST['password']==$_POST['comppassword']){
 			$apellidos = null;
 
 			if(isset($_POST['apellidos'])){
 				$apellidos = $_POST['apellidos'];
 			}
 
-			$query = "call nuevoEstudiante('".$_POST['nombre']."','".$apellidos."','".$_POST['modulo']."','".$_POST['mail']."')";
+			$query = "call nuevoEstudiante('".$_POST['nombre']."','".$apellidos."','".$_POST['modulo']."','".$_POST['mail']."','".$_POST['password']."')";
 			$consulta = $this->Idb->prepare($query);
 			$consulta->execute();
 			
@@ -219,6 +219,7 @@ class loginBBDD extends singleton{
 				$_SESSION["mensajeServidor"] = $result["mensaje"];
 
 			}else{
+				session_start();
 				session_destroy();
 				session_start();
 				$_SESSION["mensajeServidor"] = "Error al crear el nuevo usuario.";
@@ -235,7 +236,7 @@ class loginBBDD extends singleton{
 
 	public function nvEmpresa(){
 		if(isset($_POST['registrar'])&&isset($_POST['mail'])&&isset($_POST['nombre'])&&isset($_POST['empresa'])&&isset($_POST['tipo'])&&
-			$_POST['tipo'] == "empresa"){
+			$_POST['tipo'] == "empresa"&&isset($_POST['password'])){
 			$nombre = $_POST['nombre'];
 
 			if(isset($_POST['apellidos'])){
@@ -246,14 +247,16 @@ class loginBBDD extends singleton{
 				$web = $_POST['webempresa'];
 			}
 
-			$query = "call nuevaEmpresa(?,?,?,?,null)";
+			$query = "call nuevaEmpresa(?,?,?,?,?,null)";
 			
 			$empresa = $_POST['empresa'];
 
 			$mail = $_POST["mail"];
 
+			$contr = $_POST["password"];
+
 			$consulta = $this->Idb->prepare($query);
-			$consulta->execute(array($empresa,$nombre,$web,$mail));
+			$consulta->execute(array($empresa,$contr,$nombre,$web,$mail));
 			
 			if($consulta->rowCount()>0){
 				$result = $consulta->fetch();	

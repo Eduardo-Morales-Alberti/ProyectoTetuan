@@ -11,8 +11,9 @@ if(!isset($_SESSION["usuario"])){
 include_once("funciones/adminF.php");
 $adminclass = new adminBBDD;
 $adminclass->eliminarEmpresas();
-$adminclass->modificarEmpresas();
-$adminclass->nuevaEmpresa();
+$adminclass->cambiarEstadoEmp();
+/*$adminclass->modificarEmpresa();*/
+/*$adminclass->nuevaEmpresa();*/
 
 ob_start();?>
 <script type="text/javascript">
@@ -39,28 +40,31 @@ ob_start();
              <thead>
                 <tr>
                     <th><i class="fa fa-list-ul" aria-hidden="true"></i></th>
-                    <th>Empresa</th>
+                    <th>Seleccionar</th>
+                    <th>Estado</th> 
                     <th>Web</th>
                     <th>Email</th>
                     <th>Teléfono</th>
-                    <th>Contacto</th>                
+                    <th>Contacto</th> 
+                                  
                 </tr>
             </thead>
             <tfoot>
                 <tr>
                     <th><i class="fa fa-list-ul" aria-hidden="true"></i></th>
-                    <th>Empresa</th>
+                    <th>Seleccionar</th>
+                    <th>Estado</th>
                     <th>Web</th>
                     <th>Email</th>
                     <th>Teléfono</th>
-                    <th>Contacto</th>                
+                    <th>Contacto</th>  
                 </tr>
             </tfoot>
             <tbody>
                 <?php 
                 $adminclass->listarEmpresas();                
                 ?>
-                <tr>
+                <!--<tr>
                     <td><button type="submit" name="agregaremp" class="btn btn-success">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </button></td>
@@ -69,7 +73,7 @@ ob_start();
                     <td><input type="text" name="mailemp" ></td>
                     <td><input type="text" name="telfemp"></td>
                     <td><input type="text" name="contemp"></td>
-                </tr>
+                </tr>-->
             </tbody>
         </table>               
     </div>
@@ -77,7 +81,7 @@ ob_start();
         <div class="row">
             <div class="col-md-12 text-right">
                 <input type="submit" class="btn btn-danger" name="eliminaremp" value="Eliminar selección">
-                <input type="submit" name="modificaremp" value="Modificar selección" class="btn btn-success">
+                <input type="submit" name="cambiarest" value="Cambiar estado" class="btn btn-success">
             </div>
         </div>
     </div>

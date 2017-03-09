@@ -3,11 +3,8 @@ include_once('funciones/loginF.php');
 
 session_start();
 
-$logincl = loginBBDD::singleton();
+$logincl = new loginBBDD;
 $modal = $logincl->restContr();
-
-
-
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -109,13 +106,13 @@ $modal = $logincl->restContr();
     									<div class="col-md-6 col-lg-4">
     										<div class="form-group">
     											<label>Nueva contraseña</label>
-    											<input type="text" class="form-control" name="ncontr" value="" required="required">
+    											<input type="password" class="form-control" name="ncontr" value="" required="required">
     										</div>
     									</div>
     									<div class="col-md-6 col-lg-4">
     										<div class="form-group">
     											<label>Confirma la contraseña</label>
-    											<input type="text" class="form-control" name="ccontr" value="" required="required">
+    											<input type="password" class="form-control" name="ccontr" value="" required="required">
     										</div>
     									</div>
     								</div>

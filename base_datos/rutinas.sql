@@ -38,9 +38,19 @@ drop PROCEDURE if EXISTS tetuanjobs.eliminarUsuario;
 delimiter //
 CREATE PROCEDURE tetuanjobs.eliminarUsuario(id_us int) 
 	BEGIN
-	delete from tetuanjobs.estudiantes where id_usuario = id_us;
+	declare tipo varchar(250);
+	select tipo_usuario into tipo from tetuanjobs.usuarios where id_usuario = id_us;
 
-	delete from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "estudiante";
+	if tipo = "estudiante" then
+
+		delete from tetuanjobs.estudiantes where id_usuario = id_us;
+		delete from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "estudiante";
+	elseif tipo = "empresa" then
+		delete from tetuanjobs.empresas where id_usuario = id_us;
+		delete from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "empresa";
+	else 
+		select false as mensaje;
+	end if;
 
 
 END//
@@ -74,6 +84,8 @@ BEGIN
 
 	if id >= 0 and tipo = "estudiante" then 
 	SELECT nombre, id_usuario as identificador, "estudiante" as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
+	elseif id >= 0 and tipo = "empresa" then 
+	SELECT nombre_empresa as nombre, id_usuario as identificador, "empresa" as "tipo_usuario" from tetuanjobs.empresas where id_usuario = id;
 	elseif id >= 0 and tipo = "administrador" then 
 	SELECT "Administrador" as nombre, id as identificador, tipo as "tipo_usuario";
 	else
@@ -83,6 +95,7 @@ BEGIN
 END//
 delimiter ;	
 
+/*call tetuanjobs.compAcceso("gates@microsoft.com", "empresatetetuan");*/
 /*call tetuanjobs.compAcceso('prueba4@gmail.com','pruebadeacceso');*/
 /*call tetuanjobs.compAcceso('admin@gmail.com','admintetuan');*/
 /*call tetuanjobs.compAcceso('eduardomoberti@hotmail.com','estudiantetetuan');*/
@@ -160,20 +173,34 @@ delimiter //
 CREATE PROCEDURE tetuanjobs.cambiarContrRest(mail varchar(100), clave varchar(41), contr varchar(41)) 
 BEGIN	
 	declare existe boolean default false;	
+	declare tipo varchar(250);
 
 	SELECT true into existe from tetuanjobs.usuarios where email = mail AND activo = 1 
 	and restablecer = 1 and clave_rest = clave;	
 
 	if existe then
+		select tipo_usuario into tipo from usuarios where email = mail;
 
 		update tetuanjobs.usuarios set password = password(contr), clave_rest = null, restablecer = 0
 		 where email = mail AND activo = 1 
 		and restablecer = 1 and clave_rest = clave;	
 
-		SELECT true as resultado, nombre, id_estudiante as identificador, tipo_usuario 
-		from tetuanjobs.usuarios as usr join tetuanjobs.estudiantes as est
-			on usr.id_usuario = est.id_usuario
-	 			where email = mail AND activo = 1 and password = password(contr);	
+		if tipo = "estudiante" then
+
+			SELECT true as resultado, nombre, est.id_usuario as identificador, tipo_usuario 
+			from tetuanjobs.usuarios as usr join tetuanjobs.estudiantes as est
+				on usr.id_usuario = est.id_usuario
+		 			where email = mail AND activo = 1 and password = password(contr);	
+	 	elseif tipo = "empresa" then
+	 		SELECT true as resultado, nombre_empresa as nombre, emp.id_usuario as identificador, tipo_usuario 
+			from tetuanjobs.usuarios as usr join tetuanjobs.empresas as emp
+			on usr.id_usuario = emp.id_usuario
+	 			where usr.email = mail AND activo = 1 and password = password(contr);	
+	 	else
+
+	 		select false as resultado;
+
+	 	end if;
 
 	else
 		select false as resultado;
@@ -196,14 +223,14 @@ drop PROCEDURE if EXISTS tetuanjobs.nuevoEstudiante;
 delimiter //
 
 CREATE PROCEDURE tetuanjobs.nuevoEstudiante(nomb varchar(25), ape varchar(50),ccl varchar(20),
-	mail varchar(100)) 
+	mail varchar(100), contr varchar(100)) 
 BEGIN
 	declare mensaje varchar(250) default "";
 	declare identificador int(11) unsigned;
 	
 
-	INSERT INTO tetuanjobs.usuarios (email,tipo_usuario) 
-		values(mail,'estudiante');
+	INSERT INTO tetuanjobs.usuarios (email,tipo_usuario, password) 
+		values(mail,'estudiante', password(contr));
 		set identificador = @@IDENTITY;
 
 	INSERT INTO tetuanjobs.estudiantes 
@@ -214,7 +241,7 @@ BEGIN
 
 END//
 delimiter ;
-/*call tetuanjobs.nuevoEstudiante("Carlos","Navarro","ASIR", "prueba4@gmail.com");*/
+/*call tetuanjobs.nuevoEstudiante("Laura","Garcia","ASIR", "prueba10@gmail.com","hola");*/
 
 /* Fin de funcion */
 
@@ -226,8 +253,8 @@ drop PROCEDURE if EXISTS tetuanjobs.nuevaEmpresa;
 
 delimiter //
 
-CREATE PROCEDURE tetuanjobs.nuevaEmpresa(nomb_emp varchar(250),nomb_c varchar(250),
- web varchar(250), mail varchar(100), telf varchar(9))
+CREATE PROCEDURE tetuanjobs.nuevaEmpresa(nomb_emp varchar(250), contr varchar(250),nomb_c varchar(250),
+ web varchar(250), mail varchar(100),telf varchar(9))
 BEGIN
 	declare creada boolean default false;
 	declare identificador int(11) default -1;
@@ -236,10 +263,13 @@ BEGIN
 	email = mail;
 
 	IF creada = false then 
+		INSERT INTO tetuanjobs.usuarios (email,tipo_usuario, password) 
+		values(mail,'empresa', password(contr));
+		set identificador = @@IDENTITY;
 
-		INSERT INTO tetuanjobs.empresas (nombre_empresa, persona_contacto,
+		INSERT INTO tetuanjobs.empresas (nombre_empresa,id_usuario, persona_contacto,
 			emp_web,email,telefono) 
-			values(nomb_emp,nomb_c,web, mail,telf);
+			values(nomb_emp,identificador,nomb_c,web, mail,telf);
 		/*if telf is not null then 
 		 update tetuanjobs.empresas set telefono = telf where id_empresa = @@IDENTITY;
 		end if;*/
@@ -255,7 +285,7 @@ BEGIN
 
 END//
 delimiter ;
-/*call tetuanjobs.nuevaEmpresa("Microsoft","Prueba","microsoft.com", "prueba@microsoft.com");*/
+/*call tetuanjobs.nuevaEmpresa("Otra empresa","hola","Prueba 2","microsoft.com", "prueba2@otraempresa.com",null);*/
 
 /* Fin de funcion */
 
@@ -816,12 +846,12 @@ delimiter ;
 
 /** RUTINAS FILTRO DE USUARIOS **/
 
-/** FUNCION PARA DAR DE ALTA UN USUARIO O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
+/** FUNCION PARA DAR DE ALTA UN USUARIO estudiante O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
 
-drop PROCEDURE if EXISTS tetuanjobs.cambiarEstado;
+drop PROCEDURE if EXISTS tetuanjobs.cambiarEstadoEst;
 
 delimiter //
-CREATE PROCEDURE tetuanjobs.cambiarEstado(id_us int) 
+CREATE PROCEDURE tetuanjobs.cambiarEstadoEst(id_us int) 
 	BEGIN
 
 update tetuanjobs.usuarios set activo = if(activo = 1, 0, 1)
@@ -835,7 +865,7 @@ delimiter ;
 /*call tetuanjobs.cambiarEstado(2);*/
 
 
-/** FIN FUNCION PARA DAR DE ALTA UN USUARIO O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
+/** FIN FUNCION PARA DAR DE ALTA UN USUARIO estudiante O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
 
 /** FIN RUTINAS FILTRO DE USUARIOS **/
 
@@ -851,11 +881,14 @@ CREATE PROCEDURE tetuanjobs.eliminarEmpresa(id_us int, id_emp int)
 	BEGIN
 	declare r boolean default false;
 	declare ext boolean default false;
-	select true into r from tetuanjobs.usuarios where id_usuario = id_us;
+	declare id_usuemp int default -1;
+	select true into r from tetuanjobs.usuarios where id_usuario = id_us and tipo_usuario = "administrador";
 	select true into ext from tetuanjobs.empresas where id_empresa = id_emp;
+	select id_usuario into id_usuemp from tetuanjobs.empresas where id_empresa = id_emp;
 
 	if r and ext then
 		delete from tetuanjobs.empresas where id_empresa = id_emp;
+		delete from tetuanjobs.usuarios where id_usuario = id_usuemp;
 		select true as resultado;
 	else 
 		select false as resultado;
@@ -864,8 +897,32 @@ CREATE PROCEDURE tetuanjobs.eliminarEmpresa(id_us int, id_emp int)
 END//
 delimiter ;
 
+/*call eliminarEmpresa(1,9);*/
 
 /** FIN RUTINA PARA ELIMINAR UNA EMPRESA **/
+
+/** FUNCION PARA DAR DE ALTA UN USUARIO empresa O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
+
+drop PROCEDURE if EXISTS tetuanjobs.cambiarEstadoEmp;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.cambiarEstadoEmp(id_emp int) 
+	BEGIN
+	declare id_us int default -1;
+	select id_usuario into id_us from tetuanjobs.empresas where id_empresa = id_emp;
+	if id_us >= 0 then
+		update tetuanjobs.usuarios set activo = if(activo = 1, 0, 1)
+			where id_usuario = id_us and tipo_usuario = "empresa";
+
+	SELECT * from tetuanjobs.usuarios where id_usuario = id_us;
+	end if;
+END//
+delimiter ;
+
+/*call tetuanjobs.cambiarEstadoEmp(9);*/
+
+
+/** FIN FUNCION PARA DAR DE ALTA UN USUARIO empresa O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
 
 /** RUTINA PARA MODIFICAR UNA EMPRESA **/
 
@@ -897,15 +954,15 @@ delimiter ;
 drop PROCEDURE if EXISTS tetuanjobs.agregarPuesto;
 
 delimiter //
-CREATE PROCEDURE tetuanjobs.agregarPuesto(usid int, id_emp int, nombre varchar(250), pdesc varchar(3000), carnet boolean, idprov int,
+CREATE PROCEDURE tetuanjobs.agregarPuesto(usid int, nombre varchar(250), pdesc varchar(3000), carnet boolean, idprov int,
 	exp int, tcontrato int, jorn int, titminima int) 
 	BEGIN
 	declare id int default -1;
 	declare idemp int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
-	SELECT id_empresa into idemp from tetuanjobs.empresas where id_empresa = id_emp;
+	SELECT id_empresa into idemp from tetuanjobs.empresas where id_usuario = id;
 
 	if id >=0 and idemp >= 0 then
 		INSERT INTO PUESTOS (id_empresa, puesto_nombre, puesto_desc, puesto_carnet, id_provincia, experiencia, tipo_contrato,
@@ -934,7 +991,7 @@ CREATE PROCEDURE tetuanjobs.cargarInfoPuesto(idpuesto int, usid int)
 	declare id int default -1;
 	declare idpst int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
@@ -970,8 +1027,7 @@ CREATE PROCEDURE tetuanjobs.listarEtiquetasPst(pst int, selct boolean)
 	BEGIN
 	declare id int default -1;	
 	
-	SELECT psto.id_puesto into id from tetuanjobs.puestos psto join tetuanjobs.puestos_etiquetas etq
-		on psto.id_puesto = etq.id_puesto  where psto.id_puesto = pst limit 1;
+	SELECT psto.id_puesto into id from tetuanjobs.puestos psto where psto.id_puesto = pst limit 1;
 
 		if id >=0 then
 			if selct then
@@ -987,7 +1043,7 @@ CREATE PROCEDURE tetuanjobs.listarEtiquetasPst(pst int, selct boolean)
 	END//
 delimiter ;
 
-/*call listarEtiquetasPst(3,true);*/
+/*call listarEtiquetasPst(4,true);*/
 
 /** Fin Rutina para listar skills del puesto **/
 
@@ -1001,8 +1057,7 @@ CREATE PROCEDURE tetuanjobs.listarIdiomasPst(pst int, selct boolean)
 	BEGIN
 	declare id int default -1;	
 	
-	SELECT psto.id_puesto into id from tetuanjobs.puestos psto join tetuanjobs.puestos_idiomas idm
-		on psto.id_puesto = idm.id_puesto  where psto.id_puesto = pst limit 1;
+	SELECT psto.id_puesto into id from tetuanjobs.puestos psto where psto.id_puesto = pst limit 1;
 
 		if id >=0 then
 			if selct then
@@ -1034,7 +1089,7 @@ CREATE PROCEDURE tetuanjobs.eliminarSkillsPuesto(usid int, pst int)
 		declare idpst int default -1;
 
 		SELECT id_usuario into id from tetuanjobs.usuarios
-		 where id_usuario = usid and tipo_usuario = "administrador";
+		 where id_usuario = usid and tipo_usuario = "empresa";
 
 		 SELECT id_puesto into idpst from tetuanjobs.puestos 
 		 where id_puesto = pst;
@@ -1069,7 +1124,7 @@ CREATE PROCEDURE tetuanjobs.agregarSkillsPuesto(usid int,idpst int, etiqueta var
 		declare id_etq int default -1;
 		declare pst int default -1;
 
-		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
 		select id_etiqueta into id_etq from tetuanjobs.etiquetas where nombre_etiqueta = lower(etiqueta);
 
@@ -1111,7 +1166,7 @@ CREATE PROCEDURE tetuanjobs.agregarIdiomaPuesto(usid int,idpst int, idioma varch
 		declare id_idm int default -1;
 		declare pst int default -1;
 
-		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
 		select id_idioma into id_idm from tetuanjobs.idiomas  where nombre_idioma = lower(idioma);
 
@@ -1153,7 +1208,7 @@ CREATE PROCEDURE tetuanjobs.agregarFuncionPuesto(usid int,idpst int, funcion var
 		declare id_func int default -1;
 		declare pst int default -1;
 
-		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
 		select id_funcion into id_func from tetuanjobs.funciones  where lower(funcion_desc) = lower(funcion);
 
@@ -1184,16 +1239,16 @@ drop PROCEDURE if EXISTS tetuanjobs.listarSkillsPuesto;
 
 delimiter //
 
-CREATE PROCEDURE tetuanjobs.listarSkillsPuesto(idpuesto int, usid int) 
+CREATE PROCEDURE tetuanjobs.listarSkillsPuesto(idpuesto int) 
 	BEGIN	
-	declare id int default -1;
+	/*declare id int default -1;*/
 	declare idpst int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	/*SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";*/
 
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
-	if id >=0 and idpst >= 0 then
+	if idpst >= 0 then
 		select etq.id_etiqueta as identificador, nombre_etiqueta as nombre
      from tetuanjobs.etiquetas etq left join 
      tetuanjobs.puestos_etiquetas pstetq on etq.id_etiqueta = pstetq.id_etiqueta left join tetuanjobs.puestos pst
@@ -1217,16 +1272,16 @@ drop PROCEDURE if EXISTS tetuanjobs.listarIdiomasPuesto;
 
 delimiter //
 
-CREATE PROCEDURE tetuanjobs.listarIdiomasPuesto(idpuesto int, usid int) 
+CREATE PROCEDURE tetuanjobs.listarIdiomasPuesto(idpuesto int) 
 	BEGIN	
-	declare id int default -1;
+	/*declare id int default -1;*/
 	declare idpst int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	/*SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";*/
 
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
-	if id >=0 and idpst >= 0 then
+	if idpst >= 0 then
 		select idm.id_idioma as identificador, nombre_idioma as nombre
      from tetuanjobs.idiomas idm left join 
      tetuanjobs.puestos_idiomas pstidm on idm.id_idioma = pstidm.id_idioma left join tetuanjobs.puestos pst
@@ -1250,16 +1305,16 @@ drop PROCEDURE if EXISTS tetuanjobs.listarFuncionesPuesto;
 
 delimiter //
 
-CREATE PROCEDURE tetuanjobs.listarFuncionesPuesto(idpuesto int, usid int) 
+CREATE PROCEDURE tetuanjobs.listarFuncionesPuesto(idpuesto int) 
 	BEGIN	
-	declare id int default -1;
+	/*declare id int default -1;*/
 	declare idpst int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	/*SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";*/
 
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
-	if id >=0 and idpst >= 0 then
+	if  idpst >= 0 then
 		select func.id_funcion as identificador, funcion_desc as nombre
      from tetuanjobs.funciones func  left join tetuanjobs.puestos pst
      on func.id_puesto = pst.id_puesto where pst.id_puesto = idpst
@@ -1288,7 +1343,7 @@ CREATE PROCEDURE tetuanjobs.modificarPuesto(idpuesto int, usid int, nombre varch
 	declare id int default -1;
 	declare idpst int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
@@ -1323,7 +1378,7 @@ CREATE PROCEDURE tetuanjobs.listarEstPuesto(idpuesto int, usid int)
 	declare id int default -1;
 	declare idpst int default -1;	
 
-	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+	SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "empresa";
 
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
@@ -1372,3 +1427,50 @@ delimiter ;
 /** FIN RUTINA PARA ELIMINAR UN PUESTO **/
 
 /** FIN RUTINAS FILTRO PUESTOS **/
+
+/* Rutinas perfil empresa */
+
+/* Función para modificar Usuario */
+drop PROCEDURE if EXISTS tetuanjobs.modificarUsuarioEmpresa;
+
+delimiter //
+CREATE PROCEDURE tetuanjobs.modificarUsuarioEmpresa(id_us int, nomb varchar(25), mail varchar(50),
+telef varchar(9), contacto varchar(250),web varchar(250)) 
+	BEGIN
+
+update tetuanjobs.empresas set nombre_empresa = if(nomb is not null, nomb, nombre_empresa), 
+	email = if(mail is not null, mail, email),telefono = if(telef is not null, telef,telefono), 
+	persona_contacto = if(contacto is not null, contacto, persona_contacto), 
+	emp_web = if(web is not null, web, emp_web)
+	where id_usuario = id_us;
+
+	SELECT * from tetuanjobs.empresas where id_usuario = id_us;
+
+
+END//
+delimiter ;
+
+/*call tetuanjobs.modificarUsuarioEmpresa(7,"Apple fff", null, "625879852",null,null);*/
+
+/* fin Función para modificar Usuario*/
+
+/** funcion para cargar información de empresa por id **/
+
+drop PROCEDURE if EXISTS tetuanjobs.cargarInfoEmpresa;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.cargarInfoEmpresa(usid int) 
+	BEGIN	
+
+		SELECT nombre_empresa as nombre, email, telefono, persona_contacto as contacto,
+		emp_web as web
+		 from tetuanjobs.empresas where id_usuario = usid;		
+		
+	END//
+delimiter ;
+
+
+/** fin funcion para cargar información de empresa por id **/
+
+/* Fin perfil empresa */

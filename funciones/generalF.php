@@ -57,7 +57,7 @@ class General extends singleton{
 		
 		$mail->Username = "contacto@momentosenlata.es";
 
-		$mail->Password = "alumno";
+		$mail->Password = "contactotetuan";
 
 		$mail->SetFrom("contacto@momentosenlata.es");
 
@@ -71,13 +71,13 @@ class General extends singleton{
 
 		if(!$mail->Send()) {
 
-			/*echo "Error en el mail: " . $mail->ErrorInfo;*/
-			return false;
+			return "Error en el mail: " . $mail->ErrorInfo;
+			/*return false;*/
 
 		} else {
 
 			/*echo "El mensaje ha sido enviado";*/
-			return true;
+			return "correcto";
 
 		}
 	}

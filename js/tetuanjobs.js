@@ -456,7 +456,7 @@ function busquedaofer(){
   /* fin Eliminar elementos repetidos del select de etiquetas*/
 
 
-/* Aplicar a un puesto */
+  /* Aplicar a un puesto */
   $(".aplicarform").each(function(){
     console.log($(this));
     $(this).submit(function() {
@@ -504,6 +504,23 @@ function filtrous(){
 }
 
 /**Filtro de usuarios**/
+
+/* perfil empresa */
+
+function perfilempresa(){
+  /** Función eliminar cuenta **/
+
+  $("#eliminarcuenta").click(function(event){
+    var eliminar = confirm("¿Seguro que desea eliminar la cuenta?");
+    if(!eliminar){
+      event.preventDefault();
+    }
+  });
+
+  /** Fin Función eliminar cuenta **/
+}
+
+/* fin perfil empresa */
 
 /** Filtro Puestos**/
 function filtropuestos(){

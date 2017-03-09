@@ -5,15 +5,15 @@ session_start();
 
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
-}else if($_SESSION["usuario"]->tipo != "administrador"){
+}else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }
 
 $generacl = new General;
-include_once("funciones/adminF.php");
-$admincl = new adminBBDD;
-$admincl->eliminarPuestos();
-$admincl->modificarPuesto();
+include_once("funciones/empresaF.php");
+$empresacl = new empresaBBDD;
+$empresacl->eliminarPuestos();
+$empresacl->modificarPuesto();
 
 
 ob_start();
@@ -32,8 +32,7 @@ ob_start();
                <thead>
                 <tr>
                     <th style="">Puesto</th>
-                    <th>Acciones</th>                   
-                    <th>Empresa</th>
+                    <th>Acciones</th>   
                     <th>Provincia</th>
                     <th>Descripción</th>   
                     <th>Interesados</th>                                
@@ -42,8 +41,7 @@ ob_start();
             <tfoot>
                 <tr>
                     <th>Puesto</th>
-                    <th>Acciones</th>                   
-                    <th>Empresa</th>
+                    <th>Acciones</th> 
                     <th>Provincia</th>
                     <th>Descripción</th>   
                     <th>Interesados</th>                                 
@@ -52,7 +50,7 @@ ob_start();
             <tbody>
                 
                 <?php 
-                $admincl->listarPuestos();                
+                $empresacl->listarPuestos();                
                 ?>
             </tbody>
         </table>               

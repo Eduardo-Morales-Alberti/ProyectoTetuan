@@ -41,25 +41,40 @@ INSERT INTO tetuanjobs.estudiantes
 
 /** INSERTAR EMPRESAS DE EJEMPLO **/
 
-INSERT INTO tetuanjobs.empresas
-	(`id_empresa`,`nombre_empresa`,`emp_web`,`email`,`telefono`,`persona_contacto`)
-	VALUES(NULL, "Microsoft","microsoft.com","gates@microsoft.com","658987456","Bill Gates");
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("gates@microsoft.com",'empresa',0,
+password('empresatetuan'));
 
 INSERT INTO tetuanjobs.empresas
-	(`id_empresa`,`nombre_empresa`,`emp_web`,`email`,`telefono`,`persona_contacto`)
-	VALUES(NULL, "Apple","apple.com","steve@hotmail.com","698741239","Steve Jobs");
+	(`id_empresa`,`nombre_empresa`,`id_usuario`,`emp_web`,`email`,`telefono`,`persona_contacto`)
+	VALUES(NULL, "Microsoft",@@IDENTITY,"microsoft.com","gates@microsoft.com","658987456","Bill Gates");
+
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("steve@hotmail.com",'empresa',0,
+password('empresatetuan'));
 
 INSERT INTO tetuanjobs.empresas
-	(`id_empresa`,`nombre_empresa`,`emp_web`,`email`,`telefono`,`persona_contacto`)
-	VALUES(NULL, "Facebook","facebook.com","mack@facebook.com","654321789","Mack Zuckerberg");
+	(`id_empresa`,`nombre_empresa`,`id_usuario`,`emp_web`,`email`,`telefono`,`persona_contacto`)
+	VALUES(NULL, "Apple",@@IDENTITY,"apple.com","steve@hotmail.com","698741239","Steve Jobs");
+
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("mack@facebook.com",'empresa',0,
+password('empresatetuan'));
 
 INSERT INTO tetuanjobs.empresas
-	(`id_empresa`,`nombre_empresa`,`emp_web`,`email`,`telefono`,`persona_contacto`)
-	VALUES(NULL, "Hotel Buena Vista","hbuenavista.com","mariano@hotmail.com","915845796","Mariano Maldonado");
+	(`id_empresa`,`nombre_empresa`,`id_usuario`,`emp_web`,`email`,`telefono`,`persona_contacto`)
+	VALUES(NULL, "Facebook",@@IDENTITY,"facebook.com","mack@facebook.com","654321789","Mack Zuckerberg");
+
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("mariano@hotmail.com",'empresa',0,
+password('empresatetuan'));
 
 INSERT INTO tetuanjobs.empresas
-	(`id_empresa`,`nombre_empresa`,`emp_web`,`email`,`telefono`,`persona_contacto`)
-	VALUES(NULL, "Iberia","iberia.com","patricia@hotmail.com","644582369","Patricia Carrero");
+	(`id_empresa`,`nombre_empresa`,`id_usuario`,`emp_web`,`email`,`telefono`,`persona_contacto`)
+	VALUES(NULL, "Hotel Buena Vista",@@IDENTITY,"hbuenavista.com","mariano@hotmail.com","915845796","Mariano Maldonado");
+
+INSERT INTO `USUARIOS` (email, tipo_usuario,activo, password) values("patricia@hotmail.com",'empresa',0,
+password('empresatetuan'));
+
+INSERT INTO tetuanjobs.empresas
+	(`id_empresa`,`nombre_empresa`,`id_usuario`,`emp_web`,`email`,`telefono`,`persona_contacto`)
+	VALUES(NULL, "Iberia",@@IDENTITY,"iberia.com","patricia@hotmail.com","644582369","Patricia Carrero");
 
 /** INSERTAR EMPRESAS DE EJEMPLO **/
 
@@ -219,4 +234,8 @@ INSERT into `tetuanjobs`.`puestos_idiomas`(`id_puesto`,`id_idioma`)
 	values(3,4),(3,1);
 /* fin insertar idiomas al puesto*/
 
+/* insertar estudiantes en los puestos */
+INSERT into `tetuanjobs`.`puestos_estudiantes`(`id_puesto`,`id_estudiante`)
+	values(3,1),(3,2),(1,1),(1,3);
 
+/* insertar estudiantes en los puestos */

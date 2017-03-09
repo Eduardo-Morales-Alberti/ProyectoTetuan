@@ -150,6 +150,16 @@ $logincl->logOut();
                                             <input id="apellidos" name="apellidos" type="text" placeholder="Escriba sus apellidos" class="form-control" required="required"   title="Introduzca un Apellido valido"/>
 
                                         </div>
+                                         <div class="form-group has-feedback">
+                                            <label for="password">Contraseña</label>
+                                            <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Escriba su contraseña" class="form-control" required="required"   title="Introduzca una contraseña"/>
+
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label for="password">Confirma la contraseña</label>
+                                            <input id="password" name="comppassword" type="password" autocomplete="new-password" placeholder="Confirme su contraseña" class="form-control" required="required"   title="Confirme la contraseña"/>
+
+                                        </div>
                                         <div class="form-group has-feedback elEmp" >
                                             <label for="webempresa">Web de la Empresa</label>
                                             <input id="webempresa" name="webempresa" type="text" placeholder="Escriba la web de la empresa" class="form-control" title="Introduzca un Apellido valido"/>

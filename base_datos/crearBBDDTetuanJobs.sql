@@ -1,6 +1,4 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
+﻿
 --
 -- Base de datos: `tetuanjobs`
 --
@@ -28,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `USUARIOS`(
   `id_usuario` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `email` varchar(100) COLLATE utf8_general_ci NOT NULL UNIQUE,
   `password` varchar(41),
-  `tipo_usuario` enum('estudiante','administrador'),
+  `tipo_usuario` enum('estudiante','administrador','empresa'),
   `restablecer` boolean DEFAULT FALSE,
   `clave_rest` varchar(41),
   `activo` boolean DEFAULT FALSE
@@ -68,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES` (
   `descripcion` varchar(3000) COLLATE utf8_general_ci ,
   `carnet` boolean DEFAULT FALSE,
   `id_provincia` int(11) UNSIGNED,
-  FOREIGN KEY (`id_usuario`) REFERENCES USUARIOS(`id_usuario`),
+  FOREIGN KEY (`id_usuario`) REFERENCES USUARIOS(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`id_provincia`) REFERENCES PROVINCIAS(`id_provincia`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
@@ -209,11 +207,13 @@ CREATE TABLE IF NOT EXISTS `ESTUDIANTES_IDIOMAS` (
 DROP TABLE IF EXISTS `EMPRESAS`;
 CREATE TABLE IF NOT EXISTS `EMPRESAS` (
   `id_empresa` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` int(11) UNSIGNED,
   `nombre_empresa` varchar(250) COLLATE utf8_general_ci NOT NULL,
   `emp_web` varchar(250) COLLATE utf8_general_ci,
   `email` varchar(100) COLLATE utf8_general_ci NOT NULL,
   `telefono` varchar(9) COLLATE utf8_general_ci ,
-  `persona_contacto` varchar(250) COLLATE utf8_general_ci 
+  `persona_contacto` varchar(250) COLLATE utf8_general_ci ,
+  FOREIGN KEY (`id_usuario`) REFERENCES USUARIOS(`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------

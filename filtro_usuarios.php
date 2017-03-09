@@ -14,7 +14,7 @@ if(!isset($_SESSION["usuario"])){
 include_once("funciones/adminF.php");
 
 $adminclass = new adminBBDD;
-$adminclass->cambiarEstado();
+$adminclass->cambiarEstadoEst();
 $adminclass->eliminarUsuarios();
 
 ob_start();?>
@@ -41,10 +41,11 @@ ob_start();
                 <tr>
                     <th>Seleccionar</th>
                     <th>Email</th>
+                    <th>Estado</th>
                     <th>Nombre</th>
                     <th>Apellidos</th>
                     <th>Ciclo</th>
-                    <th>Estado</th>
+                    
                 </tr>
             </thead>        
             <tbody>
@@ -56,10 +57,11 @@ ob_start();
             <tr>
                 <th>Seleccionar</th>
                 <th>Email</th>
+                <th>Estado</th>
                 <th>Nombre</th>
                 <th>Apellidos</th>
                 <th>Ciclo</th>
-                <th>Estado</th>
+                
             </tr>
         </tfoot>
     </table>

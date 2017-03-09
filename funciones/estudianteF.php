@@ -1619,10 +1619,10 @@ class estudianteBBDD extends singleton{
 										?> 
 									</p>
 									<?php 
-									$sql = "call listarFuncionesPuesto(?,?)";
+									$sql = "call listarFuncionesPuesto(?)";
 									$consulta = $this->Idb->prepare($sql);
 
-									$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+									$consulta->execute(array($puestosfilas[$i]["identificador"]));
 									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
 									$funciones = array();
 									if($consulta->rowCount() > 0){
@@ -1641,10 +1641,10 @@ class estudianteBBDD extends singleton{
 										<?php echo $puestosfilas[$i]["provincia"];?>
 									</p>
 									<?php 
-									$sql = "call listarIdiomasPuesto(?,?)";
+									$sql = "call listarIdiomasPuesto(?)";
 									$consulta = $this->Idb->prepare($sql);
 
-									$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+									$consulta->execute(array($puestosfilas[$i]["identificador"]));
 									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
 									$idiomas = array();
 
@@ -1663,10 +1663,10 @@ class estudianteBBDD extends singleton{
 
 									}
 
-									$sql = "call listarSkillsPuesto(?,?)";
+									$sql = "call listarSkillsPuesto(?)";
 									$consulta = $this->Idb->prepare($sql);
 
-									$consulta->execute(array($puestosfilas[$i]["identificador"],1));
+									$consulta->execute(array($puestosfilas[$i]["identificador"]));
 									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
 									$etiquetas = array();
 									if($consulta->rowCount() > 0){

@@ -158,9 +158,9 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                 ?>
                                 <!--Usuarios-->                                
                                 <li>                                    
-                                    <a href="filtro_usuarios.php" title="Usuarios"  class="no-submenu">
+                                    <a href="filtro_usuarios.php" title="Estudiantes"  class="no-submenu">
                                         <em class="fa fa-user"></em>                                        
-                                        <span class="item-text">Usuarios</span>
+                                        <span class="item-text">Estudiantes</span>
                                     </a>             
                                 </li>
                                 <!---->
@@ -170,6 +170,15 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                         <em class="fa fa-building-o"></em>
                                         <span class="item-text">Empresas</span>                                        
                                     </a>             
+                                </li>
+                                <!---->
+                                <?php }else if($_SESSION["usuario"]->tipo == "empresa"){ ?> 
+                                <!--Perfil-->
+                                <li>
+                                    <a href="perfil_empresa.php" title="Perfil" class="no-submenu">
+                                        <em class="fa fa-user"></em>
+                                        <span class="item-text">Perfil</span>
+                                    </a>               
                                 </li>
                                 <!---->
                                 <!--Puestos-->

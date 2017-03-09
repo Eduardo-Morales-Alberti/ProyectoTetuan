@@ -65,9 +65,13 @@ GRANT select on tetuanjobs.listarUsuarios To 'usertetuan'@'localhost';
 /** VISTA LISTAR empresas **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarEmpresas as 
-	select nombre_empresa as nombre, id_empresa as identificador, emp_web as web, email as correo, 
-      telefono, persona_contacto as contacto
-             from tetuanjobs.empresas;
+	select nombre_empresa as nombre, id_empresa as identificador, emp_web as web, emp.email as correo, 
+      telefono, persona_contacto as contacto, CASE 
+                  WHEN activo = 1 
+                  THEN "Activo" 
+                  ELSE "Pendiente" 
+             END as estado
+             from tetuanjobs.empresas emp join tetuanjobs.usuarios us on emp.id_usuario = us.id_usuario;
 
 GRANT select on tetuanjobs.listarEmpresas To 'usertetuan'@'localhost';
 
@@ -136,7 +140,7 @@ GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
 
 CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as 
   select  puesto_nombre as nombre, pst.id_puesto as identificador, nombre_empresa as empresa, nombre_provincia as provincia, 
-      puesto_desc as descripcion, f_publicacion as publicacion, emp.id_empresa as idempresa, prv.id_provincia as idprovincia, 
+      puesto_desc as descripcion, f_publicacion as publicacion, emp.id_empresa as idempresa,emp.id_usuario as idusuario, prv.id_provincia as idprovincia, 
       puesto_carnet as carnet, email, persona_contacto as contacto,tipo_contrato as contrato, 
       cast(tipo_contrato as unsigned) idcontrato, experiencia, cast(experiencia as unsigned) idexperiencia, 
       jornada, cast(jornada as unsigned) idjornada, count(pstest.id_estudiante) as interesados/*,

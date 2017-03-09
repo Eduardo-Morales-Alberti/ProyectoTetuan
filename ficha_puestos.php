@@ -1,19 +1,19 @@
 <?php
 $page["nombrePag"] = "Ficha de puestos";
 include_once("funciones/generalF.php");
-include_once("funciones/adminF.php");
+include_once("funciones/empresaF.php");
 session_start();
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
-}else if($_SESSION["usuario"]->tipo != "administrador"){
+}else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }
 
 $generacl = new General;
-$admincl = new adminBBDD;
-$admincl->agregarPuesto();
-$admincl->cancelarPuesto();
-$puesto = $admincl->listarInformacionPuesto();
+$empresacl = new empresaBBDD;
+$empresacl->agregarPuesto();
+$empresacl->cancelarPuesto();
+$puesto = $empresacl->listarInformacionPuesto();
 //print_r($puesto);
 
 ob_start();
@@ -31,25 +31,25 @@ ob_start();
        </div>
        <div class="panel-body <?php  if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} ?>">
         <div class="row">
-            <div class="col-md-6">
+            <!--<div class="col-md-6">
                 <div class="form-group">
                     <label>Nombre de la empresa</label>
                     <select class="form-control"   <?php if(isset($puesto["id_emp"])){ echo "disabled";}else{echo 'name="empresa"';}?> >
-                        <?php if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
+                        <?php /*if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
                     }else{echo $generacl->listarEmpresasSelect();
-                    } ?>
+                    } */?>
                 </select>
-                <?php if(isset($puesto["id_emp"])){ echo '<input type="hidden" name="empresa" value="'.$puesto["id_emp"].'" >';} ?>
+                <?php /*if(isset($puesto["id_emp"])){ echo '<input type="hidden" name="empresa" value="'.$puesto["id_emp"].'" >';}*/ ?>
             </div>
-        </div>
+        </div>-->
         <div class="col-md-6">
             <div class="form-group">
                 <label>Título del puesto</label>
                 <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="<?php if(isset($puesto["nombre"])){echo $puesto["nombre"];}?>" >
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="col-md-6">
             <div class="form-group">
                 <label>Provincia</label>
@@ -73,7 +73,7 @@ ob_start();
             <div class="form-group">
                 <label>Funciones</label><br>
                 <div class="input-group">
-                    <input type="text" class="form-control " id="funciones" name="funciones" value="" >                            
+                    <input type="text" class="form-control " id="funciones"  >                            
                     <span class="input-group-btn">
                         <input type="button" class="btn btn-success" id="afuncion" name="afuncion" value="Agregar función">
                     </span>
@@ -85,7 +85,7 @@ ob_start();
         <div class="col-lg-12 form-group">                    
             <div class="col-lg-12 conborde etiquetas">
                 <div class="row" id="divfunciones">
-                    <?php echo $admincl->listarFuncionesPst();?>
+                    <?php echo $empresacl->listarFuncionesPst();?>
                         <!--<div class="col-md-6 form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -112,7 +112,7 @@ ob_start();
                     <label>Etiquetas</label>
                     <div class="input-group">
                         <select class="form-control" id="etiquetas" name="etiqueta">
-                            <?php echo $admincl->listarTodasEtiquetas();?>
+                            <?php echo $empresacl->listarTodasEtiquetas();?>
                             
                         </select>
                         <span class="input-group-btn">
@@ -126,7 +126,7 @@ ob_start();
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="divetiquetas">
-                        <?php $admincl->listarEtiquetasPst(); ?>
+                        <?php $empresacl->listarEtiquetasPst(); ?>
                         <!--<div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -154,7 +154,7 @@ ob_start();
                     <label>Idiomas</label>
                     <div class="input-group">
                         <select class="form-control" id="idiomas" name="idioma">
-                            <?php echo $admincl->listarIdiomas();?>
+                            <?php echo $empresacl->listarIdiomas();?>
                         </select>
                         <span class="input-group-btn">
                             <input class="btn btn-success" id="ageidi" name="ageidi" type="button" value="Agregar idioma">
@@ -167,7 +167,7 @@ ob_start();
             <div class="col-lg-12 form-group">                    
                 <div class="col-lg-12 conborde etiquetas">
                     <div class="row" id="dividiomas">
-                        <?php $admincl->listarIdiomasPst(); ?>
+                        <?php $empresacl->listarIdiomasPst(); ?>
                         <!--<div class="col-md-4 col-lg-3 form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -274,17 +274,17 @@ ob_start();
 </form>
 
 <?php
-    $admincl->listarEstudiantesPuesto($puesto);
+    $empresacl->listarEstudiantesPuesto($puesto);
 ?>
 
 
 <?php
 $page["cuerpo"] = ob_get_clean();
 
-if(isset($_SESSION["idpst"])){
+/*if(isset($_SESSION["idpst"])){
 
     unset($_SESSION["idpst"]);
-}
+}*/
 
 ob_start();?>
 <script type="text/javascript">

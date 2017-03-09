@@ -9,7 +9,7 @@ if(!isset($_SESSION["usuario"])){
 ob_start();
 ?>
 <h1 style="text-align: center; color: #060349"><b>Bienvenido a Tetuán Jobs</b>
-   
+
 </h1>
 <div class="panel sinborde col-md-12">
 
@@ -61,14 +61,14 @@ ob_start();
 
         ?>  
         <!-- Usuarios -->
-        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut2">
+        <div class="panel sinborde col-md-6" id="panel-anim-zoomOut2">
             <a href="filtro_usuarios.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut2"> 
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
                             <div class="panel-body bg-inverse text-center">
                                 <em class="fa fa-user" style="font-size: 75px"></em>
-                                <h3>Usuarios</h3>
+                                <h3>Estudiantes</h3>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@ ob_start();
         </div>
         <!-- Fin de Usuarios-->
         <!-- Empresas -->
-        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut3">
+        <div class="panel sinborde col-md-6" id="panel-anim-zoomOut3">
             <a href="filtro_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut3">
                 <div class="row">
                     <div class="col-sm-12">
@@ -92,8 +92,25 @@ ob_start();
             </a>
         </div>
         <!-- Fin de Empresas -->  
+        <?php }else if($_SESSION["usuario"]->tipo == "empresa"){  ?>
+        <!-- Perfil -->
+        <div class="panel sinborde col-md-6" id="panel-anim-zoomOut">
+            <a href="perfil_empresa.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut"> 
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel widget">
+                            <div class="panel-body bg-inverse text-center">
+                                <em class="fa fa-user" style="font-size: 75px"></em>
+                                <h3>Perfil</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                                                        
+            </a>
+        </div>
+        <!-- Fin de Perfil -->
         <!-- Puestos -->
-        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut4">
+        <div class="panel sinborde col-md-6" id="panel-anim-zoomOut4">
             <a href="ficha_puestos.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut4">
                 <div class="row">
                     <div class="col-sm-12">
@@ -109,6 +126,7 @@ ob_start();
         </div>
         <!-- Fin de puestos --> 
         <?php } ?>
+        
     </div>
     <?php
     $page["cuerpo"] = ob_get_clean();
