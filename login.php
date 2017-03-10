@@ -15,6 +15,7 @@ $logincl->nvContrEmail();
 $logincl->nvEstudiante();
 $logincl->nvEmpresa();
 $logincl->logOut();
+$logincl->confirmarCuenta();
 
 ?>
 
@@ -132,13 +133,13 @@ $logincl->logOut();
                                         <div class="form-group ">
                                             <label for="tipo">Tipo de usuario</label><br>
                                             <select id="tipo" name="tipo" class="form-control">
-                                                <option value="estudiante">Estudiante</option>
+                                                <option value="estudiante" selected>Estudiante</option>
                                                 <option value="empresa">Empresa</option>
                                             </select>                                        
                                         </div>
                                         <div class="form-group has-feedback elEmp" >
                                             <label for="empresa">Empresa</label>
-                                            <input id="empresa" name="empresa" type="text" placeholder="Nombre de la empresa" class="form-control inputEmp"  title="Introduzca un Nombre valido" required="required"/>                                       
+                                            <input id="empresa" name="empresa" type="text" placeholder="Nombre de la empresa" class="form-control inputEmp"  title="Introduzca un Nombre valido"/>                                       
                                         </div>
                                         <div class="form-group has-feedback">
                                             <label for="nombre">Nombre</label>

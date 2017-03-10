@@ -4,8 +4,8 @@ include_once("conexion.php");
 class loginBBDD extends singleton{
 
 	function __construct() {
-       parent::__construct();
-   }
+		parent::__construct();
+	}
 
 	/** Función para entrar en la web **/
 	public function entrar(){	
@@ -202,27 +202,32 @@ class loginBBDD extends singleton{
 			$_POST['tipo'] == "estudiante"&&isset($_POST['password'])&&isset($_POST['comppassword'])&&$_POST['password']==$_POST['comppassword']){
 			$apellidos = null;
 
-			if(isset($_POST['apellidos'])){
-				$apellidos = $_POST['apellidos'];
-			}
+		if(isset($_POST['apellidos'])){
+			$apellidos = $_POST['apellidos'];
+		}
 
-			$query = "call nuevoEstudiante('".$_POST['nombre']."','".$apellidos."','".$_POST['modulo']."','".$_POST['mail']."','".$_POST['password']."')";
-			$consulta = $this->Idb->prepare($query);
-			$consulta->execute();
-			
-			if($consulta->rowCount()>0){
-				$result = $consulta->fetch();	
-			}
+		$query = "call nuevoEstudiante('".$_POST['nombre']."','".$apellidos."','".$_POST['modulo']."','".$_POST['mail']."','".$_POST['password']."')";
+		$consulta = $this->Idb->prepare($query);
+		$consulta->execute();
 
-			if(isset($result["mensaje"])){
-				session_reset();
-				$_SESSION["mensajeServidor"] = $result["mensaje"];
+		if($consulta->rowCount()>0){
+			$result = $consulta->fetch();	
+		}
 
-			}else{
-				session_start();
-				session_destroy();
-				session_start();
-				$_SESSION["mensajeServidor"] = "Error al crear el nuevo usuario.";
+		if(isset($result["mensaje"])){
+			session_reset();
+			$_SESSION["mensajeServidor"] = $result["mensaje"]."<br> Recibirá un correo para confirmar la cuenta.";
+
+			$mensaje = "Para confirmar su cuenta vaya al siguiente enlace 
+			<a href='http://localhost/proyectofinal/login.php?confirmar=true&email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
+			Confirmar</a>";
+			$enviado = General::enviarEmail(array($_POST['mail']),"Confirmar cuenta", $mensaje);
+
+		}else{
+			session_start();
+			session_destroy();
+			session_start();
+			$_SESSION["mensajeServidor"] = "Error al crear el nuevo usuario.";
 				/*unset( $_SESSION["nombre"]);
 				unset( $_SESSION["idenficador"]);*/
 
@@ -232,6 +237,30 @@ class loginBBDD extends singleton{
 
 	/** Fin función nvEstudiante **/
 
+	/* Función para confirmar la cuenta */
+
+	function confirmarCuenta(){
+		if(isset($_GET["confirmar"])&&isset($_GET["email"])&&isset($_GET["clave"])){
+			$query = "call confirmarUsuario(?,?);";
+
+			$consulta = $this->Idb->prepare($query);
+			$consulta->execute(array($_GET["email"],$_GET["clave"]));
+			if($consulta->rowCount()>0){
+				$result = $consulta->fetch();
+				if($result["mensaje"]){
+					$_SESSION["mensajeServidor"] = "Usuario confirmado correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido confirmar";
+				}
+			}
+
+
+		}
+	}
+
+
+	/* fin Función para confirmar la cuenta */
+
 	/** Función nueva empresa **/
 
 	public function nvEmpresa(){
@@ -239,37 +268,37 @@ class loginBBDD extends singleton{
 			$_POST['tipo'] == "empresa"&&isset($_POST['password'])){
 			$nombre = $_POST['nombre'];
 
-			if(isset($_POST['apellidos'])){
-				$nombre .= " ".$_POST['apellidos'];
-			}
+		if(isset($_POST['apellidos'])){
+			$nombre .= " ".$_POST['apellidos'];
+		}
 
-			if(isset($_POST['webempresa'])){
-				$web = $_POST['webempresa'];
-			}
+		if(isset($_POST['webempresa'])){
+			$web = $_POST['webempresa'];
+		}
 
-			$query = "call nuevaEmpresa(?,?,?,?,?,null)";
-			
-			$empresa = $_POST['empresa'];
+		$query = "call nuevaEmpresa(?,?,?,?,?,null)";
 
-			$mail = $_POST["mail"];
+		$empresa = $_POST['empresa'];
 
-			$contr = $_POST["password"];
+		$mail = $_POST["mail"];
 
-			$consulta = $this->Idb->prepare($query);
-			$consulta->execute(array($empresa,$contr,$nombre,$web,$mail));
-			
-			if($consulta->rowCount()>0){
-				$result = $consulta->fetch();	
-			}
+		$contr = $_POST["password"];
 
-			if(isset($result["mensaje"])&&$result["mensaje"]){
-				session_destroy();
-				session_start();
-				$_SESSION["mensajeServidor"] = "Empresa creada correctamente";
+		$consulta = $this->Idb->prepare($query);
+		$consulta->execute(array($empresa,$contr,$nombre,$web,$mail));
 
-			}else{
-				session_reset();
-				$_SESSION["mensajeServidor"] = "Error al crear la nueva empresa.";
+		if($consulta->rowCount()>0){
+			$result = $consulta->fetch();	
+		}
+
+		if(isset($result["mensaje"])&&$result["mensaje"]){
+			session_destroy();
+			session_start();
+			$_SESSION["mensajeServidor"] = "Empresa creada correctamente";
+
+		}else{
+			session_reset();
+			$_SESSION["mensajeServidor"] = "Error al crear la nueva empresa.";
 				/*unset( $_SESSION["nombre"]);
 				unset( $_SESSION["idenficador"]);*/
 

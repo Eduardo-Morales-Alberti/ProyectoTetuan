@@ -226,18 +226,20 @@ CREATE PROCEDURE tetuanjobs.nuevoEstudiante(nomb varchar(25), ape varchar(50),cc
 	mail varchar(100), contr varchar(100)) 
 BEGIN
 	declare mensaje varchar(250) default "";
-	declare identificador int(11) unsigned;
-	
+	declare identificador int(11) unsigned;	
+	declare clave varchar(41);
 
-	INSERT INTO tetuanjobs.usuarios (email,tipo_usuario, password) 
-		values(mail,'estudiante', password(contr));
+	select password(rand()) into clave;
+
+	INSERT INTO tetuanjobs.usuarios (email,tipo_usuario, password,clave_rest) 
+		values(mail,'estudiante', password(contr), clave);
 		set identificador = @@IDENTITY;
 
 	INSERT INTO tetuanjobs.estudiantes 
 		(`id_estudiante`, `id_usuario`, `ciclo`, `nombre`, `apellidos`) 
 		VALUES (NULL, identificador,ccl,nomb, ape);
 
-	select concat("Usuario ",nomb," creado correctamente") as mensaje;
+	select concat("Usuario ",nomb," creado correctamente") as mensaje, clave as hashing;
 
 END//
 delimiter ;
@@ -287,9 +289,40 @@ END//
 delimiter ;
 /*call tetuanjobs.nuevaEmpresa("Otra empresa","hola","Prueba 2","microsoft.com", "prueba2@otraempresa.com",null);*/
 
-/* Fin de funcion */
 
 /** FIN FUNCION NUEVA EMPRESA **/
+
+/** FUNCION confirma usuario **/
+
+drop PROCEDURE if EXISTS tetuanjobs.confirmarUsuario;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.confirmarUsuario(mail varchar(250), clave varchar(250))
+BEGIN
+	declare correcto boolean default false;
+
+	select true into correcto from tetuanjobs.usuarios where email = mail and activo = 0
+		and tipo_usuario <> "administrador";
+
+	if correcto then
+
+		update tetuanjobs.usuarios set clave_rest = "", activo = 1 where email = mail and activo = 0
+			and tipo_usuario <> "administrador";
+		select true as mensaje;
+
+	else
+		select false as mensaje;
+	end if;
+
+END//
+delimiter ;
+
+
+
+/** FIN FUNCION confirma usuario **/
+
+
 
 /** FIN RUTINAS LOGIN **/
 
