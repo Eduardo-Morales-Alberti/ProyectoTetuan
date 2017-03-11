@@ -141,15 +141,17 @@ GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
 CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as 
   select  puesto_nombre as nombre, pst.id_puesto as identificador, nombre_empresa as empresa, nombre_provincia as provincia, 
       puesto_desc as descripcion, f_publicacion as publicacion, emp.id_empresa as idempresa,emp.id_usuario as idusuario, prv.id_provincia as idprovincia, 
-      puesto_carnet as carnet, email, persona_contacto as contacto,tipo_contrato as contrato, 
+      puesto_carnet as carnet, emp.email, persona_contacto as contacto,tipo_contrato as contrato, 
       cast(tipo_contrato as unsigned) idcontrato, experiencia, cast(experiencia as unsigned) idexperiencia, 
       jornada, cast(jornada as unsigned) idjornada, count(pstest.id_estudiante) as interesados/*,
       nombre_etiqueta , est.nombre as estudiante, pstest.id_estudiante as idestudiante */  
      from tetuanjobs.puestos pst join tetuanjobs.empresas emp on pst.id_empresa = emp.id_empresa
      join tetuanjobs.provincias prv on prv.id_provincia = pst.id_provincia
+     join tetuanjobs.usuarios usr on emp.id_usuario = usr.id_usuario
      /*left join tetuanjobs.puestos_etiquetas pstetq on pst.id_puesto = pstetq.id_puesto
      left join etiquetas etq on pstetq.id_etiqueta = etq.id_etiqueta;*/
      left join tetuanjobs.puestos_estudiantes pstest on pstest.id_puesto = pst.id_puesto
+     where activo = 1
      group by pst.id_puesto;
      /*left join tetuanjobs.estudiantes est on est.id_estudiante = pstest.id_estudiante;*/
 GRANT select on tetuanjobs.listarPuestos To 'usertetuan'@'localhost';

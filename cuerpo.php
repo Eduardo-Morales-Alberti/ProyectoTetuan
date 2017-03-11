@@ -306,10 +306,10 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                     }
                     
                     if(isset($_SESSION["mensajeServidor"])){
-                        echo '<script type="text/javascript">
-                        mensajeModal("'.$_SESSION["mensajeServidor"].'");
-                        </script>';
-                        unset($_SESSION["mensajeServidor"]);
+                        ?> <script type="text/javascript">
+                        mensajeModal("<?php echo $_SESSION['mensajeServidor']; ?>");
+                        </script>
+                       <?php unset($_SESSION["mensajeServidor"]);
                     }
 
                     if(isset($_SESSION["modificar"])){

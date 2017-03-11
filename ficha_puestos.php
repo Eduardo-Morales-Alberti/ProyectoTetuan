@@ -107,7 +107,7 @@ ob_start();
             </div>
         </div>            
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label>Etiquetas</label>
                     <div class="input-group">
@@ -121,6 +121,17 @@ ob_start();
                     </div>               
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Agregar una nueva etiqueta</label> 
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="etiquetasinput" placeholder="etiqueta">
+                        <span class="input-group-btn">
+                            <input class="btn btn-success" id="ageet" name="agreet" type="button" value="Agregar etiqueta">
+                        </span>
+                    </div>                           
+                </div>                        
+            </div> 
         </div>
         <div class="row">
             <div class="col-lg-12 form-group">                    

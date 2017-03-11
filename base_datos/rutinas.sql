@@ -706,10 +706,10 @@ CREATE PROCEDURE tetuanjobs.agregarSkills(usid int, etiqueta varchar(250))
 
 		SELECT id_estudiante into id from tetuanjobs.estudiantes where id_usuario = usid;
 
-		select id_etiqueta into id_etq from tetuanjobs.etiquetas where nombre_etiqueta = lower(etiqueta);
+		select id_etiqueta into id_etq from tetuanjobs.etiquetas where trim(lower(nombre_etiqueta)) = trim(lower(etiqueta));
 
 		if id_etq < 0 and id >=0 then
-			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(lower(etiqueta));
+			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(trim(lower(etiqueta)));
 			select @@IDENTITY into id_etq;
 		end if;
 
@@ -857,7 +857,8 @@ BEGIN
 	on usu.id_usuario = est.id_usuario
 	where est.id_usuario = idusuario and activo = 1;
 
-	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
+	SELECT id_puesto into idpst from tetuanjobs.puestos pst join tetuanjobs.empresas emp on pst.id_empresa = emp.id_empresa
+	join tetuanjobs.usuarios usr on emp.id_usuario = usr.id_usuario where id_puesto = idpuesto and activo = 1;
 
 	if id >=0 and idpst >= 0 then
 		INSERT into tetuanjobs.puestos_estudiantes (id_puesto, id_estudiante) values(idpst, id);
@@ -899,6 +900,118 @@ delimiter ;
 
 
 /** FIN FUNCION PARA DAR DE ALTA UN USUARIO estudiante O DAR DE BAJA SI ESTÁ DADO DE ALTA **/
+
+/** Rutina para agregar etiqueta **/
+
+drop PROCEDURE if EXISTS tetuanjobs.agregarEtiqueta;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.agregarEtiqueta(usid int, etiqueta varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_etq int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_etiqueta into id_etq from tetuanjobs.etiquetas where trim(lower(nombre_etiqueta)) = trim(lower(etiqueta));
+
+		if id_etq < 0 and id >=0 and length(trim(etiqueta)) > 1 then
+			INSERT INTO tetuanjobs.etiquetas (nombre_etiqueta) values(trim(lower(etiqueta)));
+			select true as resultado;
+		else 
+			select false as resultado;
+		end if;	
+		
+		
+	END//
+delimiter ;
+
+/** Fin Rutina para agregar etiqueta **/
+
+/** Rutina para eliminar etiqueta **/
+
+drop PROCEDURE if EXISTS tetuanjobs.eliminarEtiqueta;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.eliminarEtiqueta(usid int, etiqueta varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_etq int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_etiqueta into id_etq from tetuanjobs.etiquetas where  trim(lower(nombre_etiqueta)) = trim(lower(etiqueta));
+
+		if id_etq > 0 and id >=0 then
+			delete from tetuanjobs.etiquetas where trim(lower(nombre_etiqueta)) = trim(lower(etiqueta));
+			select true as resultado;
+		else 
+			select false as resultado;
+		end if;	
+		
+		
+	END//
+delimiter ;
+
+/** Fin Rutina para eliminar etiqueta **/
+
+/** Rutina para agregar idioma **/
+
+drop PROCEDURE if EXISTS tetuanjobs.agregarIdioma;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.agregarIdioma(usid int, idioma varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_idm int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_idioma into id_idm from tetuanjobs.idiomas where trim(lower(nombre_idioma)) = trim(lower(idioma));
+
+		if id_idm < 0 and id >=0 and length(trim(idioma)) > 1 then
+			INSERT INTO tetuanjobs.idiomas (nombre_idioma) values(trim(lower(idioma)));
+			select true as resultado;
+		else 
+			select false as resultado;
+		end if;	
+		
+		
+	END//
+delimiter ;
+
+/** Fin Rutina para agregar idioma **/
+
+/** Rutina para eliminar idioma **/
+
+drop PROCEDURE if EXISTS tetuanjobs.eliminarIdioma;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.eliminarIdioma(usid int, idioma varchar(250)) 
+	BEGIN
+		declare id int default -1;
+		declare id_idm int default -1;
+
+		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
+
+		select id_idioma into id_idm from tetuanjobs.idiomas where  trim(lower(nombre_idioma)) = trim(lower(idioma));
+
+		if id_idm > 0 and id >=0 then
+			delete from tetuanjobs.idiomas where trim(lower(nombre_idioma)) = trim(lower(idioma));
+			select true as resultado;
+		else 
+			select false as resultado;
+		end if;	
+		
+		
+	END//
+delimiter ;
+
+/** Fin Rutina para eliminar idioma **/
 
 /** FIN RUTINAS FILTRO DE USUARIOS **/
 

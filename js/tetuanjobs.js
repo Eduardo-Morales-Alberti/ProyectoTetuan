@@ -501,6 +501,80 @@ function busquedaofer(){
 
 function filtrous(){
   var table = cargarTabla('#resultado');
+
+  /* Agregar una etiqueta */
+  $("#agreet").click(function(){
+    $(this).prop( "disabled", true );
+    var etiqueta = $("#inputetiq").val();
+    $("#inputetiq").val("");
+
+    var xhr = $.post( "funciones/adminF.php", 
+      { agreet: "agregar", 
+      inputetiq:  etiqueta } );
+
+    xhr.done(function( data ) {
+        //alert(data);
+        $("#agreet").removeAttr("disabled");
+        //console.log(data);
+        var obj = JSON.parse(data);
+        //console.log(obj);
+        mensajeModal(obj.mensaje);
+
+        if(obj.resultado){
+
+          $("#divetiquetas").append(
+            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
+            +'<input type="checkbox" name="etiquetasel[]" value="'+etiqueta+'">'
+            +'</span><input type="text" class="form-control" value="'+etiqueta+'" readonly></div></div>'
+            );
+        }
+
+
+      }).fail(function() {
+        $("#inputetiq").removeAttr("disabled");
+        mensajeModal("Error: No ha podido agregar la etiqueta "+etiqueta);
+      });
+
+    });
+
+ /* fin Agregar una etiqueta */
+
+ /* Agregar un idioma */
+  $("#agreidm").click(function(){
+    $(this).prop( "disabled", true );
+    var idioma = $("#inputidm").val();
+    $("#inputidm").val("");
+
+    var xhr = $.post( "funciones/adminF.php", 
+      { agreidm: "agregar", 
+      inputidm:  idioma } );
+
+    xhr.done(function( data ) {
+        //alert(data);
+        $("#agreidm").removeAttr("disabled");
+        //console.log(data);
+        var obj = JSON.parse(data);
+        //console.log(obj);
+        mensajeModal(obj.mensaje);
+
+        if(obj.resultado){
+
+          $("#dividiomas").append(
+            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
+            +'<input type="checkbox" name="idiomasel[]" value="'+idioma+'">'
+            +'</span><input type="text" class="form-control" value="'+idioma+'" readonly></div></div>'
+            );
+        }
+
+
+      }).fail(function() {
+        $("#inputetiq").removeAttr("disabled");
+        mensajeModal("Error: No ha podido agregar el idioma "+idioma);
+      });
+
+    });
+
+ /* fin Agregar un idioma */
 }
 
 /**Filtro de usuarios**/
@@ -556,6 +630,11 @@ function fichapuestos(){
   btnex.addEventListener("click", function(){
     elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3","etiquetas");
     //console.log(ele);
+  });
+
+  var btnet2 = document.getElementById("ageet");
+  btnet2.addEventListener("click", function(){
+    elementosreq = agregarTag("etiquetasinput", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
   });
 
   var btnelimex = document.getElementById("elimrequisito");

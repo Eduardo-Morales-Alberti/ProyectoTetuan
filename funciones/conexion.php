@@ -37,7 +37,7 @@ class singleton {
 
 	function limpiar($string) {
 
-		$string = preg_replace('/[^A-Za-z0-9\-\_]/', ' ', $string);
+		$string = preg_replace('/[^A-Za-zñÑáéíóúÁÉÍÓÚ0-9\-\_]/', ' ', $string);
 		$string = preg_replace ('/[ ]+/', ' ', $string);
 
 		return $string; 

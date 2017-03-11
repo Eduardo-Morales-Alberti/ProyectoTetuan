@@ -80,6 +80,182 @@ class adminBBDD extends singleton{
 
 	/** Eliminar usuarios **/
 
+	/** FUNCIÓN LISTAR ETIQUETAS**/
+	function listarEtiquetas(){
+		
+		$sql = "select * from listarEtiquetas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$etiquetas = array();
+		while ($row = $consulta->fetch()) {
+			$etiquetas[] = $row;
+		}
+
+		for ($i=0; $i < count($etiquetas); $i++) { 
+
+			?>
+			<div class="col-md-4 col-lg-3 form-group" >
+				<div class="input-group">
+					<span class="input-group-addon">
+						<input type="checkbox" name="etiquetasel[]" value="<?php echo $etiquetas[$i]['nombre'];?>">
+					</span>
+					<input type="text" class="form-control" value="<?php echo $etiquetas[$i]["nombre"];?>" readonly>
+				</div>
+			</div>
+			<?php
+		}
+
+	}
+
+	/** FIN FUNCIÓN LISTAR ETIQUETAS **/
+
+	/** función agregar nueva etiqueta **/
+	function agregarEtiqueta(){
+		if(isset($_POST["agreet"])&&isset($_POST["inputetiq"])){
+			$mensaje = "";
+			$res = false;
+			$sql = "call agregarEtiqueta(?,?)";
+			$etiqueta = $this->limpiar($_POST["inputetiq"]);
+			$consulta = $this->Idb->prepare($sql);
+			include_once("generalF.php");
+			session_start();
+			$consulta->execute(array($_SESSION["usuario"]->identificador,$etiqueta));
+			if($row = $consulta->fetch()){
+				if($row["resultado"]){
+					$mensaje =  "Etiqueta ".$etiqueta." agregada correctamente.";
+					$res = true;
+				}else{
+					$mensaje = "No se ha podido agregar la etiqueta.";
+				}
+			}else{
+				$mensaje = "No se ha recibido respuesta.";
+			}
+
+			echo json_encode(array("mensaje"=>$mensaje, "resultado"=>$res));
+		}
+	}
+
+	/* Fin función agregar nueva etiqueta */
+
+	/** función eliminar etiqueta **/
+	function eliminarEtiquetas(){
+		if(isset($_POST["eliminaret"])&&isset($_POST["etiquetasel"])){
+
+			$mensaje = "";
+			for ($i=0; $i < count($_POST["etiquetasel"]); $i++) { 
+				$sql = "call eliminarEtiqueta(?,?)";			
+				$consulta = $this->Idb->prepare($sql);
+				
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["etiquetasel"][$i]));
+				
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				if($row = $consulta->fetch()){
+					if($row["resultado"]){
+						$mensaje .= "Etiqueta ".$_POST["etiquetasel"][$i]." eliminada correctamente. <br>";
+					}else{
+						$mensaje .= "No se ha podido eliminar la etiqueta ".$_POST["etiquetasel"][$i].". <br>";
+					}
+				}else{
+					$mensaje .= "No se ha obtenido respuesta con la etiqueta ".$_POST["etiquetasel"][$i].". <br>";
+				}
+			}
+
+			$_SESSION["mensajeServidor"] = $mensaje;
+			
+		}
+	}
+
+	/* Fin función eliminar etiqueta */
+
+	/** FUNCIÓN LISTAR Idiomas**/
+	function listarIdiomas(){
+		
+		$sql = "select * from listarIdiomas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$idiomas = array();
+		while ($row = $consulta->fetch()) {
+			$idiomas[] = $row;
+		}
+
+		for ($i=0; $i < count($idiomas); $i++) { 
+
+			?>
+			<div class="col-md-4 col-lg-3 form-group" >
+				<div class="input-group">
+					<span class="input-group-addon">
+						<input type="checkbox" name="idiomasel[]" value="<?php echo $idiomas[$i]['nombre'];?>">
+					</span>
+					<input type="text" class="form-control" value="<?php echo $idiomas[$i]["nombre"];?>" readonly>
+				</div>
+			</div>
+			<?php
+		}
+
+	}
+
+	/** FIN FUNCIÓN LISTAR Idiomas **/
+
+	/** función agregar nuevo idioma **/
+	function agregarIdioma(){
+		if(isset($_POST["agreidm"])&&isset($_POST["inputidm"])){
+			$mensaje = "";
+			$res = false;
+			$sql = "call agregarIdioma(?,?)";
+			$idioma = $this->limpiar($_POST["inputidm"]);
+			$consulta = $this->Idb->prepare($sql);
+			include_once("generalF.php");
+			session_start();
+			$consulta->execute(array($_SESSION["usuario"]->identificador,$idioma));
+			if($row = $consulta->fetch()){
+				if($row["resultado"]){
+					$mensaje =  "Idioma ".$idioma." agregado correctamente.";
+					$res = true;
+				}else{
+					$mensaje = "No se ha podido agregar el idioma.";
+				}
+			}else{
+				$mensaje = "No se ha recibido respuesta.";
+			}
+
+			echo json_encode(array("mensaje"=>$mensaje, "resultado"=>$res));
+		}
+	}
+
+	/* Fin función agregar nuevo idioma */
+
+	/** función eliminar idioma **/
+	function eliminarIdiomas(){
+		if(isset($_POST["eliminaridm"])&&isset($_POST["idiomasel"])){
+
+			$mensaje = "";
+			for ($i=0; $i < count($_POST["idiomasel"]); $i++) { 
+				$sql = "call eliminarIdioma(?,?)";			
+				$consulta = $this->Idb->prepare($sql);
+				
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idiomasel"][$i]));
+				
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				if($row = $consulta->fetch()){
+					if($row["resultado"]){
+						$mensaje .= "Idioma ".$_POST["idiomasel"][$i]." eliminado correctamente. <br>";
+					}else{
+						$mensaje .= "No se ha podido eliminar el idioma ".$_POST["idiomasel"][$i].". <br>";
+					}
+				}else{
+					$mensaje .= "No se ha obtenido respuesta con el idioma ".$_POST["idiomasel"][$i].". <br>";
+				}
+			}
+
+			$_SESSION["mensajeServidor"] = $mensaje;
+			
+		}
+	}
+
+	/* Fin función eliminar idioma */
+
 	/** FIN FILTRO USUARIOS**/
 
 	/** FILTRO EMPRESAS **/
@@ -254,5 +430,9 @@ class adminBBDD extends singleton{
 
 
 }
+
+$adminclass = new adminBBDD;
+$adminclass->agregarEtiqueta();
+$adminclass->agregarIdioma();
 
 ?>

@@ -540,44 +540,40 @@ ob_start();
                                 <label>Etiquetas</label>
                                 <div class="input-group">
                                     <select class="form-control" id="etiquetas" name="etiqueta">
-                            <!--<option value="nada">Ninguna</option>
-                            <option value="php">php</option>
-                            <option value="java">java</option>
-                            <option value="html">html</option>
-                            <option value="css">css</option>-->
-                            <?php /*echo $generacl->listarEtiquetas();*/
-                            echo $estudiantecl->listarSkillsSelect(); ?>
-                        </select>
-                        <span class="input-group-btn">
-                            <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
-                        </span>
-                    </div>               
-                </div>
-            </div>           
+                                     
+                                        <?php /*echo $generacl->listarEtiquetas();*/
+                                        echo $estudiantecl->listarSkillsSelect(); ?>
+                                    </select>
+                                    <span class="input-group-btn">
+                                        <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
+                                    </span>
+                                </div>               
+                            </div>
+                        </div>           
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Agregar una nueva etiqueta</label> 
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="etiquetasinput" placeholder="etiqueta">
-                        <span class="input-group-btn">
-                            <input class="btn btn-success" id="ageet" name="agreet" type="button" value="Agregar etiqueta">
-                        </span>
-                    </div>                           
-                </div>                        
-            </div>                    
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Tus etiquetas</label> 
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="col-lg-12 conborde etiquetas">
-                    <div class="row" id="divetiquetas">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Agregar una nueva etiqueta</label> 
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="etiquetasinput" placeholder="etiqueta">
+                                    <span class="input-group-btn">
+                                        <input class="btn btn-success" id="ageet" name="agreet" type="button" value="Agregar etiqueta">
+                                    </span>
+                                </div>                           
+                            </div>                        
+                        </div>                    
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tus etiquetas</label> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-lg-12 conborde etiquetas">
+                                <div class="row" id="divetiquetas">
                         <!--<div class="col-md-4 col-lg-3 form-group" id="php">
                             <div class="input-group">
                                 <span class="input-group-addon">
