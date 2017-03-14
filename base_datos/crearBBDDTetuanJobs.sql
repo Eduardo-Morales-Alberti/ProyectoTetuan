@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `PUESTOS` (
   `puesto_desc` varchar(3000) COLLATE utf8_general_ci NOT NULL,
   `puesto_carnet` boolean DEFAULT FALSE,
   `id_provincia` int(11) UNSIGNED,
-  `experiencia` enum('Sin experiencia','Al menos un año','Más de un año') COLLATE utf8_general_ci NOT NULL,
+  `experiencia` enum('Sin experiencia','Menos un año','Más de un año') COLLATE utf8_general_ci NOT NULL,
   `tipo_contrato` enum('Sin determinar','Indefinido','En prácticas','Por obra o servicio') COLLATE utf8_general_ci NOT NULL DEFAULT 'Sin determinar',
   `jornada` enum('Sin determinar','Completa','Sólo mañanas','Sólo tardes') COLLATE utf8_general_ci NOT NULL DEFAULT 'Sin determinar',
   `titulacion_minima` enum('Sin importancia','F.P. Básica','C.F. Grado Medio','Bachillerato','C.F. Grado Superior','Grado Universitario','Máster','Certificado Oficial','Otro') COLLATE utf8_general_ci NOT NULL,

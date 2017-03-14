@@ -688,3 +688,27 @@ function fichaem(){
 
 }
 /** Fin Ficha Empresa**/
+
+/* interesados */
+function interesados(){
+    var btnex = document.getElementById("ageex");
+  btnex.addEventListener("click", function(){
+    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3","etiquetas");
+    //console.log(ele);
+  });
+  var btnelimex = document.getElementById("elimrequisito");
+  btnelimex.addEventListener("click", function(){
+    elementosreq = eliminarTag("etiquetas", "divetiquetas",elementosreq)
+  });
+
+  /* Eliminar elementos repetidos del select de etiquetas*/
+  /*console.log(elementosreq);*/
+  for (v in elementosreq ) {     
+    $("#etiquetas option[value='"+elementosreq[v]+"']").remove();
+  };  
+
+  /* fin Eliminar elementos repetidos del select de etiquetas*/
+
+}
+
+/* fin interesados */

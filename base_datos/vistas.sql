@@ -49,7 +49,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarUsuarios as
                   WHEN activo = 1 
                   THEN "Activo" 
                   ELSE "Pendiente" 
-             END as estado, id_estudiante as idestudiante, telefono, nombre_provincia as provincia
+             END as estado, id_estudiante as idestudiante, telefono, nombre_provincia as provincia, prov.id_provincia as idprovincia
              from tetuanjobs.usuarios as us join tetuanjobs.estudiantes as est 
              on us.id_usuario = est.id_usuario  
              left join tetuanjobs.provincias prov on est.id_provincia = prov.id_provincia
@@ -134,6 +134,25 @@ GRANT select on tetuanjobs.listarSkills To 'usertetuan'@'localhost';
 
 /** fin Perfil estudiante **/
 
+/* BUSQUEDA ESTUDIANTE */
+
+/* VISTA ETIQUETAS Y COMPROBAR SI SE HA APLICADO AL PUESTO*/
+
+CREATE OR REPLACE VIEW tetuanjobs.listarPstEtqEst as 
+  select  pst.id_puesto as identificador, nombre_etiqueta, est.nombre as estudiante, pstest.id_estudiante as idestudiante,
+  id_usuario as idusuario   
+     from tetuanjobs.puestos pst 
+     left join tetuanjobs.puestos_etiquetas pstetq on pst.id_puesto = pstetq.id_puesto
+     left join tetuanjobs.etiquetas etq on pstetq.id_etiqueta = etq.id_etiqueta
+     left join tetuanjobs.puestos_estudiantes pstest on pstest.id_puesto = pst.id_puesto
+     left join tetuanjobs.estudiantes est on est.id_estudiante = pstest.id_estudiante;
+GRANT select on tetuanjobs.listarPstEtqEst To 'usertetuan'@'localhost';
+
+/* FIN VISTA ETIQUETAS Y COMPROBAR SI SE HA APLICADO AL PUESTO*/
+
+/* FIN BUSQUEDA ESTUDIANTE */
+
+
 /** filtro puestos **/
 
 /** VISTA LISTAR puesto  **/
@@ -199,22 +218,21 @@ GRANT select on tetuanjobs.listarIdiomasPuesto To 'usertetuan'@'localhost';
 
 /** fin ficha puestos **/
 
+/* listar interesador */
+CREATE OR REPLACE VIEW tetuanjobs.listarInteresados as 
+  select idestudiante, nombre, lus.email, lus.telefono, identificador, provincia, foto, ciclo, cv, f_seleccion,
+  puesto_nombre as nombrepuesto, idprovincia, pst.id_puesto as idpuesto, emp.id_usuario as idempusuario,
+  formacion_clasificacion as titulacion,  cast(formacion_clasificacion as unsigned) as idtitulacion
+   from tetuanjobs.puestos_estudiantes pstest join tetuanjobs.listarUsuarios lus
+  on pstest.id_estudiante = lus.idestudiante
+  join tetuanjobs.puestos pst on pstest.id_puesto = pst.id_puesto
+  join tetuanjobs.empresas emp on pst.id_empresa = emp.id_empresa
+  left join tetuanjobs.formacion form on form.id_estudiante = lus.idestudiante;
 
-/* VISTA ETIQUETAS Y COMPROBAR SI SE HA APLICADO AL PUESTO*/
+GRANT select on tetuanjobs.listarInteresados To 'usertetuan'@'localhost';
 
-CREATE OR REPLACE VIEW tetuanjobs.listarPstEtqEst as 
-  select  pst.id_puesto as identificador, nombre_etiqueta, est.nombre as estudiante, pstest.id_estudiante as idestudiante,
-  id_usuario as idusuario   
-     from tetuanjobs.puestos pst 
-     left join tetuanjobs.puestos_etiquetas pstetq on pst.id_puesto = pstetq.id_puesto
-     left join tetuanjobs.etiquetas etq on pstetq.id_etiqueta = etq.id_etiqueta
-     left join tetuanjobs.puestos_estudiantes pstest on pstest.id_puesto = pst.id_puesto
-     left join tetuanjobs.estudiantes est on est.id_estudiante = pstest.id_estudiante;
-GRANT select on tetuanjobs.listarPstEtqEst To 'usertetuan'@'localhost';
+/* fin listar interesador */
 
-/* FIN VISTA ETIQUETAS Y COMPROBAR SI SE HA APLICADO AL PUESTO*/
-
-/* FIN BUSQUEDA ESTUDIANTE */
 
 
 

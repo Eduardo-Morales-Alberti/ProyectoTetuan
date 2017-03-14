@@ -154,11 +154,11 @@ ob_start();?>
             <div class="form-group">
                 <label>Fecha de publicación</label>
                 <select class="form-control" name="antiguedad" id="antiguedad" >
-                    <option disabled selected value='nada'> -- Selecciona una opción -- </option>
+                    <!--<option disabled selected value='nada'> -- Selecciona una opción -- </option>-->
+                    <option value="" selected>Indiferente</option>
                     <option value="1">Hace 24 horas</option>
                     <option value="2">Última semana</option>
-                    <option value="3">Último mes</option>
-                    <option value="4">Indiferente</option>
+                    <option value="3">Último mes</option>                    
                 </select>
             </div>
         </div>		
@@ -174,8 +174,9 @@ ob_start();?>
     </div>
 </div>
 </div>	
-</form>
 </div>
+</form>
+
 
 <!-- Fin panel Busqueda -->
 <!-- Panel resultados -->

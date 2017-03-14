@@ -949,6 +949,456 @@ class empresaBBDD extends singleton{
 
 	/* fin Filtro puestos */
 
+	/* Interesados */
+
+	/* Función select puestos */
+	function listarSelectPuestos($seleccion = -1){
+		$sql = "select nombre,identificador from listarPuestos where idusuario = ?";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+		while ($row = $consulta->fetch()) {
+			$puestos[] = $row;
+		}
+		$selectPuesto = "<option disabled selected value> -- Selecciona una opción -- </option>";
+
+		for ($i=0; $i < count($puestos) ; $i++) { 
+			if($seleccion == $puestos[$i]['identificador']){
+				$selectPuesto .= "<option value='".$puestos[$i]['identificador']."' selected>";
+				$selectPuesto .= $puestos[$i]['nombre']."</option>";
+			}else{
+				$selectPuesto .= "<option value='".$puestos[$i]['identificador']."'>";
+				$selectPuesto .= $puestos[$i]['nombre']."</option>";
+			}
+			
+		}
+
+		return $selectPuesto;
+	}
+
+
+	/* fin Función select puestos */
+
+	/* Función para listar los estudiantes*/
+	function listarInteresados(){
+
+		
+		?>
+		<div class="panel panel-default">
+			<div class="panel-heading" ><h4>Lista de interesados</h4></div>
+			<div class="panel-body ">
+
+				<?php
+				$condicion = "";
+				if(isset($_POST["provincia"])){
+					
+					$condicion .= " and idprovincia = ".$_POST["provincia"];
+
+				}
+
+				if(isset($_POST["puesto"])){
+					
+					$condicion .= " and idpuesto = ".$_POST["puesto"];
+					
+				}
+
+				if(isset($_POST["formacion"])){
+					
+					$condicion .= " and idtitulacion = ".$_POST["formacion"];
+					
+				}
+
+
+
+				if(isset($_POST["antiguedad"])){
+					switch ($_POST["antiguedad"]) {
+						case '1':
+
+						$condicion .= " and f_seleccion > date_sub(curdate(), interval 1 day)";
+						
+						break;
+						case '2':
+
+						$condicion .= " and f_seleccion > date_sub(curdate(), interval 1 week)";
+
+						break;
+						
+						$condicion .= " and f_seleccion > date_sub(curdate(), interval 1 month)";
+
+						break;
+					}
+				}
+
+
+				$sql = "select * from listarInteresados where idempusuario = ? ".$condicion." group by identificador";
+				$consulta = $this->Idb->prepare($sql);
+				$consulta->execute(array($_SESSION["usuario"]->identificador));
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$usuarios = array();
+				$cont = 1;
+				while ($usuario = $consulta->fetch()) {
+					$usuarios[] = $usuario;
+				}
+				//print_r($usuario);
+				//$usuarios[] = $row;
+
+				
+
+				
+
+				for ($u=0; $u < count($usuarios); $u++) { 
+
+					$identificador = $usuarios[$u]["identificador"];
+					$existe = true;
+					if(isset($_POST["etiquetas"])){
+						$existe = false;
+						for ($o=0; $o < count($_POST["etiquetas"])&&!$existe; $o++) {
+							$sql = 'select true as existe from listarskills where usuario = ? and lower(nombre) = lower(?)';
+							$consulta = $this->Idb->prepare($sql);
+							$consulta->execute(array($identificador,$_POST["etiquetas"][$o]));
+							$consulta->setFetchMode(PDO::FETCH_ASSOC);
+							$row = $consulta->fetch();
+							if($row["existe"]){
+								$existe = true;
+							}
+						}
+					}
+					$experiencia = true;
+					if(isset($_POST["experiencia"])){
+						$experiencia = false;
+						$sql = "select fecha_ini, fecha_fin from listarExperiencia where estudiante = ?";
+						$consulta = $this->Idb->prepare($sql);
+						$consulta->execute(array($identificador));
+						$consulta->setFetchMode(PDO::FETCH_ASSOC);
+						$diasexp = 0;
+						while ($row = $consulta->fetch()) {
+
+							$fechaini = $row["fecha_ini"];
+							$fechafin = $row["fecha_fin"];
+
+							if($fechafin != "actualmente"){
+
+								$diasexp += strtotime($fechafin) - strtotime($fechaini);
+							}else{
+
+								$diasexp += time(); - strtotime($fechaini);
+							}
+						}
+						$diasexp = floor($diasexp / (60 * 60 * 24));
+						switch ($_POST["experiencia"]) {
+							case '1':
+							$experiencia = true;
+							break;
+							case '2':
+							if($diasexp < 360){
+								$experiencia = true;
+							}
+							break;
+							case '3':
+							if($diasexp >= 360){
+								$experiencia = true;
+							}
+
+							break;
+						}
+						
+						
+
+					}
+
+					if($existe&&$experiencia){
+
+
+						?>
+
+
+						<div class="panel panel-default">
+							<div class="panel-heading" data-toggle="collapse" data-target=".est<?php echo $cont;?>">
+								<div class="row">
+									<div class="col-md-8"><h4><?php echo $usuarios[$u]["nombre"];?><br>
+										<small><b><?php echo $usuarios[$u]["email"];?></b>
+											<?php
+											if(isset($usuarios[$u]["telefono"])){
+												echo " - <b>".$usuarios[$u]["telefono"]."</b>";
+											}
+											?>
+											<?php
+											if(isset($usuarios[$u]["provincia"])){
+												echo " - <b>".$usuarios[$u]["provincia"]."</b>";
+											}
+											?>
+										</small></h4>
+									</div> 
+
+								</div>
+							</div>
+							<div class="panel-body collapse out est<?php echo $cont; $cont++;?>" >          
+								<?php
+
+								?>
+								<p>
+									<h4>Interesado en los puestos:</h4>
+									<ol>
+										<?php 
+										$sql = "select * from listarInteresados where idestudiante = ? and idempusuario = ? group by nombrepuesto";
+										$consulta = $this->Idb->prepare($sql);
+										$consulta->execute(array($usuarios[$u]["idestudiante"], $_SESSION["usuario"]->identificador));
+										$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+										$puestos = array();
+
+										while ($puesto = $consulta->fetch()) {
+											/*$puestos[] = $puesto;*/
+											echo "<li>".$puesto["nombrepuesto"]."</li>";
+										}
+										?>
+									</ol>
+								</p>
+								<?php
+								if(isset($usuarios[$u]["foto"])||isset($usuarios[$u]["cv"])||isset($usuarios[$u]["descripcion"])){
+									?>
+									<p>  
+										<h4>Sobre el estudiante:</h4>
+										<?php
+										if(isset($usuarios[$u]["foto"])){
+											echo '<img src="subidas/'.$usuarios[$u]["foto"].'" style="float:left; padding-right:10px">';
+										}
+
+										if(isset($usuarios[$u]["descripcion"])){
+											echo $usuarios[$u]["descripcion"];
+										}
+										?>
+										<br style="clear: left;"><br>
+										<?php
+										if(isset($usuarios[$u]["cv"])){
+											echo '<a href="subidas/'.$usuarios[$u]["cv"].'" target="_blank">Mostrar Currículum vitae </a>';
+										}
+										?>
+									</p>
+									<?php
+								}
+
+
+								/* experiencia */
+
+								$sql = "select * from listarExperiencia where estudiante = ?";
+								$consulta = $this->Idb->prepare($sql);
+								$consulta->execute(array($identificador));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);
+								$experienciafilas = array();
+								while ($row = $consulta->fetch()) {
+									$experienciafilas[] = $row;
+								}
+
+								for ($i=0; $i < count($experienciafilas); $i++) { 
+									echo "<hr>";			
+									if($i == 0){
+
+										echo "<h4>Experiencia:</h4>";
+									}
+									?>
+									<div class="row">                        
+										<div class="col-md-8"><b><?php echo $experienciafilas[$i]["titulo"];?><br>
+											<small>Empresa: <?php echo $experienciafilas[$i]["empresa"];?></small></b>
+										</div>
+										<div class="col-md-4">
+											<small class="femp ">Período: <i> <?php 
+
+											$fechaini = $experienciafilas[$i]["fecha_ini"];
+											$mes = date("n",strtotime($fechaini));
+											$anio = date("Y",strtotime($fechaini));
+											echo $this->meses[$mes].", ".$anio;
+
+											?>- <?php 
+
+											$fechafin = $experienciafilas[$i]["fecha_fin"];
+											if($fechafin != "actualmente"){
+												$mes = date("n",strtotime($fechafin));
+												$anio = date("Y",strtotime($fechafin));
+												echo $this->meses[$mes].", ".$anio;
+												
+											}else{
+												echo $fechafin;
+											}
+
+
+											?> </i></small>
+										</div>   
+										<div class="col-md-8">
+											<p>-Descripción: <br>  
+												<?php echo $experienciafilas[$i]["descripcion"];?>
+											</p>
+										</div>									
+									</div>
+
+									<?php
+
+								}
+								/* fin experiencia*/
+
+								/* educacion */
+
+								$sql = "select * from listarEducacion where estudiante = ?";
+								$consulta = $this->Idb->prepare($sql);
+								$consulta->execute(array($identificador));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);
+								$educacionfilas = array();
+								while ($row = $consulta->fetch()) {
+									$educacionfilas[] = $row;
+								}
+
+								for ($i=0; $i < count($educacionfilas); $i++) { 			
+									echo "<hr>";
+									if($i == 0){
+										echo "<h4>Educación:</h4>";
+									}
+									?>
+									<div class="row">                        
+										<div class="col-md-8"><b><?php echo $educacionfilas[$i]["titulo"];?><br>
+											<small>Institución: <?php echo $educacionfilas[$i]["institucion"];?><br>
+												<?php echo $educacionfilas[$i]["grado"];?>
+											</small></b>
+										</div>
+										<div class="col-md-4">
+											<small class="femp ">Período: <i> <?php 
+
+											$fechaini = $educacionfilas[$i]["fecha_ini"];
+											$mes = date("n",strtotime($fechaini));
+											$anio = date("Y",strtotime($fechaini));
+											echo $this->meses[$mes].", ".$anio;
+
+											?> - <?php 
+
+											$fechafin = $educacionfilas[$i]["fecha_fin"];
+
+											if($fechafin != 0){
+												$mes = date("n",strtotime($fechafin));
+												$anio = date("Y",strtotime($fechafin));
+												echo $this->meses[$mes].", ".$anio;
+											}else{
+												echo "actualmente";
+											}
+
+
+											?> </i></small>
+										</div>   
+										<div class="col-md-8">
+											<p>-Descripción: <br>
+												<?php echo $educacionfilas[$i]["descripcion"];?>
+											</p>
+										</div>
+									</div>
+
+									<?php
+
+								}
+
+								/* fin educación */
+
+								/* Idiomas */
+								$sql = "select * from listarIdiomasEst where estudiante = ?";
+								$consulta = $this->Idb->prepare($sql);
+								$consulta->execute(array($identificador));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);
+								$idiomasfilas = array();
+								while ($row = $consulta->fetch()) {
+									$idiomasfilas[] = $row;
+								}
+
+								for ($i=0; $i < count($idiomasfilas); $i++) {
+									if($i == 0 ){
+										echo "<hr><h4>Idiomas:</h4><p>";
+									}
+
+									echo $idiomasfilas[$i]["nombre"]." / ";
+
+
+									if($i == count($idiomasfilas)-1){
+										echo "</p>";
+									}
+								}
+
+								/* Fin idiomas*/
+								/* skills */
+								$sql = "call listarEtiquetasEst(?,false)";
+								$consulta = $this->Idb->prepare($sql);
+								$consulta->execute(array($identificador));
+								$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+								$etiquetas = array();
+								while ($row = $consulta->fetch()) {
+									$etiquetas[] = $row;
+								}
+
+								for ($i=0; $i < count($etiquetas); $i++) { 
+									if($i == 0 ){
+										echo "<hr><h4>Skills:</h4><p>";
+									}
+
+									echo $etiquetas[$i]["nombre"]." / ";
+
+
+									if($i == count($etiquetas)-1){
+										echo "</p>";
+									}
+								}
+
+								/* fin skills */
+								?> 
+
+
+								<?php
+								if(isset($usuarios[$u]["carnet"])&&$usuarios[$u]["carnet"]){
+									echo "<hr><b>Tiene carnet de conducir</b><br>";
+								}
+								?>
+
+							</div>                               
+
+						</div>
+
+
+
+						<?php 
+					}
+				} ?>
+			</div>
+		</div>
+		<?php
+
+	}
+
+	/* fin Función para listar los estudiantes*/
+
+	/* FUNCION LISTAR ETIQUETAS interesados*/
+	function listarEtiquetasInter(){
+		if(isset($_POST["etiquetas"])){
+			$n = 0;
+			$etiquetas = array();				
+			for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
+				$id = substr($this->limpiarRuta($_POST["etiquetas"][$i]),0,5).$n;
+				$n++;
+				?>
+				<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
+						</span>
+						<input type="text" class="form-control" id="input<?php echo $id;?>" name="etiquetas[]" value="<?php echo $_POST["etiquetas"][$i];?>" readonly>
+					</div>
+				</div>
+				<?php
+				$etiquetas[$i]["nombre"] = $_POST["etiquetas"][$i];
+			}
+
+			$_SESSION["etiquetas"] = json_encode($etiquetas);
+		}
+	}
+	/* fin FUNCION LISTAR ETIQUETAS interesados*/
+
+	/* Interesados */
+
 }
 
 ?>

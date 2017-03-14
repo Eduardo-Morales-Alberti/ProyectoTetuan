@@ -200,6 +200,12 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                                 <span class="item-text">Buscar puesto</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="interesados.php" title="Interesados" data-toggle="" class="no-submenu subitem">
+
+                                                <span class="item-text">Interesados</span>
+                                            </a>
+                                        </li>
                                         
                                     </ul> 
                                 </li>

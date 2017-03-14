@@ -1465,14 +1465,14 @@ class estudianteBBDD extends singleton{
 
 		$condicion = "";
 		if(isset($_POST["provincia"])){
-			$condicion = "idprovincia = ".$_POST["provincia"];
+			$condicion = " where idprovincia = ".$_POST["provincia"];
 		}
 
 		if(isset($_POST["empresa"])){
 			if(strlen($condicion)>0){
 				$condicion .= " and idempresa =".$_POST["empresa"];
 			}else{
-				$condicion = " idempresa =".$_POST["empresa"];
+				$condicion = " where idempresa =".$_POST["empresa"];
 			}
 		}
 
@@ -1480,7 +1480,7 @@ class estudianteBBDD extends singleton{
 			if(strlen($condicion)>0){
 				$condicion .= " and idcontrato =".$_POST["contrato"];
 			}else{
-				$condicion = " idcontrato =".$_POST["contrato"];
+				$condicion = " where idcontrato =".$_POST["contrato"];
 			}
 		}
 
@@ -1488,7 +1488,7 @@ class estudianteBBDD extends singleton{
 			if(strlen($condicion)>0){
 				$condicion .= " and idexperiencia =".$_POST["experiencia"];
 			}else{
-				$condicion = " idexperiencia =".$_POST["experiencia"];
+				$condicion = " where idexperiencia =".$_POST["experiencia"];
 			}
 		}
 
@@ -1496,7 +1496,33 @@ class estudianteBBDD extends singleton{
 			if(strlen($condicion)>0){
 				$condicion .= " and idjornada =".$_POST["jornada"];
 			}else{
-				$condicion = " idjornada =".$_POST["jornada"];
+				$condicion = " where idjornada =".$_POST["jornada"];
+			}
+		}
+		/* select nombre, empresa, publicacion from listarPuestos where publicacion > date_sub(curdate(), interval 1 day); */
+		if(isset($_POST["antiguedad"])){
+			switch ($_POST["antiguedad"]) {
+				case '1':
+				if(strlen($condicion)>0){
+					$condicion .= " and publicacion > date_sub(curdate(), interval 1 day)";
+				}else{
+					$condicion = " where publicacion > date_sub(curdate(), interval 1 day)";
+				}
+				break;
+				case '2':
+					if(strlen($condicion)>0){
+						$condicion .= " and publicacion > date_sub(curdate(), interval 1 week)";
+					}else{
+						$condicion = " where publicacion > date_sub(curdate(), interval 1 week)";
+					}
+				break;
+				case '3':
+					if(strlen($condicion)>0){
+						$condicion .= " and publicacion > date_sub(curdate(), interval 1 month)";
+					}else{
+						$condicion = " where publicacion > date_sub(curdate(), interval 1 month)";
+					}
+				break;
 			}
 		}
 
@@ -1526,7 +1552,7 @@ class estudianteBBDD extends singleton{
 				
 
 				if(strlen($condicion)>0){
-					$sql = "select * from listarPuestos where ".$condicion;
+					$sql = "select * from listarPuestos ".$condicion;
 					//echo $sql;
 				}else{
 					$sql = "select * from listarPuestos";
@@ -1542,6 +1568,8 @@ class estudianteBBDD extends singleton{
 
 				//$nombres = array();
 				$sql = 'select true as existe from listarPstEtqEst where identificador = ? and lower(nombre_etiqueta) = lower(?)';
+
+
 				
 				for ($i=0; $i < count($puestosfilas); $i++) { 		
 					/*if(!in_array($puestosfilas[$i]["nombre"], $nombres)){*/

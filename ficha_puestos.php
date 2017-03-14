@@ -22,14 +22,14 @@ ob_start();
 </h1>  
 <form method="post">
     <div class="panel panel-default">
-        <div class="panel-heading" <?php  if(isset($_SESSION["idpst"])&&isset($puesto["interesados"])&&$puesto["interesados"]>0){echo 'data-toggle="collapse" data-target=".modificarpst"';} ?> >
+        <div class="panel-heading" <?php  /*if(isset($_SESSION["idpst"])&&isset($puesto["interesados"])&&$puesto["interesados"]>0){echo 'data-toggle="collapse" data-target=".modificarpst"';}*/ ?> >
             <h4>
                <?php 
                if(isset($_SESSION["idpst"])){echo "Modificar Puesto '".$puesto['nombre']."'";}else{echo "Añadir un nuevo puesto";}
                ?>
            </h4> 
        </div>
-       <div class="panel-body <?php  if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} ?>">
+       <div class="panel-body <?php  /*if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';}*/ ?>">
         <div class="row">
             <!--<div class="col-md-6">
                 <div class="form-group">
@@ -264,7 +264,7 @@ ob_start();
         </div>          
     </div>
 </div>
-<div class="panel-footer <?php  if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} ?>">
+<div class="panel-footer <?php  /*if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} */?>">
     <div class="row">
      <div class="col-md-12 text-right">
         <?php 
@@ -285,7 +285,7 @@ ob_start();
 </form>
 
 <?php
-    $empresacl->listarEstudiantesPuesto($puesto);
+   /* $empresacl->listarEstudiantesPuesto($puesto);*/
 ?>
 
 

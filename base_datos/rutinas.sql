@@ -1529,7 +1529,7 @@ CREATE PROCEDURE tetuanjobs.listarEstPuesto(idpuesto int, usid int)
 	SELECT id_puesto into idpst from tetuanjobs.puestos where id_puesto = idpuesto;
 
 	if id >=0 and idpst >= 0 then
-	select *from puestos_estudiantes pstest join listarUsuarios lus
+	select * from puestos_estudiantes pstest join listarUsuarios lus
 	on pstest.id_estudiante = lus.idestudiante where id_puesto = 3;
 
 		/*select true as resultado;*/
