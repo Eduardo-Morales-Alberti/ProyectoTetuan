@@ -151,7 +151,7 @@ class General extends singleton{
 		while ($row = $consulta->fetch()) {
 			$idiomas[] = $row;
 		}
-		$idiomasSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+		$idiomasSELECT = " <option disabled selected value=''> -- Selecciona una opción -- </option>";
 		for ($i=0; $i < count($idiomas) ; $i++) { 
 			
 				$idiomasSELECT .= "<option value='".$idiomas[$i]['identificador']."'>";
@@ -207,7 +207,7 @@ class General extends singleton{
 		if($row["resultado"]){
 			$ciclos = explode(",", $row["resultado"]) ;
 			//print_r($ciclos);
-			$ciclosSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+			$ciclosSELECT = " <option disabled selected value=''> -- Selecciona una opción -- </option>";
 			for ($i=0; $i < count($ciclos) ; $i++) { 
 				if($seleccion == $i+1){
 					$ciclosSELECT .= "<option value='".($i+1)."' selected>";

@@ -187,7 +187,7 @@ class estudianteBBDD extends singleton{
 
 
 			if(isset($_POST["descpersonal"])){
-				$descp = $this->limpiar($_POST["descpersonal"]);
+				$descp = htmlentities($_POST["descpersonal"]);
 			}
 
 			if(isset($_POST["carnet"])){				
@@ -331,7 +331,7 @@ class estudianteBBDD extends singleton{
 			$desc = null;
 
 			if(isset($_POST["desc"])){
-				$desc = $_POST["desc"];
+				$desc = htmlentities($_POST["desc"]);
 			}	
 
 			$params = array();
@@ -374,11 +374,12 @@ class estudianteBBDD extends singleton{
 			$fecha1 = null;
 
 			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
-				$mes = 1;
-				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12){
+				$t=time();	
+				$mes = date("n",$t);
+				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12 && $_POST["f1mes"] <= date("n",$t)){
 					$mes = $_POST["f1mes"];
 				}
-				$t=time();				
+							
 				$anio = date("Y",$t);
 
 				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
@@ -393,11 +394,12 @@ class estudianteBBDD extends singleton{
 			$actualmente = null;
 
 			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
-				$mes = 1;
-				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12){
+				$t=time();
+				$mes = date("n",$t);
+				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12&& $_POST["f2mes"] <= date("n",$t)){
 					$mes = $_POST["f2mes"];
 				}
-				$t=time();				
+								
 				$anio = date("Y",$t);
 
 				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
@@ -413,7 +415,7 @@ class estudianteBBDD extends singleton{
 			$desc = null;
 
 			if(isset($_POST["desc"])){
-				$desc = $_POST["desc"];
+				$desc = htmlentities($_POST["desc"]);
 			}	
 
 			$nivel = null;

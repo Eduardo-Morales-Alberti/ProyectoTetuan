@@ -106,13 +106,13 @@ $modal = $logincl->restContr();
     									<div class="col-md-6 col-lg-4">
     										<div class="form-group">
     											<label>Nueva contraseña</label>
-    											<input type="password" class="form-control" name="ncontr" value="" required="required">
+    											<input type="password" class="form-control" id="ncontr" name="ncontr" value="" required="required">
     										</div>
     									</div>
     									<div class="col-md-6 col-lg-4">
     										<div class="form-group">
     											<label>Confirma la contraseña</label>
-    											<input type="password" class="form-control" name="ccontr" value="" required="required">
+    											<input type="password" class="form-control" id="ccontr" name="ccontr" value="" required="required">
     										</div>
     									</div>
     								</div>
@@ -121,7 +121,7 @@ $modal = $logincl->restContr();
     								<div class="row">
     									<div class="col-md-12 text-right">
     										<input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
-    										<input type="submit" name="restcontr" value="Restablecer" class="btn btn-green">
+    										<input type="submit" id="restcontr" name="restcontr" value="Restablecer" class="btn btn-green">
     									</div>
     								</div>
     							</div>
@@ -199,15 +199,18 @@ $modal = $logincl->restContr();
 
     	<!-- Aplicación Scripts-->
     	<script src="js/tetuanjobs.js"></script>
+        <script type="text/javascript">
+        restablecer();
+        </script>
+        <?php
 
-    	<?php
-
-    	/*if(isset($_SESSION["mensajeServidor"])){
+    	if(isset($_SESSION["mensajeServidor"])&&isset($_SESSION["fallo"])){
     		echo '<script type="text/javascript">
     		mensajeModal("'.$_SESSION["mensajeServidor"].'"");
     		</script>';
     		unset($_SESSION["mensajeServidor"]);
-    	}*/
+            unset($_SESSION["fallo"]);
+    	}
 
     	if(isset($modal)){
     		echo $modal;

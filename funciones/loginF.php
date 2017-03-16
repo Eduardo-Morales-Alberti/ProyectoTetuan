@@ -74,7 +74,7 @@ class loginBBDD extends singleton{
 
 					$emails = [$_POST['mail']];
 					$mensaje = "Para restablecer su contraseña vaya al siguiente enlace 
-					<a href='http://localhost/proyectofinal/restablecercontr.php?email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
+					<a href='http://localhost/proyectofinal/restablecer_password.php?email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
 					Restablecer Contraseña</a>";
 					$enviado = General::enviarEmail($emails,"Restablecer la contraseña", $mensaje);
 
@@ -108,7 +108,7 @@ class loginBBDD extends singleton{
 
 	/** Funcion para establecer una nueva contraseña con el enlace del email recibido **/
 	public function restContr(){
-		print_r($_GET);
+		/*print_r($_GET);*/
 		if(isset($_GET["email"])&&isset($_GET["clave"])){
 			
 			if(isset($_SESSION["email"])&&isset($_SESSION["clave"])
@@ -157,9 +157,8 @@ class loginBBDD extends singleton{
 					
 				}else{
 					
-					return '<script type="text/javascript">
-					mensajeModal("Las contraseñas no coinciden");
-					</script>';
+					$_SESSION["mensajeServidor"] ="Las contraseñas no coinciden";
+					$_SESSION["fallo"] = true;
 				}
 				
 

@@ -438,11 +438,46 @@ $("#tipo").change( function(){
 }
 
 /**Fin Login**/
+
+/* Restablecer contraseña*/
+
+function restablecer(){
+  /* validar formulario */
+  $("#restcontr").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+
+    if(!validarTexto($("#ncontr").val())||!validarTexto($("#ccontr").val())){
+      mensaje += "La contraseña no está bien escrita.<br>";
+      valido = false;
+    }else if($("#ncontr").val()!=$("#ccontr").val()){
+      mensaje += "Las contraseñas no coinciden.<br>";
+      valido = false;
+    }
+
+    
+
+
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+  /* fin validar formulario */
+}
+
+/* fin restablecer contraseña*/
+
+
 /**Perfil Estudiante **/
 
 
 
-function perfil(){
+function perfilEstudiante(){
   /** Opcion fechas actualmente **/
 
   var selact = document.getElementsByClassName("selact");
@@ -457,6 +492,39 @@ function perfil(){
   };
 
   /** Fin Opcion fechas actualmente **/
+
+  /* validar formulario contraseña */
+
+  $("#modcontr").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+
+    if(!validarTexto($("#contr").val())){
+      mensaje += "La contraseña no está bien escrita.<br>";
+      valido = false;
+    }
+    
+    if(!validarTexto($("#ncontr").val())||!validarTexto($("#ccontr").val())){
+      mensaje += "La contraseña no está bien escrita.<br>";
+      valido = false;
+    }else if($("#ncontr").val()!=$("#ccontr").val()){
+      mensaje += "Las contraseñas no coinciden.<br>";
+      valido = false;
+    }
+
+    
+
+
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+  /* fin validar formulario contraseña */
 
   /** Agregar etiquetas **/
 
@@ -952,3 +1020,4 @@ function interesados(){
 }
 
 /* fin interesados */
+
