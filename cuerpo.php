@@ -145,7 +145,7 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                             <!---->
                             <!--Busqueda-->
                             <li>
-                                <a href="busqueda_estudiante.php" title="Busqueda" class="no-submenu">
+                                <a href="busqueda_ofertas.php" title="Busqueda" class="no-submenu">
                                     <em class="fa fa-search"></em>
                                     <span class="item-text">Búsqueda</span>
                                 </a>                            
@@ -158,7 +158,7 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                 ?>
                                 <!--Usuarios-->                                
                                 <li>                                    
-                                    <a href="filtro_usuarios.php" title="Estudiantes"  class="no-submenu">
+                                    <a href="gestion_estudiantes.php" title="Estudiantes"  class="no-submenu">
                                         <em class="fa fa-user"></em>                                        
                                         <span class="item-text">Estudiantes</span>
                                     </a>             
@@ -166,7 +166,7 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                 <!---->
                                 <!--Empresa-->
                                 <li>
-                                    <a href="filtro_empresas.php" title="Empresas"  class="no-submenu">
+                                    <a href="gestion_empresas.php" title="Empresas"  class="no-submenu">
                                         <em class="fa fa-building-o"></em>
                                         <span class="item-text">Empresas</span>                                        
                                     </a>             

@@ -83,13 +83,13 @@ BEGIN
 	
 
 	if id >= 0 and tipo = "estudiante" then 
-	SELECT nombre, id_usuario as identificador, "estudiante" as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
+	SELECT true as resultado, "Usuario logado correctamente" as mensaje, nombre, id_usuario as identificador, "estudiante" as "tipo_usuario" from tetuanjobs.estudiantes where id_usuario = id;
 	elseif id >= 0 and tipo = "empresa" then 
-	SELECT nombre_empresa as nombre, id_usuario as identificador, "empresa" as "tipo_usuario" from tetuanjobs.empresas where id_usuario = id;
+	SELECT true as resultado, "Usuario logado correctamente" as mensaje, nombre_empresa as nombre, id_usuario as identificador, "empresa" as "tipo_usuario" from tetuanjobs.empresas where id_usuario = id;
 	elseif id >= 0 and tipo = "administrador" then 
-	SELECT "Administrador" as nombre, id as identificador, tipo as "tipo_usuario";
+	SELECT true as resultado, "Usuario logado correctamente" as mensaje, "Administrador" as nombre, id as identificador, tipo as "tipo_usuario";
 	else
-	SELECT false as mensaje;
+	SELECT false as resultado, "Usuario incorrecto" as mensaje;
 	END IF;
 
 END//

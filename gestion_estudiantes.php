@@ -30,13 +30,13 @@ $page["js"] = ob_get_clean();
 
 ob_start();
 ?>
-<h1>GESTIÓN DE USUARIOS</h1> 
+<h1>Gestión de estudiantes</h1> 
 <form method="post">
     <div class="panel panel-default">
 
         <div class="panel-heading">
             <h4>
-                Lista de Usuarios
+                Lista de Estudiantes
             </h4> 
         </div>
         <div class="panel-body">

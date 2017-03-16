@@ -87,7 +87,7 @@ $logincl->confirmarCuenta();
                                     <form class="mb-lg" method="post">
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
-                                            <input id="mail" name="mail" type="email" placeholder="Email" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido" />
+                                            <input id="mail" name="mail" type="email" placeholder="Email" class="form-control" required="required" />
                                             <span class="fa fa-envelope form-control-feedback text-muted"></span>
                                         </div>
                                         <div class="form-group has-feedback">
@@ -95,7 +95,7 @@ $logincl->confirmarCuenta();
                                             <input id="contrlog" name="contrlog" type="password" placeholder="Contraseña" class="form-control" required="required"/>
                                             <span class="fa fa-lock form-control-feedback text-muted"></span>
                                         </div>      
-                                        <input type="submit" name="entrar" value="Entrar" class="btn btn-block btn-success"/>
+                                        <input type="submit" id="acceder" name="entrar" value="Entrar" class="btn btn-block btn-success"/>
                                     </form>
                                 </div>
                             </div>
@@ -112,10 +112,10 @@ $logincl->confirmarCuenta();
                                         <p class="text-center"><i>Escriba su email para establecer una nueva contraseña.</i></p>
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
-                                            <input  name="mail" type="email" placeholder="Email" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido"/>
+                                            <input  name="mail" id="recontr" type="email" placeholder="Email" class="form-control" required="required"  />
                                             <span class="fa fa-envelope form-control-feedback text-muted"></span>
                                         </div>
-                                        <input type="submit" name="recordar" value="Enviar" class="btn btn-danger btn-block">
+                                        <input type="submit" name="recordar" id="recordar" value="Enviar" class="btn btn-danger btn-block">
                                     </form>
                                 </div>
                             </div>
@@ -153,12 +153,12 @@ $logincl->confirmarCuenta();
                                         </div>
                                          <div class="form-group has-feedback">
                                             <label for="password">Contraseña</label>
-                                            <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Escriba su contraseña" class="form-control" required="required"   title="Introduzca una contraseña"/>
+                                            <input  name="password" id="contres" type="password" autocomplete="new-password" placeholder="Escriba su contraseña" class="form-control" required="required"   title="Introduzca una contraseña"/>
 
                                         </div>
                                         <div class="form-group has-feedback">
-                                            <label for="password">Confirma la contraseña</label>
-                                            <input id="password" name="comppassword" type="password" autocomplete="new-password" placeholder="Confirme su contraseña" class="form-control" required="required"   title="Confirme la contraseña"/>
+                                            <label for="comppassword">Confirma la contraseña</label>
+                                            <input id="contres2" name="comppassword" type="password" autocomplete="new-password" placeholder="Confirme su contraseña" class="form-control" required="required"   title="Confirme la contraseña"/>
 
                                         </div>
                                         <div class="form-group has-feedback elEmp" >
@@ -176,10 +176,10 @@ $logincl->confirmarCuenta();
                                         </div>
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
-                                            <input name="mail" type="email" placeholder="Correo electrónico" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido"/>
+                                            <input name="mail" id="resemail" type="email" placeholder="Correo electrónico" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido"/>
                                             <span class="fa fa-envelope form-control-feedback text-muted"></span>
                                         </div>                                                                       
-                                        <input type="submit" name="registrar" class="btn btn-block btn-success" value="Registrar">
+                                        <input type="submit" name="registrar" id="registrar" class="btn btn-block btn-success" value="Registrar">
                                     </form>
                                 </div>
                             </div>
@@ -254,7 +254,8 @@ $logincl->confirmarCuenta();
 
         </script>
         <?php
-        print_r($_SESSION);
+        /*print_r($_SESSION);*/
+        /* &&!isset($_SESSION["login"])*/
         if(isset($_SESSION["mensajeServidor"])){
             echo '<script type="text/javascript">
             mensajeModal("'.$_SESSION["mensajeServidor"].'");

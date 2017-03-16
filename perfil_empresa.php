@@ -42,35 +42,35 @@ ob_start();
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Nombre de la empresa</label>                        
-                        <input type="text" class="form-control " id="nombre" name="nombre" maxlength="25" value="<?php if(isset($informacion["nombre"])){echo $informacion["nombre"];}?>" autofocus="autofocus" required="required" >
+                        <label for="nombre">Nombre de la empresa</label>                        
+                        <input type="text" class="form-control" placeholder="Empresa" id="nombre" name="nombre" maxlength="25" value="<?php if(isset($informacion["nombre"])){echo $informacion["nombre"];}?>" autofocus="autofocus" required="required" >
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Email</label>
-                        <input  name="mail" type="email" placeholder="Correo electrónico" class="form-control" required="required"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Introduzca un email valido" value="<?php if(isset($informacion["email"])){echo $informacion["email"];}?>">
+                        <label for="mail">Email</label>
+                        <input  name="mail" id="mail" type="email" placeholder="Correo electrónico" class="form-control" required="required" value="<?php if(isset($informacion["email"])){echo $informacion["email"];}?>">
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" class="form-control" placeholder="Teléfono" id="telefono" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
                     </div>
                 </div>                   
             </div>
              <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Persona de contacto</label>                        
-                        <input type="text" class="form-control " id="contacto" name="contacto" maxlength="50" value="<?php if(isset($informacion["contacto"])){echo $informacion["contacto"];}?>" required="required" >
+                        <label for="contacto">Persona de contacto</label>                        
+                        <input type="text" class="form-control " placeholder="Contacto" id="contacto" name="contacto" maxlength="50" value="<?php if(isset($informacion["contacto"])){echo $informacion["contacto"];}?>" required="required" >
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Web</label>
-                        <input type="text" class="form-control" id="web" name="web" maxlength="50" value="<?php if(isset($informacion["web"])){echo $informacion["web"];}?>">
+                        <label for="web">Web</label>
+                        <input type="text" class="form-control" id="web" name="web" placeholder="Web de la empresa" maxlength="50" value="<?php if(isset($informacion["web"])){echo $informacion["web"];}?>">
                     </div>
                 </div>
                    
@@ -100,20 +100,20 @@ ob_start();
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Contraseña actual</label>
-                        <input type="password" class="form-control"  name="contr" value="" required="required" >
+                        <label for="contr">Contraseña actual</label>
+                        <input type="password" class="form-control"  id="contr" name="contr" value="" required="required" >
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Nueva contraseña</label>
-                        <input type="password" class="form-control" name="ncontr" value="" required="required">
+                        <label for="ncontr">Nueva contraseña</label>
+                        <input type="password" class="form-control" name="ncontr" id="ncontr" value="" required="required">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Confirma la contraseña</label>
-                        <input type="password" class="form-control"  name="ccontr" value="" required="required">
+                        <label for="ccontr">Confirma la contraseña</label>
+                        <input type="password" class="form-control"  name="ccontr" id="ccontr" value="" required="required">
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@ ob_start();
         <div class="panel-footer collapse collcontr">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <input type="submit" name="modcontr" class="btn btn-green" value="Renovar">
+                    <input type="submit" id="modcontr" name="modcontr" class="btn btn-green" value="Renovar">
                 </div>
             </div>
         </div>

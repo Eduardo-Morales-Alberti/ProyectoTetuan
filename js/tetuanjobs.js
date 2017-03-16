@@ -52,6 +52,58 @@ function mensajeModal(mensaje){
 
 /** Fin Modal mensaje **/
 
+/* Validar email */
+
+function validarEmail(email) {
+  var re = /^[A-Z0-9._-]+@[A-Z0-9.-]+\.[A-Z0-9.-]+$/i;
+  return re.test(email);
+}
+/* Validar email */
+
+/* validar texto */
+function validarTexto(texto){
+  var re = /^[\w]+$/i;
+  return re.test(texto);
+}
+
+/* fin validar texto */
+
+/* validar texto espacios*/
+function validarTextoEspacios(texto){
+  var re = /^[\w áéíóúÁÉÍÓÚ]+$/i;
+  return re.test(texto);
+}
+
+/* fin validar texto espacios*/
+
+/* validar nombres propios */
+
+function validarNombres(nombre){
+  var re = /^(([A-Z][a-z]+[\-\']?)*([A-Z][a-z]+)?\s)+([A-Z][a-z]+[\-\']?)*([A-Z][a-z]+)?/i;
+  return re.test(nombre);
+}
+/* fin validar nombres propios */
+
+/* validar web */
+function validarWeb(web){
+  var re = /^((http\:\/\/)|(https\:\/\/))?([wW]{3})?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}$/i;
+  return re.test(web);
+}
+
+/* fin validar web */
+
+/* validar teléfono */
+
+function validarTelefono(telefono){
+  var re = /^\d{9}$/i;
+  return re.test(telefono);
+}
+
+/* fin validar teléfono */
+
+
+
+
 /** crear id **/
 function crearId(cadena){
   // Quito los espacios extras y lo dejo a uno
@@ -263,27 +315,126 @@ function eliminarTag(selctid,divid,elementos){
 
 /**Login**/
 function login(){
+  /* Validaciones */
 
-  $(document).ready(function(){
-    setTimeout(function() { $("#mail").focus() }, 500);
+  /* Validacion del login */
 
-  });
-  
-  $("#tipo").change( function(){
-
-    if($(this).val() == "empresa"){
-      $(".elEmp").show();
-      $(".inputEmp").attr("required","required");
-      $(".elEst").hide();
-      $(".inputEst").removeAttr("required");
-    }else{
-      $(".elEst").show();
-      $(".inputEst").attr("required","required");
-      $(".elEmp").hide();
-      $(".inputEmp").removeAttr("required");
+  $("#acceder").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+    if(!validarEmail($("#mail").val())){
+      mensaje += "El email no es válido.<br>";
+      valido = false;
+    }
+    if(!validarTexto($("#contrlog").val())){
+      mensaje += "La contraseña no está bien escrita.<br>";
+      valido = false;
     }
 
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
   });
+
+  /* Validacion del login */
+
+  /* Validación de enviar email */
+
+  $("#recordar").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+    if(!validarEmail($("#recontr").val())){
+      mensaje += "El email no es válido.<br>";
+      valido = false;
+    }
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+
+
+  /* Fin validación de enviar email */
+
+  /* validación registrarse */
+  $("#registrar").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+    if(!validarEmail($("#resemail").val())){
+      mensaje += "El email no es válido.<br>";
+      valido = false;
+    }
+
+    if(!validarNombres($("#nombre").val())){
+      mensaje += "Escriba correctamente su nombre.<br>";
+      valido = false;
+    }
+
+    if(!validarNombres($("#apellidos").val())){
+      mensaje += "Escriba correctamente sus apellidos.<br>";
+      valido = false;
+    }
+
+    if(!validarTextoEspacios($("#empresa").val())){
+      mensaje += "Escriba correctamente su empresa sin caracteres especiales.<br>";
+      valido = false;
+    }
+
+    if(!validarTexto($("#contres").val())||!validarTexto($("#contres2").val())){
+      mensaje += "La contraseña no está bien escrita.<br>";
+      valido = false;
+    }else if($("#contres").val()!=$("#contres2").val()){
+      mensaje += "Las contraseñas no coinciden.<br>";
+      valido = false;
+    }
+
+    if(!validarWeb($("#webempresa").val())){
+      mensaje += "Escriba correctamente la web de su empresa.<br>";
+      valido = false;
+    }
+
+
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+/* fin validación registrarse */
+
+/* Fin validaciones */
+
+$(document).ready(function(){
+  setTimeout(function() { $("#mail").focus() }, 500);
+
+});
+
+$("#tipo").change( function(){
+
+  if($(this).val() == "empresa"){
+    $(".elEmp").show();
+    $(".inputEmp").attr("required","required");
+    $(".elEst").hide();
+    $(".inputEst").removeAttr("required");
+  }else{
+    $(".elEst").show();
+    $(".inputEst").attr("required","required");
+    $(".elEmp").hide();
+    $(".inputEmp").removeAttr("required");
+  }
+
+});
 }
 
 /**Fin Login**/
@@ -458,7 +609,7 @@ function busquedaofer(){
 
   /* Aplicar a un puesto */
   $(".aplicarform").each(function(){
-    console.log($(this));
+    /*console.log($(this));*/
     $(this).submit(function() {
       event.preventDefault();
       var input = $(this).children("input[name='aplicar']");
@@ -537,19 +688,19 @@ function filtrous(){
 
     });
 
- /* fin Agregar una etiqueta */
+/* fin Agregar una etiqueta */
 
- /* Agregar un idioma */
-  $("#agreidm").click(function(){
-    $(this).prop( "disabled", true );
-    var idioma = $("#inputidm").val();
-    $("#inputidm").val("");
+/* Agregar un idioma */
+$("#agreidm").click(function(){
+  $(this).prop( "disabled", true );
+  var idioma = $("#inputidm").val();
+  $("#inputidm").val("");
 
-    var xhr = $.post( "funciones/adminF.php", 
-      { agreidm: "agregar", 
-      inputidm:  idioma } );
+  var xhr = $.post( "funciones/adminF.php", 
+    { agreidm: "agregar", 
+    inputidm:  idioma } );
 
-    xhr.done(function( data ) {
+  xhr.done(function( data ) {
         //alert(data);
         $("#agreidm").removeAttr("disabled");
         //console.log(data);
@@ -574,7 +725,7 @@ function filtrous(){
 
     });
 
- /* fin Agregar un idioma */
+/* fin Agregar un idioma */
 }
 
 /**Filtro de usuarios**/
@@ -592,6 +743,71 @@ function perfilempresa(){
   });
 
   /** Fin Función eliminar cuenta **/
+
+  /* Validación de formulario */
+
+  $("#guardar").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+
+    if(!validarTextoEspacios($("#nombre").val())){
+      mensaje += "Escriba correctamente su empresa sin caracteres especiales.<br>";
+      valido = false;
+    }
+
+
+    if(!validarEmail($("#mail").val())){
+      mensaje += "El email no es válido.<br>";
+      valido = false;
+    }
+
+    if(!validarTelefono($("#telefono").val())){
+      mensaje += "El teléfono no es válido.<br>";
+      valido = false;
+    }
+
+    if(!validarNombres($("#nombre").val())){
+      mensaje += "Escriba correctamente su nombre.<br>";
+      valido = false;
+    }
+
+    if(!validarWeb($("#web").val())){
+      mensaje += "Escriba correctamente la web de su empresa.<br>";
+      valido = false;
+    }
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+  $("#modcontr").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+
+
+    if(!validarTexto($("#contr").val())||!validarTexto($("#ncontr").val())||!validarTexto($("#ccontr").val())){
+      mensaje += "La contraseña no está bien escrita.<br>";
+      valido = false;
+    }else if($("#ncontr").val()!=$("#ccontr").val()){
+      mensaje += "Las contraseñas no coinciden.<br>";
+      valido = false;
+    }
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+  
+
+  /* fin validación de formulario */
 }
 
 /* fin perfil empresa */
@@ -622,6 +838,30 @@ var table = cargarTabla('#respuestos');
 var elementosidm = new Array();
 var elementosfunc = new Array();
 function fichapuestos(){
+
+  /* validar formularios */
+  $("#guardarpuesto").on("click",function(){
+    var mensaje = "";
+    var valido = true;
+
+
+    if(!validarTextoEspacios($("#titpuesto").val())){
+      mensaje += "El título del puesto no está bien escrito.<br>";
+      valido = false;
+    }
+
+    
+
+    if(!valido){
+      mensajeModal(mensaje);
+    }
+
+    return valido;
+
+  });
+
+
+  /* fin validar formularios */
 
   /** Opcion requisitos **/
   //elementosreq = new Array();
@@ -691,7 +931,7 @@ function fichaem(){
 
 /* interesados */
 function interesados(){
-    var btnex = document.getElementById("ageex");
+  var btnex = document.getElementById("ageex");
   btnex.addEventListener("click", function(){
     elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3","etiquetas");
     //console.log(ele);

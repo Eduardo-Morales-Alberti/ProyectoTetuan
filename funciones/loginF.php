@@ -20,24 +20,33 @@ class loginBBDD extends singleton{
 				$result = $consulta->fetch();	
 			}
 
-			if(!isset($result["mensaje"])){
+			if(isset($result["resultado"])){
+				if($result["resultado"]){
+					/*$_SESSION["mensajeServidor"] = $result["mensaje"];*/
+					/*$_SESSION["login"] = true;*/
+					$_SESSION["usuario"] = new Usuario($_POST['mail'],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
+					/*print_r($_SESSION);*/
+					header("location: dashboard.php");
+				}else{
+					session_destroy();
+					session_start();
+					$_SESSION["mensajeServidor"] = $result["mensaje"];
+				}
 
-
-				$_SESSION["usuario"] = new Usuario($_POST['mail'],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
+				
 
 				/*$_SESSION["email"] = $_POST['mail'];
 				$_SESSION["nombre"] = $result["nombre"];
 				$_SESSION["identificador"] = $result["identificador"];
 				$_SESSION["tipo"] = $result["tipo_usuario"];*/
-				$_SESSION["mensajeServidor"] = "Usuario correcto";
-				header("location: dashboard.php");
+				
 
 			}else{
 				session_destroy();
 				session_start();
-				$_SESSION["mensajeServidor"] = "Usuario o Contraseña incorrectos";
+				$_SESSION["mensajeServidor"] = "No se ha obtenido respuesta";
 
-			}    
+			}      
 		}/*else{
 			session_destroy();
 			session_start();

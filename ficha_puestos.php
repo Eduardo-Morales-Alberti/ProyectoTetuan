@@ -44,7 +44,7 @@ ob_start();
         </div>-->
         <div class="col-md-6">
             <div class="form-group">
-                <label>Título del puesto</label>
+                <label for="titpuesto">Título del puesto</label>
                 <input type="text" class="form-control " id="titpuesto" name="titpuesto" value="<?php if(isset($puesto["nombre"])){echo $puesto["nombre"];}?>" >
             </div>
         </div>
@@ -52,7 +52,7 @@ ob_start();
     <div class="row">-->
         <div class="col-md-6">
             <div class="form-group">
-                <label>Provincia</label>
+                <label for="provincia">Provincia</label>
                 <select class="form-control" name="provincia">
                     <?php if(isset($puesto["idprov"])){$generacl->listarProvincias($puesto["idprov"]);}?>
                     <?php echo $generacl->provinciasSELECT;?>
@@ -63,8 +63,8 @@ ob_start();
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label>Descripción del puesto</label><br>
-                <textarea class="form-control" rows="5" name="descpuesto"><?php if(isset($puesto["descripcion"])){echo $puesto["descripcion"];}?></textarea>
+                <label for="descpuesto">Descripción del puesto</label><br>
+                <textarea class="form-control" rows="5" id="descpuesto" required name="descpuesto"><?php if(isset($puesto["descripcion"])){echo $puesto["descripcion"];}?></textarea>
             </div>
         </div>
     </div>
@@ -275,7 +275,7 @@ ob_start();
         }
         ?>
         <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
-        <input type="submit" class="btn btn-green" name="guardarpuesto" value="Guardar puesto">
+        <input type="submit" class="btn btn-green" name="guardarpuesto" id="guardarpuesto" value="Guardar puesto">
 
     </div>
 </div>

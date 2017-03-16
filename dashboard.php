@@ -5,7 +5,7 @@ session_start();
 if(!isset($_SESSION["usuario"])){
     header("location:login.php");
 }
-
+/*print_r($_SESSION);*/
 ob_start();
 ?>
 <h1 style="text-align: center; color: #060349"><b>Bienvenido a Tetuán Jobs</b>
@@ -40,7 +40,7 @@ ob_start();
         <!-- Fin de Perfil -->
         <!-- Búsqueda -->
         <div class="panel sinborde col-md-6" id="panel-anim-zoomOut1">
-            <a href="busqueda_estudiante.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
+            <a href="busqueda_ofertas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut1">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
@@ -62,7 +62,7 @@ ob_start();
         ?>  
         <!-- Usuarios -->
         <div class="panel sinborde col-md-6" id="panel-anim-zoomOut2">
-            <a href="filtro_usuarios.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut2"> 
+            <a href="gestion_estudiantes.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut2"> 
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">
@@ -78,7 +78,7 @@ ob_start();
         <!-- Fin de Usuarios-->
         <!-- Empresas -->
         <div class="panel sinborde col-md-6" id="panel-anim-zoomOut3">
-            <a href="filtro_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut3">
+            <a href="gestion_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut3">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel widget">

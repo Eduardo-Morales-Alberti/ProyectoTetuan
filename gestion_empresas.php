@@ -25,7 +25,7 @@ $page["js"] = ob_get_clean();
 
 ob_start();
 ?>
-<h1 >Filtro de empresas
+<h1 >Gestión de empresas
 </h1>
 <!-- Panel resultados -->
 
