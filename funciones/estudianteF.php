@@ -379,7 +379,7 @@ class estudianteBBDD extends singleton{
 				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12 && $_POST["f1mes"] <= date("n",$t)){
 					$mes = $_POST["f1mes"];
 				}
-							
+
 				$anio = date("Y",$t);
 
 				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
@@ -399,7 +399,7 @@ class estudianteBBDD extends singleton{
 				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12&& $_POST["f2mes"] <= date("n",$t)){
 					$mes = $_POST["f2mes"];
 				}
-								
+
 				$anio = date("Y",$t);
 
 				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
@@ -1512,21 +1512,24 @@ class estudianteBBDD extends singleton{
 				}
 				break;
 				case '2':
-					if(strlen($condicion)>0){
-						$condicion .= " and publicacion > date_sub(curdate(), interval 1 week)";
-					}else{
-						$condicion = " where publicacion > date_sub(curdate(), interval 1 week)";
-					}
+				if(strlen($condicion)>0){
+					$condicion .= " and publicacion > date_sub(curdate(), interval 1 week)";
+				}else{
+					$condicion = " where publicacion > date_sub(curdate(), interval 1 week)";
+				}
 				break;
 				case '3':
-					if(strlen($condicion)>0){
-						$condicion .= " and publicacion > date_sub(curdate(), interval 1 month)";
-					}else{
-						$condicion = " where publicacion > date_sub(curdate(), interval 1 month)";
-					}
+				if(strlen($condicion)>0){
+					$condicion .= " and publicacion > date_sub(curdate(), interval 1 month)";
+				}else{
+					$condicion = " where publicacion > date_sub(curdate(), interval 1 month)";
+				}
 				break;
 			}
 		}
+
+
+
 
 				/*if(isset($_POST["etiquetas"])){
 					if(strlen($condicion)>0){
@@ -1601,7 +1604,33 @@ class estudianteBBDD extends singleton{
 							$aplicado = true;
 						}
 
-						if($existe){
+						$mostrar = false;
+
+						if(isset($_POST["estadop"])){
+							switch ($_POST["estadop"]) {
+								case 1:
+									if($aplicado){
+										$mostrar = true;
+									}else{
+										$mostrar = false;
+									}
+									break;
+								case 2:
+									if($aplicado){
+										$mostrar = false;
+									}else{
+										$mostrar = true;
+									}
+									break;								
+								default:
+									$mostrar = true;
+									break;
+							}
+						}else{
+							$mostrar = true;
+						}
+
+						if($existe&& $mostrar){
 
 							/*array_push($nombres, $puestosfilas[$i]["nombre"]);*/
 							?>

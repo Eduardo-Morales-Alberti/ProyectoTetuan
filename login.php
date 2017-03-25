@@ -8,14 +8,57 @@ session_start();
 if(isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
+
+
+
 //singleton::singleton();
 $logincl = new loginBBDD;
-$logincl->entrar();
-$logincl->nvContrEmail();
-$logincl->nvEstudiante();
-$logincl->nvEmpresa();
+
+
+/* Tokens para asegurar la integridad de los formularios */
+
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+  
+    $token = $_POST["token"];
+
+    if(isset($_POST["entrar"])){
+        if($logincl->comprobarToken("entrar", $token)){
+            $logincl->entrar();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["recordar"])){
+        if($logincl->comprobarToken("recordar", $token)){
+            $logincl->nvContrEmail();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["registrar"])){
+        if($logincl->comprobarToken("registrar", $token)){
+            $logincl->nvEstudiante();
+            $logincl->nvEmpresa();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }
+
+
+}
+
+/* Fin Tokens para asegurar la integridad de los formularios */
+
+
+
 $logincl->logOut();
 $logincl->confirmarCuenta();
+
+
 
 ?>
 
@@ -85,6 +128,7 @@ $logincl->confirmarCuenta();
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <form class="mb-lg" method="post">
+                                        <input type="hidden" name="token" value="<?php echo $logincl->generarToken('entrar');?>">
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
                                             <input id="mail" name="mail" type="email" placeholder="Email" class="form-control" required="required" />
@@ -109,6 +153,7 @@ $logincl->confirmarCuenta();
                             <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <form method="post">
+                                        <input type="hidden" name="token" value="<?php echo $logincl->generarToken('recordar');?>">
                                         <p class="text-center"><i>Escriba su email para establecer una nueva contraseña.</i></p>
                                         <div class="form-group has-feedback">
                                             <label for="mail">Email</label>
@@ -130,6 +175,7 @@ $logincl->confirmarCuenta();
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <form id="registro" method="post">
+                                        <input type="hidden" name="token" value="<?php echo $logincl->generarToken('registrar');?>">
                                         <div class="form-group ">
                                             <label for="tipo">Tipo de usuario</label><br>
                                             <select id="tipo" name="tipo" class="form-control">

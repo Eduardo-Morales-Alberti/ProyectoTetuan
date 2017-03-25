@@ -163,6 +163,19 @@ ob_start();?>
             </div>
         </div>		
     </div>	
+    <div class="row">
+         <div class="col-md-6">
+            <div class="form-group">
+                <label>Estado del puesto</label>
+                <select class="form-control" name="estadop" id="estadop" >
+                    <!--<option disabled selected value='nada'> -- Selecciona una opción -- </option>-->
+                    <option value="" selected>Indiferente</option>
+                    <option value="1">Aplicado</option>
+                    <option value="2">No aplicado</option>                  
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="panel-footer">
     <div class="row">
@@ -250,10 +263,20 @@ if(isset($_SESSION["etiquetas"])){
 ?>
 busquedaofer();
 <?php if(isset($_POST["antiguedad"])){ 
-    echo "";
+
     ?>
 
     $("#antiguedad").val(<?php echo $_POST["antiguedad"];?>);
+    <?php
+}
+?>
+
+<?php if(isset($_POST["estadop"])){ 
+
+    ?>
+
+
+    $("#estadop").val(<?php if(isset($_POST['estadop'])) echo $_POST['estadop'] ?>);
     <?php
 }
 ?>
