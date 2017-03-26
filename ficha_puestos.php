@@ -4,14 +4,29 @@ include_once("funciones/generalF.php");
 include_once("funciones/empresaF.php");
 session_start();
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }
 
 $generacl = new General;
 $empresacl = new empresaBBDD;
-$empresacl->agregarPuesto();
+
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+
+    if($empresacl->comprobarToken("fichpuesto", $token)){
+        $empresacl->agregarPuesto();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
+$idtoken = $empresacl->generarToken('fichpuesto');
+
+
+/**$empresacl->agregarPuesto();*/
 $empresacl->cancelarPuesto();
 $puesto = $empresacl->listarInformacionPuesto();
 //print_r($puesto);
@@ -267,6 +282,7 @@ ob_start();
 <div class="panel-footer <?php  /*if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} */?>">
     <div class="row">
      <div class="col-md-12 text-right">
+        <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
         <?php 
         if(isset($_SESSION["idpst"])){
             echo '<input type="submit" class="btn btn-danger" name="cancelarpuesto" value="Cancelar">';

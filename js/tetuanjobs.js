@@ -685,7 +685,8 @@ function busquedaofer(){
       
       var xhr = $.post( "funciones/estudianteF.php", 
         { aplicar: $(this).children("input[name='aplicar']").eq(0).val(), 
-        idpuesto:  $(this).children("input[name='idpuesto']").eq(0).val() } );
+        idpuesto:  $(this).children("input[name='idpuesto']").eq(0).val(),
+        token:  $(this).children("input[name='token']").eq(0).val()} );
 
       xhr.done(function( data ) {
         //alert(data);
@@ -694,7 +695,8 @@ function busquedaofer(){
           mensajeModal("Ha seleccionado el puesto correctamente");
         }else{
           input.removeAttr( "disabled");
-          mensajeModal("No ha podido aplicar al puesto");
+          /*mensajeModal("No ha podido aplicar al puesto");*/
+          mensajeModal(data);
         }
 
       }).fail(function() {
@@ -725,11 +727,13 @@ function filtrous(){
   $("#agreet").click(function(){
     $(this).prop( "disabled", true );
     var etiqueta = $("#inputetiq").val();
+    var valtoken = $("#tokenetq").val();
     $("#inputetiq").val("");
 
     var xhr = $.post( "funciones/adminF.php", 
       { agreet: "agregar", 
-      inputetiq:  etiqueta } );
+      inputetiq:  etiqueta,
+      token: valtoken } );
 
     xhr.done(function( data ) {
         //alert(data);
@@ -762,11 +766,13 @@ function filtrous(){
 $("#agreidm").click(function(){
   $(this).prop( "disabled", true );
   var idioma = $("#inputidm").val();
+  var valtoken = $("#tokenidm").val();
   $("#inputidm").val("");
 
   var xhr = $.post( "funciones/adminF.php", 
     { agreidm: "agregar", 
-    inputidm:  idioma } );
+    inputidm:  idioma,
+    token:valtoken } );
 
   xhr.done(function( data ) {
         //alert(data);

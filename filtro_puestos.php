@@ -4,7 +4,7 @@ include_once("funciones/generalF.php");
 session_start();
 
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }
@@ -12,7 +12,21 @@ if(!isset($_SESSION["usuario"])){
 $generacl = new General;
 include_once("funciones/empresaF.php");
 $empresacl = new empresaBBDD;
-$empresacl->eliminarPuestos();
+
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+
+    if($empresacl->comprobarToken("filtro", $token)){
+        $empresacl->eliminarPuestos();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
+$idtoken = $empresacl->generarToken('filtropuesto');
+
+/**$empresacl->eliminarPuestos();*/
 $empresacl->modificarPuesto();
 
 
@@ -58,6 +72,7 @@ ob_start();
     <div class="panel-footer">
         <div class="row">
             <div class="col-md-12 text-right">
+                <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
                 <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                 <input type="submit" class="btn btn-danger" name="eliminarpst" value="Eliminar selección">
                 

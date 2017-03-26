@@ -56,7 +56,7 @@ class singleton {
 
    		// escribir la información del token en sesión para poder
    		// comprobar su validez cuando se reciba un token desde un formulario
-		$_SESSION['tokens'][$form.'_token'] = array('token'=>$token, 'time'=>$token_time);; 
+		$_SESSION['tokens'][$form.'_token'] = array('token'=>$token, 'time'=>$token_time);
 
 		return $token;
 	}
@@ -65,7 +65,7 @@ class singleton {
 
 	/* funcion comprobar token */
 
-	function comprobarToken($form, $token, $delta_time=30) {
+	function comprobarToken($form, $token, $delta_time=60) {
 
    // comprueba si hay un token registrado en sesión para el formulario
 		if(!isset($_SESSION['tokens'][$form.'_token'])) {

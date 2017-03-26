@@ -6,7 +6,7 @@ include_once("funciones/generalF.php");
 session_start();
 
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "administrador"){
     header("location:dashboard.php");
 }
@@ -14,11 +14,29 @@ if(!isset($_SESSION["usuario"])){
 include_once("funciones/adminF.php");
 
 $adminclass = new adminBBDD;
-$adminclass->cambiarEstadoEst();
-$adminclass->eliminarUsuarios();
+
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+    if($adminclass->comprobarToken("gestest", $token)){
+        $adminclass->cambiarEstadoEst();
+        $adminclass->eliminarUsuarios();
+        $adminclass->eliminarEtiquetas();
+        $adminclass->eliminarIdiomas();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
+
+
+/**$adminclass->cambiarEstadoEst();
+$adminclass->eliminarUsuarios();*/
 /*$adminclass->agregarEtiqueta();*/
-$adminclass->eliminarEtiquetas();
-$adminclass->eliminarIdiomas();
+/**$adminclass->eliminarEtiquetas();
+$adminclass->eliminarIdiomas();*/
+
+$idtoken = $adminclass->generarToken('gestest');
 
 ob_start();?>
 <script type="text/javascript">
@@ -41,7 +59,7 @@ ob_start();
         </div>
         <div class="panel-body">
             <table id="resultado" class="display t-responsive" cellspacing="0" width="100%">
-             <thead>
+               <thead>
                 <tr>
                     <th>Seleccionar</th>
                     <th>Email</th>
@@ -73,6 +91,7 @@ ob_start();
     <div class="panel-footer">
         <div class="row">
             <div class="col-md-12 text-right">
+                <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
                 <input type="submit" class="btn btn-danger" name="eliminarus" value="Eliminar selección">
                 <input type="submit" class="btn btn-green" name="cambiarest" value="Cambiar estado">
             </div>
@@ -92,13 +111,14 @@ ob_start();
             </h4> 
         </div>
         <div class="panel-body">
-           <div class="row">
+         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Agregar una nueva etiqueta</label> 
                     <div class="input-group">
                         <input type="text" class="form-control" id="inputetiq" name="inputetiq" placeholder="etiqueta">
                         <span class="input-group-btn">
+                            <input type="hidden" name="token" id="tokenetq" value="<?php echo $idtoken;?>">  
                             <input class="btn btn-success" id="agreet" name="agreet" type="button"  value="Agregar etiqueta">
                         </span>
                     </div>                           
@@ -144,6 +164,7 @@ ob_start();
             <div class="input-group">
                 <input type="text" class="form-control" id="inputidm" name="inputidm" placeholder="idioma">
                 <span class="input-group-btn">
+                    <input type="hidden" name="token" id="tokenidm" value="<?php echo $idtoken;?>">  
                     <input class="btn btn-success" id="agreidm" name="agreidm" type="button"  value="Agregar idioma">
                 </span>
             </div>                           

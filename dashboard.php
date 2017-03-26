@@ -3,7 +3,7 @@ $page["nombrePag"] = "Dashboard";
 include_once("funciones/generalF.php");
 session_start();
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }
 /*print_r($_SESSION);*/
 ob_start();

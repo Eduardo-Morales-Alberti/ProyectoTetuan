@@ -4,7 +4,7 @@ include_once("funciones/generalF.php");
 session_start();
 
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }

@@ -142,7 +142,7 @@ class loginBBDD extends singleton{
 
 							
 							$_SESSION["mensajeServidor"] = "No se ha podido restablecer la contraseña, error en la consulta";
-							header("location:login.php");
+							header("location:index.php");
 
 						}
 
@@ -150,7 +150,7 @@ class loginBBDD extends singleton{
 					}else{
 
 						$_SESSION["mensajeServidor"] = "No se ha podido restablecer la contraseña, no se ha obtenido resultado";
-						header("location:login.php");
+						header("location:index.php");
 
 					}
 
@@ -181,13 +181,13 @@ class loginBBDD extends singleton{
 					}else{
 
 						session_destroy();
-						header("location:login.php");
+						header("location:index.php");
 
 					}
 				}else{
 
 					session_destroy();
-					header("location:login.php");
+					header("location:index.php");
 
 				}
 			}
@@ -195,7 +195,7 @@ class loginBBDD extends singleton{
 		}else{
 
 			session_destroy();
-			header("location:login.php");			
+			header("location:index.php");			
 
 		}
 
@@ -227,7 +227,7 @@ class loginBBDD extends singleton{
 			$_SESSION["mensajeServidor"] = $result["mensaje"]."<br> Recibirá un correo para confirmar la cuenta.";
 
 			$mensaje = "Para confirmar su cuenta vaya al siguiente enlace 
-			<a href='http://localhost/proyectofinal/login.php?confirmar=true&email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
+			<a href='http://localhost/proyectofinal/index.php?confirmar=true&email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
 			Confirmar</a>";
 			$enviado = General::enviarEmail(array($_POST['mail']),"Confirmar cuenta", $mensaje);
 

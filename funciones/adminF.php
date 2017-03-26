@@ -113,26 +113,45 @@ class adminBBDD extends singleton{
 	/** función agregar nueva etiqueta **/
 	function agregarEtiqueta(){
 		if(isset($_POST["agreet"])&&isset($_POST["inputetiq"])){
-			$mensaje = "";
-			$res = false;
-			$sql = "call agregarEtiqueta(?,?)";
-			$etiqueta = $this->limpiar($_POST["inputetiq"]);
-			$consulta = $this->Idb->prepare($sql);
+
 			include_once("generalF.php");
 			session_start();
-			$consulta->execute(array($_SESSION["usuario"]->identificador,$etiqueta));
-			if($row = $consulta->fetch()){
-				if($row["resultado"]){
-					$mensaje =  "Etiqueta ".$etiqueta." agregada correctamente.";
-					$res = true;
+
+			if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
+				$token = $_POST["token"];
+
+				if($this->comprobarToken("gestest", $token)){	
+
+
+					$mensaje = "";
+					$res = false;
+					$sql = "call agregarEtiqueta(?,?)";
+					$etiqueta = $this->limpiar($_POST["inputetiq"]);
+					$consulta = $this->Idb->prepare($sql);
+
+					$consulta->execute(array($_SESSION["usuario"]->identificador,$etiqueta));
+					if($row = $consulta->fetch()){
+						if($row["resultado"]){
+							$mensaje =  "Etiqueta ".$etiqueta." agregada correctamente.";
+							$res = true;
+						}else{
+							$mensaje = "No se ha podido agregar la etiqueta.";
+						}
+					}else{
+						$mensaje = "No se ha recibido respuesta.";
+					}
+
+					echo json_encode(array("mensaje"=>$mensaje, "resultado"=>$res));
+
 				}else{
-					$mensaje = "No se ha podido agregar la etiqueta.";
+					echo json_encode(array("mensaje"=>"El token no es válido"));
 				}
+
 			}else{
-				$mensaje = "No se ha recibido respuesta.";
+				echo json_encode(array("mensaje"=>"No hay token disponible"));
 			}
 
-			echo json_encode(array("mensaje"=>$mensaje, "resultado"=>$res));
+
 		}
 	}
 
@@ -146,9 +165,9 @@ class adminBBDD extends singleton{
 			for ($i=0; $i < count($_POST["etiquetasel"]); $i++) { 
 				$sql = "call eliminarEtiqueta(?,?)";			
 				$consulta = $this->Idb->prepare($sql);
-				
+
 				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["etiquetasel"][$i]));
-				
+
 				$consulta->setFetchMode(PDO::FETCH_ASSOC);
 				if($row = $consulta->fetch()){
 					if($row["resultado"]){
@@ -162,7 +181,7 @@ class adminBBDD extends singleton{
 			}
 
 			$_SESSION["mensajeServidor"] = $mensaje;
-			
+
 		}
 	}
 
@@ -170,7 +189,7 @@ class adminBBDD extends singleton{
 
 	/** FUNCIÓN LISTAR Idiomas**/
 	function listarIdiomas(){
-		
+
 		$sql = "select * from listarIdiomas";
 		$consulta = $this->Idb->prepare($sql);
 		$consulta->execute();
@@ -201,27 +220,41 @@ class adminBBDD extends singleton{
 	/** función agregar nuevo idioma **/
 	function agregarIdioma(){
 		if(isset($_POST["agreidm"])&&isset($_POST["inputidm"])){
-			$mensaje = "";
-			$res = false;
-			$sql = "call agregarIdioma(?,?)";
-			$idioma = $this->limpiar($_POST["inputidm"]);
-			$consulta = $this->Idb->prepare($sql);
 			include_once("generalF.php");
 			session_start();
-			$consulta->execute(array($_SESSION["usuario"]->identificador,$idioma));
-			if($row = $consulta->fetch()){
-				if($row["resultado"]){
-					$mensaje =  "Idioma ".$idioma." agregado correctamente.";
-					$res = true;
-				}else{
-					$mensaje = "No se ha podido agregar el idioma.";
-				}
-			}else{
-				$mensaje = "No se ha recibido respuesta.";
-			}
 
-			echo json_encode(array("mensaje"=>$mensaje, "resultado"=>$res));
+			if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
+				$token = $_POST["token"];
+
+				if($this->comprobarToken("gestest", $token)){	
+
+
+					$mensaje = "";
+					$res = false;
+					$sql = "call agregarIdioma(?,?)";
+					$idioma = $this->limpiar($_POST["inputidm"]);
+					$consulta = $this->Idb->prepare($sql);
+
+					$consulta->execute(array($_SESSION["usuario"]->identificador,$idioma));
+					if($row = $consulta->fetch()){
+						if($row["resultado"]){
+							$mensaje =  "Idioma ".$idioma." agregado correctamente.";
+							$res = true;
+						}else{
+							$mensaje = "No se ha podido agregar el idioma.";
+						}
+					}else{
+						$mensaje = "No se ha recibido respuesta.";
+					}
+
+					echo json_encode(array("mensaje"=>$mensaje, "resultado"=>$res));
+				}
+			}
 		}
+
+
+
+
 	}
 
 	/* Fin función agregar nuevo idioma */
@@ -234,9 +267,9 @@ class adminBBDD extends singleton{
 			for ($i=0; $i < count($_POST["idiomasel"]); $i++) { 
 				$sql = "call eliminarIdioma(?,?)";			
 				$consulta = $this->Idb->prepare($sql);
-				
+
 				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idiomasel"][$i]));
-				
+
 				$consulta->setFetchMode(PDO::FETCH_ASSOC);
 				if($row = $consulta->fetch()){
 					if($row["resultado"]){
@@ -250,7 +283,7 @@ class adminBBDD extends singleton{
 			}
 
 			$_SESSION["mensajeServidor"] = $mensaje;
-			
+
 		}
 	}
 
@@ -273,7 +306,7 @@ class adminBBDD extends singleton{
 		while ($row = $consulta->fetch()) {
 			$empresas[] = $row;
 		}
-		
+
 
 		for ($i=0; $i < count($empresas); $i++) { 
 			echo "<tr>";
@@ -334,7 +367,7 @@ class adminBBDD extends singleton{
 				}
 
 
-				
+
 
 			}	
 		}

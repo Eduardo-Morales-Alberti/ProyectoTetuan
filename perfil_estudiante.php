@@ -4,14 +4,26 @@ include_once("funciones/generalF.php");
 session_start();
 include_once('funciones/estudianteF.php');
 /*$estudiantecl = new estudianteBBDD;*/
-$estudiantecl->eliminarUsuario();
+/*$estudiantecl->eliminarUsuario();*/
+
+if(isset($_POST["elusuario"])&&isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+    if($estudiantecl->comprobarToken("elusuario", $token)){
+        $estudiantecl->eliminarUsuario();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
 
 
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "estudiante"){
     header("location:dashboard.php");
 }
+
 /**$page tendrá el resto del contenido que se mostrará en el cuerpo**/
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Perfil";
@@ -19,20 +31,109 @@ $page["nombrePag"] = "Perfil";
 
 $generacl = new General;
 
-$estudiantecl->cambiarContr();
-$estudiantecl->modificarinfo();
-$informacion = $estudiantecl->listarInformacion();
-$estudiantecl->nuevaExperiencia();
-$estudiantecl->nuevaFormacion();
-$estudiantecl->nuevoIdioma();
-$estudiantecl->eliminarExperiencia();
-$estudiantecl->eliminarEducacion();
-$estudiantecl->eliminarIdioma();
-$estudiantecl->modificarIdioma();
-$estudiantecl->modificarFormacion();
-$estudiantecl->modalModificarExperiencia();
-$estudiantecl->modificarExperiencia();
-$estudiantecl->agregarSkills();
+/* Tokens para asegurar la integridad de los formularios */
+
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+
+    $token = $_POST["token"];
+
+    if(isset($_POST["nuevaexp"])){
+        if($estudiantecl->comprobarToken("nuevaexp", $token)){
+            $estudiantecl->nuevaExperiencia();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["nuevaform"])){
+        if($estudiantecl->comprobarToken("nuevaform", $token)){
+            $estudiantecl->nuevaFormacion();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["nuevoidioma"])){
+        if($estudiantecl->comprobarToken("nuevoidioma", $token)){
+            $estudiantecl->nuevoIdioma();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["guardarinfo"])){
+        if($estudiantecl->comprobarToken("guardarinfo", $token)){
+            $estudiantecl->modificarinfo();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["modcontr"])){
+        if($estudiantecl->comprobarToken("modcontr", $token)){
+            $estudiantecl->cambiarContr();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["guardarskills"])){
+        if($estudiantecl->comprobarToken("guardarskills", $token)){
+            $estudiantecl->agregarSkills();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["elimexp"])||isset($_POST["modmexp"])){
+        if($estudiantecl->comprobarToken("modmexp", $token)){
+            $estudiantecl->eliminarExperiencia();
+            $estudiantecl->modificarExperiencia();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["elimedc"])||isset($_POST["modmedc"])){
+        if($estudiantecl->comprobarToken("modmedc", $token)){
+            $estudiantecl->eliminarEducacion();
+            $estudiantecl->modificarFormacion();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }elseif(isset($_POST["elimidio"])||isset($_POST["modidio"])){
+        if($estudiantecl->comprobarToken("modidio", $token)){
+            $estudiantecl->eliminarIdioma();
+            $estudiantecl->modificarIdioma();
+        }else{
+            $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+            "Recargue la página y vuelva a intentarlo";
+        }
+
+    }
+
+
+
+}
+
+/* Fin Tokens para asegurar la integridad de los formularios */
+
+
+/**$estudiantecl->cambiarContr();*/
+/**$estudiantecl->modificarinfo();*/
+/**$estudiantecl->nuevaExperiencia();*/
+/**$estudiantecl->nuevaFormacion();*/
+/**$estudiantecl->nuevoIdioma();*/
+/**$estudiantecl->eliminarExperiencia();*/
+/**$estudiantecl->eliminarEducacion();*/
+/**$estudiantecl->eliminarIdioma();*/
+/**$estudiantecl->modificarIdioma();*/
+/**$estudiantecl->modificarFormacion();*/
+
+/**$estudiantecl->modificarExperiencia();*/
+/**$estudiantecl->agregarSkills();*/
 
 //print_r($informacion);
 //print_r($_SESSION["usuario"]);
@@ -42,15 +143,21 @@ $estudiantecl->agregarSkills();
 
 
 
-/*Modal experiencia*/
+
 /** Abro un buffer para alamacenar el html en el buffer**/
-ob_start();?>
-<!-- Función para modificar através de modales -->
+ob_start();
 
-<?php $estudiantecl->modalModificarIdioma(); ?>
+/* Función para modificar através de modales */
 
-<?php $estudiantecl->modalModificarEducacion(); ?>
+$estudiantecl->modalModificarExperiencia();
 
+$estudiantecl->modalModificarIdioma(); 
+
+$estudiantecl->modalModificarEducacion(); 
+
+?>
+
+<!--Modal experiencia-->
 <!-- El id es importante en el modal porque através del atributo data-target="iddelmodal" con un botón
     lo vamos a invocar -->
     <form method="post">
@@ -138,7 +245,8 @@ ob_start();?>
                     </div>
                 </div>
                 <!-- Este es el pie del modal -->
-                <div class="modal-footer">                    
+                <div class="modal-footer">  
+                    <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('nuevaexp');?>">                  
                     <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                     <input type="submit" name="nuevaexp" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
@@ -228,7 +336,7 @@ ob_start();
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nivel</label><br>
-                                <select class="conborde" name="nivel">
+                                <select class="conborde" name="nivel" required>
                                    <!--<option value="1">Fp básica</option>
                                     <option value="2">Grado medio</option>
                                     <option value="3">Bachillerato</option>
@@ -252,6 +360,7 @@ ob_start();
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('nuevaform');?>">  
                     <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                     <input type="submit" name="nuevaform" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
@@ -283,7 +392,7 @@ ob_start();
 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Idioma</label>
                                 <select name="idioma" class="form-control" required>
@@ -292,10 +401,11 @@ ob_start();
                             </div>    
                         </div>                     
 
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-xs-6 col-md-4">
                             <div class="form-group">
                                 <label>Hablado</label>
-                                <select name="nvh" class="form-control " >
+                                <select name="nvh" class="form-control " required>
+                                    <option disabled selected value=''> -- Selecciona una opción -- </option>
                                     <option value="1">Bajo</option>
                                     <option value="2">Intermedio</option>
                                     <option value="3">Alto</option>
@@ -303,10 +413,11 @@ ob_start();
                                 </select>
                             </div>    
                         </div>  
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-xs-6 col-md-4">
                             <div class="form-group">
                                 <label>Escrito</label>
-                                <select name="nve" class="form-control ">
+                                <select name="nve" class="form-control " required>
+                                    <option disabled selected value=''> -- Selecciona una opción -- </option>
                                     <option value="1">Bajo</option>
                                     <option value="2">Intermedio</option>
                                     <option value="3">Alto</option>
@@ -317,6 +428,7 @@ ob_start();
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('nuevoidioma');?>">                      
                     <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                     <input type="submit" name="nuevoidioma" class="btn btn-green" value="Guardar">
                     <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancelar">
@@ -332,6 +444,7 @@ $page["modal"][2] = ob_get_clean();
 /* Fin Modal idioma */
 
 ob_start();
+$informacion = $estudiantecl->listarInformacion();
 ?>
 
 <h1>Perfil</h1>
@@ -359,7 +472,7 @@ ob_start();
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
+                        <input type="text" class="form-control" id="telefono" minlength="9" maxlength="9" size="9" name="telefono" value="<?php if(isset($informacion["telefono"])){echo $informacion["telefono"];}?>" >
                     </div>
                 </div>                   
             </div>
@@ -386,7 +499,7 @@ ob_start();
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Código Postal</label>
-                            <input type="text" class="form-control" id="cpostal"  maxlength="5" size="5" name="cpostal" value="<?php if(isset($informacion["cod_postal"])){echo $informacion["cod_postal"];}?>" >
+                            <input type="text" class="form-control" id="cpostal" minlength="5"  maxlength="5" size="5" name="cpostal" value="<?php if(isset($informacion["cod_postal"])){echo $informacion["cod_postal"];}?>" >
                         </div>
                     </div>
                 </div>
@@ -440,6 +553,7 @@ ob_start();
                 <div class="panel-footer collapse in collinfo" >
                     <div class="row">
                         <div class="col-md-12 text-right">
+                            <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('guardarinfo');?>">                  
                             <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                             <input type="submit" id="guardar" name="guardarinfo" value="Guardar" class="btn btn-green">
                         </div>
@@ -461,19 +575,19 @@ ob_start();
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Contraseña actual</label>
-                                <input type="password" class="form-control"  name="contr" value="" required="required" >
+                                <input type="password" class="form-control"  name="contr" id="contr" value="" required="required" >
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Nueva contraseña</label>
-                                <input type="password" class="form-control" name="ncontr" value="" required="required">
+                                <input type="password" class="form-control" name="ncontr" id="ncontr" value="" required="required">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Confirma la contraseña</label>
-                                <input type="password" class="form-control"  name="ccontr" value="" required="required">
+                                <input type="password" class="form-control"  name="ccontr" id="ccontr" value="" required="required">
                             </div>
                         </div>
                     </div>
@@ -481,7 +595,8 @@ ob_start();
                 <div class="panel-footer collapse collcontr">
                     <div class="row">
                         <div class="col-md-12 text-right">
-                            <input type="submit" name="modcontr" class="btn btn-green" value="Renovar">
+                            <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('modcontr');?>">                  
+                            <input type="submit" name="modcontr" id="modcontr" class="btn btn-green" value="Renovar">
                         </div>
                     </div>
                 </div>
@@ -540,7 +655,7 @@ ob_start();
                                 <label>Etiquetas</label>
                                 <div class="input-group">
                                     <select class="form-control" id="etiquetas" name="etiqueta">
-                                     
+
                                         <?php /*echo $generacl->listarEtiquetas();*/
                                         echo $estudiantecl->listarSkillsSelect(); ?>
                                     </select>
@@ -591,6 +706,7 @@ ob_start();
     <div class="panel-footer collapse collskills">
         <div class="row">
             <div class="col-md-12 text-right">
+                <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('guardarskills');?>">  
                 <input type="button"  class="btn btn-danger" id="eliminarskills" name="eliminarskills" value="Eliminar selección">
                 <input type="submit"  class="btn btn-green" name="guardarskills" value="Guardar Skills">
             </div>
@@ -637,6 +753,7 @@ ob_start();
 <div class="panel panel-danger">
     <div class="panel-heading text-right">
         <form id="eliminarcuenta" method="post">
+            <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('elusuario');?>">  
             <input type="submit" name="elusuario" class="btn btn-danger" value="Eliminar cuenta">
         </form>
     </div>
@@ -650,7 +767,7 @@ $page["cuerpo"] = ob_get_clean();
 Se le llama en el cuerpo en las últimas líneas**/
 ob_start();?>
 <script type="text/javascript">
-perfil();
+perfilEstudiante();
 <?php 
 if(isset($_SESSION["etiquetas"])){
     echo 'agregarEtiquetas('.$_SESSION["etiquetas"].',elementosreq);';

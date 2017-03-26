@@ -5,11 +5,11 @@ session_start();
 include_once('funciones/empresaF.php');
 $empresacl = new empresaBBDD;
 
-$empresacl->eliminarUsuario();
+
 
 
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }
@@ -20,10 +20,29 @@ $page["nombrePag"] = "Perfil";
 
 $generacl = new General;
 
-$empresacl->cambiarContr();
-$empresacl->modificarinfo();
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+
+    if($empresacl->comprobarToken("perfilemp", $token)){
+        $empresacl->eliminarUsuario();
+        $empresacl->cambiarContr();
+        $empresacl->modificarinfo();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
+
+
+
+/**$empresacl->cambiarContr();
+$empresacl->modificarinfo();*/
+
+
 $informacion = $empresacl->listarInformacion();
 
+$idtoken = $empresacl->generarToken('perfilemp');
 
 
 
@@ -60,7 +79,7 @@ ob_start();
                     </div>
                 </div>                   
             </div>
-             <div class="row">
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="contacto">Persona de contacto</label>                        
@@ -73,13 +92,14 @@ ob_start();
                         <input type="text" class="form-control" id="web" name="web" placeholder="Web de la empresa" maxlength="50" value="<?php if(isset($informacion["web"])){echo $informacion["web"];}?>">
                     </div>
                 </div>
-                   
+
             </div>
 
         </div>
         <div class="panel-footer collapse in collinfo" >
             <div class="row">
                 <div class="col-md-12 text-right">
+                    <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
                     <input type="reset" class="btn btn-warning" name="limpiar" value="Limpiar">
                     <input type="submit" id="guardar" name="guardarinfo" value="Guardar" class="btn btn-green">
                 </div>
@@ -121,6 +141,7 @@ ob_start();
         <div class="panel-footer collapse collcontr">
             <div class="row">
                 <div class="col-md-12 text-right">
+                    <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
                     <input type="submit" id="modcontr" name="modcontr" class="btn btn-green" value="Renovar">
                 </div>
             </div>
@@ -136,6 +157,7 @@ ob_start();
 <div class="panel panel-danger">
     <div class="panel-heading text-right">
         <form id="eliminarcuenta" method="post">
+            <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
             <input type="submit" name="elusuario" class="btn btn-danger" value="Eliminar cuenta">
         </form>
     </div>

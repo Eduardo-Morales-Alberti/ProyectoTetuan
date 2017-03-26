@@ -5,7 +5,7 @@ class estudianteBBDD extends singleton{
 	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 
 	function __construct(){
-		parent::__construct();		
+		parent::__construct();
 	}
 
 	/** PERFIL ESTUDIANTE **/
@@ -238,7 +238,7 @@ class estudianteBBDD extends singleton{
 			session_destroy();
 			session_start();
 			$_SESSION["mensajeServidor"] = "Usuario eliminado correctamente";
-			header("location:login.php");
+			header("location:index.php");
 
 		}
 	}
@@ -538,8 +538,9 @@ class estudianteBBDD extends singleton{
 					</p>
 				</div>
 				<div class="col-md-12 pie-acciones">
-					<form method="post">
-						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"];?>">						
+					<form method="post">					
+						<input type="hidden" name="token" value="<?php echo parent::generarToken('modexp'); ?>">                  
+						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"]; ?>">						
 						<?php 
 						foreach ($experienciafilas[$i] as $clave => $valor) {
 							?>
@@ -854,6 +855,7 @@ class estudianteBBDD extends singleton{
 				</div>
 				<div class="col-md-12 pie-acciones">
 					<form method="post">
+						<input type="hidden" name="token" value="<?php echo parent::generarToken('modedc'); ?>">  
 						<input type="hidden" name="idedc" value="<?php echo $educacionfilas[$i]["identificador"];?>">
 						<?php 
 						foreach ($educacionfilas[$i] as $clave => $valor) {
@@ -1290,6 +1292,7 @@ class estudianteBBDD extends singleton{
 				</div>               
 				<div class="col-xs-12 pie-acciones">
 					<form method="post">
+						<input type="hidden" name="token" value="<?php echo parent::generarToken('modidio'); ?>">                  
 						<input type="hidden" name="ididio" value="<?php echo $idiomasfilas[$i]["identificador"];?>">
 						<?php 
 						foreach ($idiomasfilas[$i] as $valor) {
@@ -1609,22 +1612,22 @@ class estudianteBBDD extends singleton{
 						if(isset($_POST["estadop"])){
 							switch ($_POST["estadop"]) {
 								case 1:
-									if($aplicado){
-										$mostrar = true;
-									}else{
-										$mostrar = false;
-									}
-									break;
-								case 2:
-									if($aplicado){
-										$mostrar = false;
-									}else{
-										$mostrar = true;
-									}
-									break;								
-								default:
+								if($aplicado){
 									$mostrar = true;
-									break;
+								}else{
+									$mostrar = false;
+								}
+								break;
+								case 2:
+								if($aplicado){
+									$mostrar = false;
+								}else{
+									$mostrar = true;
+								}
+								break;								
+								default:
+								$mostrar = true;
+								break;
 							}
 						}else{
 							$mostrar = true;
@@ -1759,7 +1762,10 @@ class estudianteBBDD extends singleton{
 												if($aplicado){
 													echo '<input type="button" disabled value="Puesto ya aplicado" class="btn btn-success">';
 												}else{
-													echo '<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success">';
+													?>
+													<input type="hidden" name="token" value="<?php echo $this::generarToken("aplicar"); ?>">                  
+													<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success"> 
+													<?php
 												}
 												?>
 												
@@ -1813,23 +1819,40 @@ class estudianteBBDD extends singleton{
 
 		function aplicarPuesto(){
 			if(isset($_POST["aplicar"])&&isset($_POST["idpuesto"])){
-				$sql = "call aplicarPuesto(?,?)";
-				$consulta = $this->Idb->prepare($sql);
 				include_once("generalF.php");
 				session_start();
-				//echo "Usuario: ".$_SESSION["usuario"]->identificador." // Puesto: ".$_POST["idpuesto"];
-				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idpuesto"]));
-				$consulta->setFetchMode(PDO::FETCH_ASSOC);	
 
-				if($consulta->rowCount() > 0){
-					$row = $consulta->fetch();
-					if($row["resultado"]){
-						echo "correcto";
+				if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
+					$token = $_POST["token"];
+
+					if($this->comprobarToken("aplicar", $token)){	
+
+						$sql = "call aplicarPuesto(?,?)";
+						$consulta = $this->Idb->prepare($sql);
+
+				//echo "Usuario: ".$_SESSION["usuario"]->identificador." // Puesto: ".$_POST["idpuesto"];
+						$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idpuesto"]));
+						$consulta->setFetchMode(PDO::FETCH_ASSOC);	
+
+						if($consulta->rowCount() > 0){
+							$row = $consulta->fetch();
+							if($row["resultado"]){
+								echo "correcto";
+							}else{
+								echo "El resultado no ha sido correcto.";
+							}
+						}else{
+							echo "No se ha obtenido respuesta de la base de datos.";
+						}
+
 					}else{
-						echo "fallo";
+						echo "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+						"Recargue la página y vuelva a intentarlo";
 					}
+
 				}else{
-					echo "fallo";
+					echo "No hay tokens almacenados :";
+					print_r($_POST);
 				}
 			}
 		}
@@ -1842,7 +1865,7 @@ class estudianteBBDD extends singleton{
 
 
 	
-	$estudiantecl = new estudianteBBDD;
+	$estudiantecl = new estudianteBBDD();
 
 	$estudiantecl->aplicarPuesto();
 	

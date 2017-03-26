@@ -4,7 +4,7 @@
 
 
 if(!isset($page)|| !isset($_SESSION["usuario"])){
-	header("location:login.php");
+	header("location:index.php");
 }else{
 
     ?>
@@ -106,7 +106,7 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
 
                         <!-- Apagar -->
                         <li style="margin-right:10px;">
-                            <a href="login.php?logout=true" title="Salir">
+                            <a href="index.php?logout=true" title="Salir">
                                 <em class="fa fa-power-off"> Salir</em>
                             </a>
                         </li> 

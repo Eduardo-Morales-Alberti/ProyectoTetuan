@@ -5,6 +5,9 @@ include_once('funciones/loginF.php');
 
 session_start();
 
+$logincl = new loginBBDD;
+$logincl->logOut();
+
 if(isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
@@ -12,7 +15,7 @@ if(isset($_SESSION["usuario"])){
 
 
 //singleton::singleton();
-$logincl = new loginBBDD;
+
 
 
 /* Tokens para asegurar la integridad de los formularios */
@@ -54,8 +57,6 @@ if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
 /* Fin Tokens para asegurar la integridad de los formularios */
 
 
-
-$logincl->logOut();
 $logincl->confirmarCuenta();
 
 

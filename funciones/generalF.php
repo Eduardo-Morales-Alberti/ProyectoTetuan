@@ -16,6 +16,8 @@ class Usuario{
 		$this->identificador = $id;
 		$this->tipo = $tp;
 	}
+
+
 }
 
 

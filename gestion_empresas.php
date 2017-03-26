@@ -4,16 +4,34 @@ include_once("funciones/generalF.php");
 session_start();
 
 if(!isset($_SESSION["usuario"])){
-    header("location:login.php");
+    header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "administrador"){
     header("location:dashboard.php");
 }
 include_once("funciones/adminF.php");
 $adminclass = new adminBBDD;
-$adminclass->eliminarEmpresas();
-$adminclass->cambiarEstadoEmp();
+
+if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+    if($adminclass->comprobarToken("gesemp", $token)){
+        $adminclass->eliminarEmpresas();
+        $adminclass->cambiarEstadoEmp();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
+
+
+
+
+/**$adminclass->eliminarEmpresas();*/
+/**$adminclass->cambiarEstadoEmp();*/
 /*$adminclass->modificarEmpresa();*/
 /*$adminclass->nuevaEmpresa();*/
+
+$idtoken = $adminclass->generarToken('gesemp');
 
 ob_start();?>
 <script type="text/javascript">
@@ -37,7 +55,7 @@ ob_start();
         </div>
         <div class="panel-body">
             <table id="resempresas" class="display t-responsive" cellspacing="0" width="100%">
-             <thead>
+               <thead>
                 <tr>
                     <th><i class="fa fa-list-ul" aria-hidden="true"></i></th>
                     <th>Seleccionar</th>
@@ -46,7 +64,7 @@ ob_start();
                     <th>Email</th>
                     <th>Teléfono</th>
                     <th>Contacto</th> 
-                                  
+
                 </tr>
             </thead>
             <tfoot>
@@ -80,6 +98,7 @@ ob_start();
     <div class="panel-footer">
         <div class="row">
             <div class="col-md-12 text-right">
+                <input type="hidden" name="token" value="<?php echo $idtoken;?>">  
                 <input type="submit" class="btn btn-danger" name="eliminaremp" value="Eliminar selección">
                 <input type="submit" name="cambiarest" value="Cambiar estado" class="btn btn-success">
             </div>
