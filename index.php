@@ -88,11 +88,6 @@ $logincl->confirmarCuenta();
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="plugins/animo/animateanimo.css" rel="stylesheet" />
     <link href="plugins/csspinner/csspinner.min.css" rel="stylesheet" />
-    <link href="plugins/Notific/jquery.notific8.min.css" rel="stylesheet" />
-    <!-- DataTables CSS -->
-    <link href="plugins/datatables-1.10.9/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <!-- DataTables Responsive CSS -->
-    <link href="plugins/datatables-1.10.9/extensions/Responsive/css/responsive.dataTables.min.css" rel="stylesheet" />
 
     <!-- Web CSS-->
     <link href="css/app.css" rel="stylesheet" />
@@ -281,19 +276,13 @@ $logincl->confirmarCuenta();
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootstrap-toggle.min.js"></script>
         <!-- Plugins Scripts-->
-        <script src="plugins/jquery.json-2.4.js"></script>
         <script src="plugins/animo/animo.min.js"></script>
         <script src="plugins/chosen/chosen.jquery.min.js"></script>
         <script src="plugins/filestyle/bootstrap-filestyle.min.js"></script>
         <script src="plugins/slider/js/bootstrap-slider.js"></script>
-        <script src="plugins/sparklines/jquery.sparkline.min.js"></script>
         <script src="plugins/slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="plugins/classyloader/js/jquery.classyloader.min.js"></script>
         <script src="plugins/store/storejson2.min.js"></script>
-        <script src="plugins/Notific/jquery.notific8.min.js"></script>
-        <!-- Data Table Scripts-->
-        <script src="plugins/datatables-1.10.9/media/js/jquery.dataTables.min.js"></script>
-        <script src="plugins/datatables-1.10.9/media/js/dataTables.bootstrap.min.js"></script>
+
         <script src="js/app.js"></script>
         <script src="js/tetuanjobs.js"></script>
         <script type="text/javascript">
