@@ -998,9 +998,9 @@ CREATE PROCEDURE tetuanjobs.eliminarIdioma(usid int, idioma varchar(250))
 
 		SELECT id_usuario into id from tetuanjobs.usuarios where id_usuario = usid and tipo_usuario = "administrador";
 
-		select id_idioma into id_idm from tetuanjobs.idiomas where  trim(lower(nombre_idioma)) = trim(lower(idioma));
+		select id_idioma into id_idm from tetuanjobs.idiomas where trim(lower(nombre_idioma)) = trim(lower(idioma));
 
-		if id_idm > 0 and id >=0 then
+		if id_idm > 0 and id > 0 then
 			delete from tetuanjobs.idiomas where trim(lower(nombre_idioma)) = trim(lower(idioma));
 			select true as resultado;
 		else 
@@ -1010,6 +1010,8 @@ CREATE PROCEDURE tetuanjobs.eliminarIdioma(usid int, idioma varchar(250))
 		
 	END//
 delimiter ;
+
+/*call eliminarIdioma(1,"naranja");*/
 
 /** Fin Rutina para eliminar idioma **/
 

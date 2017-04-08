@@ -61,7 +61,7 @@ ob_start();
 
         ?>  
         <!-- Usuarios -->
-        <div class="panel sinborde col-md-6" id="panel-anim-zoomOut2">
+        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut2">
             <a href="gestion_estudiantes.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut2"> 
                 <div class="row">
                     <div class="col-sm-12">
@@ -77,7 +77,7 @@ ob_start();
         </div>
         <!-- Fin de Usuarios-->
         <!-- Empresas -->
-        <div class="panel sinborde col-md-6" id="panel-anim-zoomOut3">
+        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut3">
             <a href="gestion_empresas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut3">
                 <div class="row">
                     <div class="col-sm-12">
@@ -92,6 +92,22 @@ ob_start();
             </a>
         </div>
         <!-- Fin de Empresas -->  
+        <!-- Usuarios -->
+        <div class="panel sinborde col-md-4" id="panel-anim-zoomOut4">
+            <a href="etiquetas_idiomas.php" data-toggle="play-animation" data-play="zoomOut" data-target="#panel-anim-zoomOut4"> 
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel widget">
+                            <div class="panel-body bg-inverse text-center">
+                                <em class="fa fa-tags" style="font-size: 75px"></em>
+                                <h3>Etiquetas e Idiomas</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                                                        
+            </a>
+        </div>
+        <!-- Fin de Usuarios-->
         <?php }else if($_SESSION["usuario"]->tipo == "empresa"){  ?>
         <!-- Perfil -->
         <div class="panel sinborde col-md-6" id="panel-anim-zoomOut">

@@ -1,1 +1,4 @@
 Options -Indexes
+
+ErrorDocument 404 /proyectofinal/
+ErrorDocument 403 /proyectofinal/

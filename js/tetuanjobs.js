@@ -683,7 +683,7 @@ function busquedaofer(){
       var input = $(this).children("input[name='aplicar']");
       input.prop( "disabled", true );
       
-      var xhr = $.post( "funciones/estudianteF.php", 
+      var xhr = $.post( "ajax.php", 
         { aplicar: $(this).children("input[name='aplicar']").eq(0).val(), 
         idpuesto:  $(this).children("input[name='idpuesto']").eq(0).val(),
         token:  $(this).children("input[name='token']").eq(0).val()} );
@@ -730,7 +730,7 @@ function filtrous(){
     var valtoken = $("#tokenetq").val();
     $("#inputetiq").val("");
 
-    var xhr = $.post( "funciones/adminF.php", 
+    var xhr = $.post( "ajax.php", 
       { agreet: "agregar", 
       inputetiq:  etiqueta,
       token: valtoken } );
@@ -769,7 +769,7 @@ $("#agreidm").click(function(){
   var valtoken = $("#tokenidm").val();
   $("#inputidm").val("");
 
-  var xhr = $.post( "funciones/adminF.php", 
+  var xhr = $.post( "ajax.php", 
     { agreidm: "agregar", 
     inputidm:  idioma,
     token:valtoken } );
@@ -803,6 +803,90 @@ $("#agreidm").click(function(){
 }
 
 /**Filtro de usuarios**/
+
+/* etiquetas idiomas */
+
+function etiquetasIdiomas(){
+  
+  /* Agregar una etiqueta */
+  $("#agreet").click(function(){
+    $(this).prop( "disabled", true );
+    var etiqueta = $("#inputetiq").val();
+    var valtoken = $("#tokenetq").val();
+    $("#inputetiq").val("");
+
+    var xhr = $.post( "ajax.php", 
+      { agreet: "agregar", 
+      inputetiq:  etiqueta,
+      token: valtoken } );
+
+    xhr.done(function( data ) {
+        //alert(data);
+        $("#agreet").removeAttr("disabled");
+        //console.log(data);
+        var obj = JSON.parse(data);
+        //console.log(obj);
+        mensajeModal(obj.mensaje);
+
+        if(obj.resultado){
+
+          $("#divetiquetas").append(
+            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
+            +'<input type="checkbox" name="etiquetasel[]" value="'+etiqueta+'">'
+            +'</span><input type="text" class="form-control" value="'+etiqueta+'" readonly></div></div>'
+            );
+        }
+
+
+      }).fail(function() {
+        $("#inputetiq").removeAttr("disabled");
+        mensajeModal("Error: No ha podido agregar la etiqueta "+etiqueta);
+      });
+
+    });
+
+/* fin Agregar una etiqueta */
+
+/* Agregar un idioma */
+$("#agreidm").click(function(){
+  $(this).prop( "disabled", true );
+  var idioma = $("#inputidm").val();
+  var valtoken = $("#tokenidm").val();
+  $("#inputidm").val("");
+
+  var xhr = $.post( "ajax.php", 
+    { agreidm: "agregar", 
+    inputidm:  idioma,
+    token:valtoken } );
+
+  xhr.done(function( data ) {
+        //alert(data);
+        $("#agreidm").removeAttr("disabled");
+        //console.log(data);
+        var obj = JSON.parse(data);
+        //console.log(obj);
+        mensajeModal(obj.mensaje);
+
+        if(obj.resultado){
+
+          $("#dividiomas").append(
+            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
+            +'<input type="checkbox" name="idiomasel[]" value="'+idioma+'">'
+            +'</span><input type="text" class="form-control" value="'+idioma+'" readonly></div></div>'
+            );
+        }
+
+
+      }).fail(function() {
+        $("#inputetiq").removeAttr("disabled");
+        mensajeModal("Error: No ha podido agregar el idioma "+idioma);
+      });
+
+    });
+
+/* fin Agregar un idioma */
+}
+/* fin etiquetas e idiomas*/
 
 /* perfil empresa */
 

@@ -1578,7 +1578,7 @@ class estudianteBBDD extends singleton{
 				$sql = 'select true as existe from listarPstEtqEst where identificador = ? and lower(nombre_etiqueta) = lower(?)';
 
 
-				
+				$token = $this::generarToken("aplicar");
 				for ($i=0; $i < count($puestosfilas); $i++) { 		
 					/*if(!in_array($puestosfilas[$i]["nombre"], $nombres)){*/
 
@@ -1763,7 +1763,7 @@ class estudianteBBDD extends singleton{
 													echo '<input type="button" disabled value="Puesto ya aplicado" class="btn btn-success">';
 												}else{
 													?>
-													<input type="hidden" name="token" value="<?php echo $this::generarToken("aplicar"); ?>">                  
+													<input type="hidden" name="token" value="<?php echo $token; ?>">                  
 													<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success"> 
 													<?php
 												}
@@ -1819,8 +1819,8 @@ class estudianteBBDD extends singleton{
 
 		function aplicarPuesto(){
 			if(isset($_POST["aplicar"])&&isset($_POST["idpuesto"])){
-				include_once("generalF.php");
-				session_start();
+				/*include_once("generalF.php");
+				session_start();*/
 
 				if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
 					$token = $_POST["token"];
@@ -1846,6 +1846,8 @@ class estudianteBBDD extends singleton{
 						}
 
 					}else{
+						print_r($_POST);
+						print_r($_SESSION);
 						echo "El tiempo de espera ha caducado o el formulario no es válido.<br>".
 						"Recargue la página y vuelva a intentarlo";
 					}
@@ -1865,9 +1867,9 @@ class estudianteBBDD extends singleton{
 
 
 	
-	$estudiantecl = new estudianteBBDD();
+	/*$estudiantecl = new estudianteBBDD();
 
-	$estudiantecl->aplicarPuesto();
+	$estudiantecl->aplicarPuesto();*/
 	
 
 	?>

@@ -114,13 +114,13 @@ class adminBBDD extends singleton{
 	function agregarEtiqueta(){
 		if(isset($_POST["agreet"])&&isset($_POST["inputetiq"])){
 
-			include_once("generalF.php");
-			session_start();
+			/*include_once("generalF.php");
+			session_start();*/
 
 			if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
 				$token = $_POST["token"];
 
-				if($this->comprobarToken("gestest", $token)){	
+				if($this->comprobarToken("gestetqidm", $token)){	
 
 
 					$mensaje = "";
@@ -220,13 +220,13 @@ class adminBBDD extends singleton{
 	/** función agregar nuevo idioma **/
 	function agregarIdioma(){
 		if(isset($_POST["agreidm"])&&isset($_POST["inputidm"])){
-			include_once("generalF.php");
-			session_start();
+			/*include_once("generalF.php");
+			session_start();*/
 
 			if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
 				$token = $_POST["token"];
 
-				if($this->comprobarToken("gestest", $token)){	
+				if($this->comprobarToken("gestetqidm", $token)){	
 
 
 					$mensaje = "";
@@ -464,8 +464,8 @@ class adminBBDD extends singleton{
 
 }
 
-$adminclass = new adminBBDD;
+/*$adminclass = new adminBBDD;
 $adminclass->agregarEtiqueta();
-$adminclass->agregarIdioma();
+$adminclass->agregarIdioma();*/
 
 ?>

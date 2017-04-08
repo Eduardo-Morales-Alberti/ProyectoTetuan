@@ -172,6 +172,13 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                                     </a>             
                                 </li>
                                 <!---->
+                                <!--Etiquetas idiomas-->
+                                <li>
+                                    <a href="etiquetas_idiomas.php" title="Etiquetas Idiomas"  class="no-submenu">
+                                        <em class="fa fa-tags"></em>
+                                        <span class="item-text">Etiquetas e idiomas</span>                                        
+                                    </a>             
+                                </li>
                                 <?php }else if($_SESSION["usuario"]->tipo == "empresa"){ ?> 
                                 <!--Perfil-->
                                 <li>
