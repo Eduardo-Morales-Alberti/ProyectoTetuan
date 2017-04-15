@@ -177,7 +177,6 @@ class loginBBDD extends singleton{
 						$_SESSION["email"] = $_GET["email"];
 						$_SESSION["clave"] = $_GET["clave"];
 
-
 					}else{
 
 						session_destroy();
@@ -222,9 +221,9 @@ class loginBBDD extends singleton{
 			$result = $consulta->fetch();	
 		}
 
-		if(isset($result["mensaje"])){
+		if(isset($result["resultado"])){
 			session_reset();
-			$_SESSION["mensajeServidor"] = $result["mensaje"]."<br> Recibirá un correo para confirmar la cuenta.";
+			$_SESSION["mensajeServidor"] = "Usuario ".$result["usuario"]." creado correctamente.<br> Recibirá un correo para confirmar la cuenta.";
 
 			$mensaje = "Para confirmar su cuenta vaya al siguiente enlace 
 			<a href='http://localhost/proyectofinal/index.php?confirmar=true&email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
@@ -232,7 +231,6 @@ class loginBBDD extends singleton{
 			$enviado = General::enviarEmail(array($_POST['mail']),"Confirmar cuenta", $mensaje);
 
 		}else{
-			session_start();
 			session_destroy();
 			session_start();
 			$_SESSION["mensajeServidor"] = "Error al crear el nuevo usuario.";
@@ -257,8 +255,10 @@ class loginBBDD extends singleton{
 				$result = $consulta->fetch();
 				if($result["mensaje"]){
 					$_SESSION["mensajeServidor"] = "Usuario confirmado correctamente";
+					unset($_GET);
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha podido confirmar";
+					unset($_GET);
 				}
 			}
 
@@ -302,7 +302,8 @@ class loginBBDD extends singleton{
 		if(isset($result["mensaje"])&&$result["mensaje"]){
 			session_destroy();
 			session_start();
-			$_SESSION["mensajeServidor"] = "Empresa creada correctamente";
+			$_SESSION["mensajeServidor"] = "Empresa creada correctamente.<br> 
+			El administrador se pondrá en contacto para activar su cuenta.";
 
 		}else{
 			session_reset();

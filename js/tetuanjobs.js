@@ -79,7 +79,7 @@ function validarTextoEspacios(texto){
 /* validar nombres propios */
 
 function validarNombres(nombre){
-  var re = /^(([A-Z][a-z]+[\-\']?)*([A-Z][a-z]+)?\s)+([A-Z][a-z]+[\-\']?)*([A-Z][a-z]+)?/i;
+  var re = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/;
   return re.test(nombre);
 }
 /* fin validar nombres propios */
@@ -383,7 +383,7 @@ function login(){
       valido = false;
     }
 
-    if(!validarTextoEspacios($("#empresa").val())){
+    if(!validarTextoEspacios($("#empresa").val()) && $('.elEmp').is(":visible")){
       mensaje += "Escriba correctamente su empresa sin caracteres especiales.<br>";
       valido = false;
     }
@@ -396,7 +396,7 @@ function login(){
       valido = false;
     }
 
-    if(!validarWeb($("#webempresa").val())){
+    if(!validarWeb($("#webempresa").val())&& $('.elEmp').is(":visible")){
       mensaje += "Escriba correctamente la web de su empresa.<br>";
       valido = false;
     }

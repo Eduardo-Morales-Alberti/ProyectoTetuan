@@ -12,7 +12,9 @@ if(isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
-
+/*print_r($_POST);
+echo "<br>";
+print_r($_SESSION);*/
 
 //singleton::singleton();
 
