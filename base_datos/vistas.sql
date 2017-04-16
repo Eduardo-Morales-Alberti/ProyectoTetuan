@@ -155,6 +155,15 @@ GRANT select on tetuanjobs.listarPstEtqEst To 'usertetuan'@'localhost';
 
 /** filtro puestos **/
 
+/** Ciclo usuario **/
+
+CREATE OR REPLACE VIEW tetuanjobs.cicloUsuario as 
+  select id_usuario as identificador, ciclo from estudiantes;
+
+GRANT select on tetuanjobs.cicloUsuario To 'usertetuan'@'localhost';
+
+/** Fin ciclo usuario **/
+
 /** VISTA LISTAR puesto  **/
 
 CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as 
@@ -162,7 +171,7 @@ CREATE OR REPLACE VIEW tetuanjobs.listarPuestos as
       puesto_desc as descripcion, f_publicacion as publicacion, emp.id_empresa as idempresa,emp.id_usuario as idusuario, prv.id_provincia as idprovincia, 
       puesto_carnet as carnet, emp.email, persona_contacto as contacto,tipo_contrato as contrato, 
       cast(tipo_contrato as unsigned) idcontrato, experiencia, cast(experiencia as unsigned) idexperiencia, 
-      jornada, cast(jornada as unsigned) idjornada, count(pstest.id_estudiante) as interesados/*,
+      jornada, cast(jornada as unsigned) idjornada, count(pstest.id_estudiante) as interesados, ciclos/*,
       nombre_etiqueta , est.nombre as estudiante, pstest.id_estudiante as idestudiante */  
      from tetuanjobs.puestos pst join tetuanjobs.empresas emp on pst.id_empresa = emp.id_empresa
      left join tetuanjobs.provincias prv on prv.id_provincia = pst.id_provincia

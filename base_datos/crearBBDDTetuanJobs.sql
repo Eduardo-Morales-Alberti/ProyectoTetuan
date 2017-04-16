@@ -229,6 +229,7 @@ DROP TABLE IF EXISTS `PUESTOS`;
 CREATE TABLE IF NOT EXISTS `PUESTOS` (
   `id_puesto` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `id_empresa` int(11) UNSIGNED NOT NULL,
+  `ciclo` set('DAW','ASIR','TURISMO'),
   `puesto_nombre` varchar(250) COLLATE utf8_general_ci NOT NULL,
   `puesto_desc` varchar(3000) COLLATE utf8_general_ci NOT NULL,
   `puesto_carnet` boolean DEFAULT FALSE,
