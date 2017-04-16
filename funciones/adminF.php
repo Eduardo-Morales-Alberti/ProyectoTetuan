@@ -2,24 +2,14 @@
 include_once("conexion.php");
 
 class adminBBDD extends singleton{
-	private $n = 0;
-	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+	/*private $n = 0;*/
+	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
 	function __construct(){
 		parent::__construct();		
 	}
 
 
-	function limpiarRuta($string) {
-		$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
-		$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
-		$string = str_replace($no_permitidas, $permitidas ,$string);
-		$string = preg_replace('/[^A-Za-z0-9\-\_]/', '_', $string);
-		$string = preg_replace ('/[ ]+/', '_', $string);
-
-		return strtolower($string); 
-	}
-
-	/** FILTRO USUARIOS**/
+	/** GESTION USUARIOS **/
 
 	function listarUsuarios(){
 		$html = "";
@@ -79,6 +69,101 @@ class adminBBDD extends singleton{
 	}
 
 	/** Eliminar usuarios **/
+
+	/** FIN GESTION USUARIOS **/
+
+	/** GESTION EMPRESAS **/
+
+	/** FILTRO EMPRESAS **/
+
+	/** funcion para listar las empresas **/
+
+	function listarEmpresas(){
+		$html = "";
+		$sql = "select nombre, identificador, estado, web,correo,telefono,contacto from listarEmpresas";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+		$empresas = array();
+		while ($row = $consulta->fetch()) {
+			$empresas[] = $row;
+		}
+
+
+		for ($i=0; $i < count($empresas); $i++) { 
+			echo "<tr>";
+			foreach ($empresas[$i] as $clave => $valor) {
+
+				if($clave == "identificador"){
+					echo "<td><input type='checkbox' name='ids[]' value='$valor'></td>";
+				}else{
+					echo "<td><input type='hidden' name='".$clave."[".$empresas[$i]["identificador"]."]' value='$valor'>$valor</td>";
+				}
+
+			}
+			echo "</tr>";
+		}	
+
+	}
+
+	/** fin funcion para listar las empresas **/
+
+	/** Cambiar el estado Empresas **/
+
+	function cambiarEstadoEmp(){
+		if(isset($_POST["cambiarest"])&&isset($_POST["ids"])){
+			for ($i=0; $i < count($_POST["ids"]); $i++) { 
+				$sql = "call cambiarEstadoEmp(?)";
+
+				$consulta = $this->Idb->prepare($sql);
+				$consulta->execute(array($_POST["ids"][$i]));
+			}	
+		}
+	}
+
+
+	/** fin Cambiar el estado Empresas**/
+
+	/** funcion para eliminar las empresas **/
+
+	function eliminarEmpresas(){
+
+		if(isset($_POST["eliminaremp"])&&isset($_POST["ids"])){
+
+			for ($i=0; $i < count($_POST["ids"]); $i++) { 
+
+				$sql = "call eliminarEmpresa(?,?)";
+
+				$consulta = $this->Idb->prepare($sql);
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["ids"][$i]));
+				if($consulta->rowCount() > 0){
+					$row = $consulta->fetch();
+					if($row["resultado"]){
+						$_SESSION["mensajeServidor"] = "Empresa(s) eliminada(s)";
+					}else{
+						$_SESSION["mensajeServidor"] = "No se ha podido eliminar la(s) empresa(s)";
+					}
+
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha recibido respuesta.";
+				}
+
+
+
+
+			}	
+		}
+
+	}
+
+	/** funcion para eliminar las empresas **/
+
+
+	/** FIN GESTION EMPRESAS **/
+
+
+	/** GESTION ETIQUETAS E IDIOMAS **/
 
 	/** FUNCIÓN LISTAR ETIQUETAS**/
 	function listarEtiquetas(){
@@ -289,93 +374,9 @@ class adminBBDD extends singleton{
 
 	/* Fin función eliminar idioma */
 
-	/** FIN FILTRO USUARIOS**/
+	/** FIN GESTION ETIQUETAS E IDIOMAS **/
 
-	/** FILTRO EMPRESAS **/
-
-	/** funcion para listar las empresas **/
-
-	function listarEmpresas(){
-		$html = "";
-		$sql = "select nombre, identificador, estado, web,correo,telefono,contacto from listarEmpresas";
-		$consulta = $this->Idb->prepare($sql);
-		$consulta->execute();
-		$consulta->setFetchMode(PDO::FETCH_ASSOC);
-
-		$empresas = array();
-		while ($row = $consulta->fetch()) {
-			$empresas[] = $row;
-		}
-
-
-		for ($i=0; $i < count($empresas); $i++) { 
-			echo "<tr>";
-			foreach ($empresas[$i] as $clave => $valor) {
-
-				if($clave == "identificador"){
-					echo "<td><input type='checkbox' name='ids[]' value='$valor'></td>";
-				}else{
-					echo "<td><input type='hidden' name='".$clave."[".$empresas[$i]["identificador"]."]' value='$valor'>$valor</td>";
-				}
-
-			}
-			echo "</tr>";
-		}	
-
-	}
-
-	/** fin funcion para listar las empresas **/
-
-	/** Cambiar el estado Empresas **/
-
-	function cambiarEstadoEmp(){
-		if(isset($_POST["cambiarest"])&&isset($_POST["ids"])){
-			for ($i=0; $i < count($_POST["ids"]); $i++) { 
-				$sql = "call cambiarEstadoEmp(?)";
-
-				$consulta = $this->Idb->prepare($sql);
-				$consulta->execute(array($_POST["ids"][$i]));
-			}	
-		}
-	}
-
-
-	/** fin Cambiar el estado Empresas**/
-
-	/** funcion para eliminar las empresas **/
-
-	function eliminarEmpresas(){
-
-		if(isset($_POST["eliminaremp"])&&isset($_POST["ids"])){
-
-			for ($i=0; $i < count($_POST["ids"]); $i++) { 
-
-				$sql = "call eliminarEmpresa(?,?)";
-
-				$consulta = $this->Idb->prepare($sql);
-				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["ids"][$i]));
-				if($consulta->rowCount() > 0){
-					$row = $consulta->fetch();
-					if($row["resultado"]){
-						$_SESSION["mensajeServidor"] = "Empresas eliminada";
-					}else{
-						$_SESSION["mensajeServidor"] = "No se ha podido eliminar las empresas";
-					}
-
-				}else{
-					$_SESSION["mensajeServidor"] = "No se ha recibido respuesta.";
-				}
-
-
-
-
-			}	
-		}
-
-	}
-
-	/** funcion para eliminar las empresas **/
-
+	/** FUNCIONES DESUSO **/
 
 	/** funcion modificar empresa **/
 
@@ -457,7 +458,9 @@ class adminBBDD extends singleton{
 	}*/
 	/** fin FUNCION NUEVA EMPRESA**/
 
-	/** FIN FILTRO EMPRESAS **/
+
+
+	/** FIN FUNCIONES DESUSO **/
 
 
 

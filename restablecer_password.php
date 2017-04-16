@@ -1,7 +1,7 @@
 <?php 
 include_once('funciones/loginF.php');
 
-session_start();
+/*session_start();*/
 
 $logincl = new loginBBDD;
 $modal = $logincl->restContr();

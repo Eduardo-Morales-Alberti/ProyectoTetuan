@@ -22,7 +22,8 @@ class loginBBDD extends singleton{
 
 			if(isset($result["resultado"])){
 				if($result["resultado"]){
-					/*$_SESSION["mensajeServidor"] = $result["mensaje"];*/
+					$_SESSION["mensajeServidor"] = $result["mensaje"];
+					$_SESSION["entrar"] = true;
 					/*$_SESSION["login"] = true;*/
 					$_SESSION["usuario"] = new Usuario($_POST['mail'],$result["nombre"],$result["identificador"], $result["tipo_usuario"]);
 					/*print_r($_SESSION);*/
@@ -255,10 +256,11 @@ class loginBBDD extends singleton{
 				$result = $consulta->fetch();
 				if($result["mensaje"]){
 					$_SESSION["mensajeServidor"] = "Usuario confirmado correctamente";
-					unset($_GET);
+					header("location: index.php");
 				}else{
 					$_SESSION["mensajeServidor"] = "No se ha podido confirmar";
-					unset($_GET);
+					header("location: index.php");
+					
 				}
 			}
 

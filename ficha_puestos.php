@@ -276,7 +276,69 @@ ob_start();
                 </select>
 
             </div>
-        </div>          
+        </div>    
+        <div class="col-md-6 col-md-offset-2">
+            <div class="form-group">
+                <label>Mostrar para los ciclos</label>              
+                <div class="row">
+                    <div class="col-xs-4">
+                        <?php 
+                        $ciclos = array();
+                        if (isset($puesto["ciclos"])) {
+                            $ciclos = explode(",", $puesto["ciclos"]);
+                            $ciclos = array_flip($ciclos);
+                        }
+                        ?>
+                        <div class="checkbox">
+                            <label>
+
+                                <input type="checkbox" 
+                                <?php 
+                                if (isset($ciclos["DAW"])) {
+                                    echo "checked";
+                                }
+                                ?> name="daw" value="daw">
+                                DAW
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" 
+                                <?php 
+                                if (isset($ciclos["ASIR"])) {
+                                    echo "checked";
+                                }
+                                ?>
+                                name="asir" value="asir">
+                                ASIR
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                <?php 
+                                if (isset($ciclos["TURISMO"])) {
+                                    echo "checked";
+                                }
+                                ?>
+                                 name="turismo" value="turismo">
+                                TURISMO
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+            
+            
+            
+        </div>
+
+
+
     </div>
 </div>
 <div class="panel-footer <?php  /*if(isset($_SESSION['idpst'])&&isset($puesto['interesados'])&&$puesto['interesados']>0){echo 'collapse out modificarpst';} */?>">
@@ -301,7 +363,7 @@ ob_start();
 </form>
 
 <?php
-   /* $empresacl->listarEstudiantesPuesto($puesto);*/
+/* $empresacl->listarEstudiantesPuesto($puesto);*/
 ?>
 
 

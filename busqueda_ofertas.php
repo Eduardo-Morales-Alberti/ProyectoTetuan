@@ -7,9 +7,6 @@ $page["nombrePag"] = "Búsqueda de ofertas";
 include_once("funciones/generalF.php");
 
 session_start();
-include_once('funciones/estudianteF.php');
-$estudiantecl = new estudianteBBDD;
-
 
 
 if(!isset($_SESSION["usuario"])){
@@ -17,6 +14,9 @@ if(!isset($_SESSION["usuario"])){
 }else if($_SESSION["usuario"]->tipo != "estudiante"){
     header("location:dashboard.php");
 }
+
+include_once('funciones/estudianteF.php');
+$estudiantecl = new estudianteBBDD;
 
 /* Con esto limpiamos el formulario*/
 if(isset($_POST["limpiar"])){

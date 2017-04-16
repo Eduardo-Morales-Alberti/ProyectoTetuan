@@ -2,11 +2,6 @@
 include_once("funciones/generalF.php");
 
 session_start();
-include_once('funciones/empresaF.php');
-$empresacl = new empresaBBDD;
-
-
-
 
 if(!isset($_SESSION["usuario"])){
     header("location:index.php");
@@ -17,6 +12,8 @@ if(!isset($_SESSION["usuario"])){
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Perfil";
 
+include_once('funciones/empresaF.php');
+$empresacl = new empresaBBDD;
 
 $generacl = new General;
 

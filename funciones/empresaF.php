@@ -3,21 +3,12 @@ include_once("conexion.php");
 
 class empresaBBDD extends singleton{
 	private $n = 0;
-	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
 	function __construct(){
 		parent::__construct();		
 	}
 
 
-	function limpiarRuta($string) {
-		$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
-		$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
-		$string = str_replace($no_permitidas, $permitidas ,$string);
-		$string = preg_replace('/[^A-Za-z0-9\-\_]/', '_', $string);
-		$string = preg_replace ('/[ ]+/', '_', $string);
-
-		return strtolower($string); 
-	}
 
 	/* perfil empresa */
 
@@ -157,9 +148,9 @@ class empresaBBDD extends singleton{
 		if(isset($_POST["guardarpuesto"])&&isset($_POST["titpuesto"])&&isset($_POST["descpuesto"])){
 			
 			if(!isset($_POST["idpuesto"])){
-				$sql = "call agregarPuesto(?,?,?,?,?,?,?,?,?)";
+				$sql = "call agregarPuesto(?,?,?,?,?,?,?,?,?,?)";
 			}else if(isset($_POST["idpuesto"])){
-				$sql = "call modificarPuesto(?,?,?,?,?,?,?,?,?,?)";
+				$sql = "call modificarPuesto(?,?,?,?,?,?,?,?,?,?,?)";
 			}
 
 			$consulta = $this->Idb->prepare($sql);	
@@ -220,17 +211,37 @@ class empresaBBDD extends singleton{
 				$titulacion = $_POST["nivel"];
 			}
 
+			$ciclos = array();
+
+			if (isset($_POST["daw"])) {
+				array_push($ciclos, $_POST["daw"]);
+			}
+
+			if (isset($_POST["asir"])) {
+				array_push($ciclos, $_POST["asir"]);
+			}
+
+			if (isset($_POST["turismo"])) {
+				array_push($ciclos, $_POST["turismo"]);
+			}
+
+			$ciclostexto = "";
+
+			if(count($ciclos)> 0){
+				$ciclostexto = implode(",", $ciclos);
+			}
+			/*echo $ciclostexto;*/
 			$params = array();
 
 			if(!isset($_POST["idpuesto"])){
 
 				array_push($params,$_SESSION["usuario"]->identificador,
-					$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion);
+					$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion, $ciclostexto);
 
 			}else if(isset($_POST["idpuesto"])){
 
 				array_push($params,$_POST["idpuesto"],$_SESSION["usuario"]->identificador,
-					$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion);
+					$nombre,$desc,$carnet,$provincia,$exp,$contrato,$jornada, $titulacion, $ciclostexto);
 			}
 			
 

@@ -2,7 +2,7 @@
 include_once("conexion.php");
 
 class estudianteBBDD extends singleton{
-	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
 
 	function __construct(){
 		parent::__construct();
@@ -26,44 +26,6 @@ class estudianteBBDD extends singleton{
 
 	/** FIN FUNCIÓN PARA LISTAR INFORMACION ESTUDIANTE **/
 
-	/** FUNCIÓN PARA CAMBIAR CONTRASEÑA ESTUDIANTE **/
-
-	function cambiarContr(){
-		/*print_r($_POST);
-
-		ECHO "<BR>";
-		print_r($_SESSION);*/
-
-		/*echo $_SESSION["usuario"]->identificador."<br>";
-		echo $_SESSION["usuario"]->tipo."<br>";*/
-		
-		if(isset($_SESSION["usuario"])&&$_SESSION["usuario"]->tipo=="estudiante"&&
-			isset($_POST["modcontr"])&&isset($_POST["contr"])&&isset($_POST["ncontr"])&&isset($_POST["ccontr"])){
-
-			if($_POST["ncontr"] == $_POST["ccontr"]){
-
-				$sql = "call cambiarContr(?,?,?)";
-				$consulta = $this->Idb->prepare($sql);			
-				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["contr"],$_POST["ncontr"]));
-				$consulta->setFetchMode(PDO::FETCH_ASSOC);
-				$row = $consulta->fetch();
-
-				if($row["cambiada"]){
-					$_SESSION["mensajeServidor"] = "Contraseña modificada.";
-				}else{
-					$_SESSION["mensajeServidor"] = "No se ha podido cambiar la contraseña.";
-				}
-
-			}else{
-				$_SESSION["mensajeServidor"] = "Las contraseñas no coinciden";
-			}
-
-
-		}
-	}
-
-
-	/** FIN FUNCIÓN PARA CAMBIAR CONTRASEÑA ESTUDIANTE **/
 
 	/** FUNCIÓN MODIFICAR USUARIO ESTUDIANTE **/
 
@@ -218,63 +180,124 @@ class estudianteBBDD extends singleton{
 
 	/** FIN FUNCIÓN MODIFICAR USUARIO ESTUDIANTE **/
 
-	function limpiarRuta($string) {
-		$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
-		$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
-		$string = str_replace($no_permitidas, $permitidas ,$string);
-		$string = preg_replace('/[^A-Za-z0-9\-\_]/', '_', $string);
-		$string = preg_replace ('/[ ]+/', '_', $string);
 
-		return strtolower($string); 
-	}
 
-	/** FUNCIÓN PARA ELIMINAR USUARIO **/
-	function eliminarUsuario(){
-		if(isset($_POST["elusuario"])&&isset($_SESSION["usuario"]->identificador)&&$_SESSION["usuario"]->tipo=="estudiante"){
+	/** FUNCIÓN PARA CAMBIAR CONTRASEÑA ESTUDIANTE **/
 
-			$sql = "call eliminarUsuario(?)";
-			$consulta = $this->Idb->prepare($sql);
-			$consulta->execute(array($_SESSION["usuario"]->identificador));
-			session_destroy();
-			session_start();
-			$_SESSION["mensajeServidor"] = "Usuario eliminado correctamente";
-			header("location:index.php");
+	function cambiarContr(){
+		/*print_r($_POST);
+
+		ECHO "<BR>";
+		print_r($_SESSION);*/
+
+		/*echo $_SESSION["usuario"]->identificador."<br>";
+		echo $_SESSION["usuario"]->tipo."<br>";*/
+		
+		if(isset($_SESSION["usuario"])&&$_SESSION["usuario"]->tipo=="estudiante"&&
+			isset($_POST["modcontr"])&&isset($_POST["contr"])&&isset($_POST["ncontr"])&&isset($_POST["ccontr"])){
+
+			if($_POST["ncontr"] == $_POST["ccontr"]){
+
+				$sql = "call cambiarContr(?,?,?)";
+				$consulta = $this->Idb->prepare($sql);			
+				$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["contr"],$_POST["ncontr"]));
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+				$row = $consulta->fetch();
+
+				if($row["cambiada"]){
+					$_SESSION["mensajeServidor"] = "Contraseña modificada.";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido cambiar la contraseña.";
+				}
+
+			}else{
+				$_SESSION["mensajeServidor"] = "Las contraseñas no coinciden";
+			}
+
 
 		}
 	}
-	/** FUNCIÓN PARA ELIMINAR USUARIO **/
 
-	/** FUNCIÓN LISTAR CICLOS **/
-	/*function listarNiveles($seleccion = -1){
-		$sql = "call obtenerEnum('formacion_clasificacion','formacion')";
+
+	/** FIN FUNCIÓN PARA CAMBIAR CONTRASEÑA ESTUDIANTE **/
+
+	/** FUNCIÓN LISTAR EXPERIENCIA **/
+
+	function listarExperiencia(){
+
+		$sql = "select * from listarExperiencia where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
-		$consulta->execute();
+		$consulta->execute(array($_SESSION["usuario"]->identificador));
 		$consulta->setFetchMode(PDO::FETCH_ASSOC);
-		$ciclosSELECT = "";
+		$experienciafilas = array();
+		while ($row = $consulta->fetch()) {
+			$experienciafilas[] = $row;
+		}
+		//print_r($experienciafilas);
+		for ($i=0; $i < count($experienciafilas); $i++) { 			
 
-		$row = $consulta->fetch();
-		if($row["resultado"]){
-			$ciclos = explode(",", $row["resultado"]) ;
-			//print_r($ciclos);
-			$ciclosSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
-			for ($i=0; $i < count($ciclos) ; $i++) { 
-				if($seleccion == $i+1){
-					$ciclosSELECT .= "<option value='".($i+1)."' selected>";
-					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
-					$ciclosSELECT .= $nombre."</option>";
-				}else{
-					$ciclosSELECT .= "<option value='".($i+1)."'>";
-					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
-					$ciclosSELECT .= $nombre."</option>";
-				}
+			?>
+			<div class="row">                        
+				<div class="col-md-8"><h4><?php echo $experienciafilas[$i]["titulo"];?><br>
+					<small><?php echo $experienciafilas[$i]["empresa"];?></small></h4>
+				</div>
+				<div class="col-md-4">
+					<small class="femp ">Período: <i> <?php 
 
+					$fechaini = $experienciafilas[$i]["fecha_ini"];
+					$mes = date("n",strtotime($fechaini));
+					$anio = date("Y",strtotime($fechaini));
+					echo $this->meses[$mes].", ".$anio;
+
+					?>- <?php 
+
+					$fechafin = $experienciafilas[$i]["fecha_fin"];
+					if($fechafin != "actualmente"){
+						$mes = date("n",strtotime($fechafin));
+						$anio = date("Y",strtotime($fechafin));
+						echo $this->meses[$mes].", ".$anio;
+					}else{
+						echo $fechafin;
+					}
+
+
+					?> </i></small>
+				</div>   
+				<div class="col-md-8">
+					<p>  
+						<?php echo $experienciafilas[$i]["descripcion"];?>
+					</p>
+				</div>
+				<div class="col-md-12 pie-acciones">
+					<form method="post">					
+						<input type="hidden" name="token" value="<?php echo parent::generarToken('modexp'); ?>">                  
+						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"]; ?>">						
+						<?php 
+						foreach ($experienciafilas[$i] as $clave => $valor) {
+							?>
+							<input type="hidden" name="filas[<?php echo $clave;?>]" value="<?php echo $valor;?>">
+
+							<?php
+						}
+						?>
+						<input type="submit" name="elimexp" value="Eliminar" class="btn btn-danger">
+						<input type="submit" name="modexp" value="Modificar" class="btn btn-green">
+					</form>
+				</div>
+			</div>
+
+			<?php
+			if($i<count($experienciafilas)-1){
+				echo "<hr>";
 			}
-		}		
+		}
 
-		return $ciclosSELECT;
-	}*/
 
-	/** FUNCIÓN LISTAR CICLOS **/
+	}
+
+	/** FIN FUNCIÓN LISTAR EXPERIENCIA **/
+
+
 
 	/** FUNCIÓN PARA AÑADIR UNA NUEVA EXPERIENCIA **/
 	function nuevaExperiencia(){
@@ -357,215 +380,6 @@ class estudianteBBDD extends singleton{
 		}
 	}
 	/** fin FUNCIÓN PARA AÑADIR UNA NUEVA EXPERIENCIA **/
-
-	/** FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
-	function nuevaFormacion(){
-
-		if(isset($_POST["nuevaform"])&&isset($_POST["tituloeduc"])){
-			$sql = "call nuevaFormacion(?,?,?,?,?,?,?,?)";
-			$consulta = $this->Idb->prepare($sql);			
-
-			$institucion = null;
-
-			if(isset($_POST["institucion"])){
-				$institucion = $_POST["institucion"];
-			}
-
-			$fecha1 = null;
-
-			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
-				$t=time();	
-				$mes = date("n",$t);
-				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12 && $_POST["f1mes"] <= date("n",$t)){
-					$mes = $_POST["f1mes"];
-				}
-
-				$anio = date("Y",$t);
-
-				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
-					$anio = $_POST["f1anio"];
-				}
-
-				$f = mktime(0,0,0,$mes,1,$anio);
-				$fecha1 = date("Y-m-d H:i:s",$f);
-			}
-
-			$fecha2 = null;
-			$actualmente = null;
-
-			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
-				$t=time();
-				$mes = date("n",$t);
-				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12&& $_POST["f2mes"] <= date("n",$t)){
-					$mes = $_POST["f2mes"];
-				}
-
-				$anio = date("Y",$t);
-
-				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
-					$anio = $_POST["f2anio"];
-				}
-
-				$f = mktime(0,0,0,$mes,1,$anio);
-				$fecha2 = date("Y-m-d H:i:s",$f);
-			}elseif(isset($_POST["f2mes"])&&$_POST["f2mes"]==0){
-				$actualmente = true;
-			}
-
-			$desc = null;
-
-			if(isset($_POST["desc"])){
-				$desc = htmlentities($_POST["desc"]);
-			}	
-
-			$nivel = null;
-
-			if(isset($_POST["nivel"])&&is_numeric($_POST["nivel"])){
-				$nivel = $_POST["nivel"];
-			}
-
-			$params = array();
-			array_push($params,$_SESSION["usuario"]->identificador,$_POST["tituloeduc"],$institucion,
-				$fecha1,$fecha2,$actualmente,$desc,$nivel);
-			//print_r($params);
-			$consulta->execute($params);
-
-			if($consulta->rowCount()>0){
-				$consulta->setFetchMode(PDO::FETCH_ASSOC);
-
-				$row = $consulta->fetch();
-
-				if($row["resultado"]){
-					$_SESSION["mensajeServidor"] = "Formación insertada correctamente";
-				}else{
-					$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
-				}
-
-			}else{
-				$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
-			}
-		}
-	}
-	/** fin FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
-
-	/** Función nuevo idioma **/
-
-	function nuevoIdioma(){
-
-		if(isset($_POST["nuevoidioma"])&&isset($_POST["idioma"])){
-			$sql = "call nuevoIdioma(?,?,?,?)";
-			$consulta = $this->Idb->prepare($sql);		
-			$params = array();
-			$hablado = 1;
-			if(isset($_POST["nvh"])&&is_numeric($_POST["nvh"])){
-				$hablado = $_POST["nvh"];
-			}
-			$escrito = 1;
-
-			if(isset($_POST["nve"])&&is_numeric($_POST["nve"])){
-				$escrito = $_POST["nve"];
-			}
-
-			array_push($params,$_SESSION["usuario"]->identificador,$_POST["idioma"],$hablado,
-				$escrito);
-			//print_r($params);
-			$consulta->execute($params);
-
-			if($consulta->rowCount()>0){
-				$consulta->setFetchMode(PDO::FETCH_ASSOC);
-
-				$row = $consulta->fetch();
-
-				if($row["resultado"]){
-					$_SESSION["mensajeServidor"] = "Idioma insertado correctamente";
-				}else{
-					$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
-				}
-
-			}else{
-				$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
-			}
-		}
-	}
-
-	/** Fin Función nuevo idioma **/
-
-	/** FUNCIÓN LISTAR EXPERIENCIA **/
-
-	function listarExperiencia(){
-
-		$sql = "select * from listarExperiencia where estudiante = ?";
-		$consulta = $this->Idb->prepare($sql);
-		$consulta->execute(array($_SESSION["usuario"]->identificador));
-		$consulta->setFetchMode(PDO::FETCH_ASSOC);
-		$experienciafilas = array();
-		while ($row = $consulta->fetch()) {
-			$experienciafilas[] = $row;
-		}
-		//print_r($experienciafilas);
-		for ($i=0; $i < count($experienciafilas); $i++) { 			
-
-			?>
-			<div class="row">                        
-				<div class="col-md-8"><h4><?php echo $experienciafilas[$i]["titulo"];?><br>
-					<small><?php echo $experienciafilas[$i]["empresa"];?></small></h4>
-				</div>
-				<div class="col-md-4">
-					<small class="femp ">Período: <i> <?php 
-
-					$fechaini = $experienciafilas[$i]["fecha_ini"];
-					$mes = date("n",strtotime($fechaini));
-					$anio = date("Y",strtotime($fechaini));
-					echo $this->meses[$mes].", ".$anio;
-
-					?>- <?php 
-
-					$fechafin = $experienciafilas[$i]["fecha_fin"];
-					if($fechafin != "actualmente"){
-						$mes = date("n",strtotime($fechafin));
-						$anio = date("Y",strtotime($fechafin));
-						echo $this->meses[$mes].", ".$anio;
-					}else{
-						echo $fechafin;
-					}
-
-
-					?> </i></small>
-				</div>   
-				<div class="col-md-8">
-					<p>  
-						<?php echo $experienciafilas[$i]["descripcion"];?>
-					</p>
-				</div>
-				<div class="col-md-12 pie-acciones">
-					<form method="post">					
-						<input type="hidden" name="token" value="<?php echo parent::generarToken('modexp'); ?>">                  
-						<input type="hidden" name="idexp" value="<?php echo $experienciafilas[$i]["identificador"]; ?>">						
-						<?php 
-						foreach ($experienciafilas[$i] as $clave => $valor) {
-							?>
-							<input type="hidden" name="filas[<?php echo $clave;?>]" value="<?php echo $valor;?>">
-
-							<?php
-						}
-						?>
-						<input type="submit" name="elimexp" value="Eliminar" class="btn btn-danger">
-						<input type="submit" name="modexp" value="Modificar" class="btn btn-green">
-					</form>
-				</div>
-			</div>
-
-			<?php
-			if($i<count($experienciafilas)-1){
-				echo "<hr>";
-			}
-		}
-
-
-	}
-
-
-	/** FIN FUNCIÓN LISTAR EXPERIENCIA **/
 
 	/** FUNCIÓN ELIMINAR EXPERIENCIA **/
 
@@ -882,6 +696,98 @@ class estudianteBBDD extends singleton{
 
 
 	/** FIN FUNCIÓN LISTAR EDUCACIÓN **/
+
+	
+
+	/** FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
+	function nuevaFormacion(){
+
+		if(isset($_POST["nuevaform"])&&isset($_POST["tituloeduc"])){
+			$sql = "call nuevaFormacion(?,?,?,?,?,?,?,?)";
+			$consulta = $this->Idb->prepare($sql);			
+
+			$institucion = null;
+
+			if(isset($_POST["institucion"])){
+				$institucion = $_POST["institucion"];
+			}
+
+			$fecha1 = null;
+
+			if(isset($_POST["f1mes"])&&isset($_POST["f1anio"])){
+				$t=time();	
+				$mes = date("n",$t);
+				if($_POST["f1mes"] > 0 && $_POST["f1mes"] <= 12 && $_POST["f1mes"] <= date("n",$t)){
+					$mes = $_POST["f1mes"];
+				}
+
+				$anio = date("Y",$t);
+
+				if($_POST["f1anio"] > 1900 && $_POST["f1anio"] <= date("Y",$t)){
+					$anio = $_POST["f1anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha1 = date("Y-m-d H:i:s",$f);
+			}
+
+			$fecha2 = null;
+			$actualmente = null;
+
+			if(isset($_POST["f2mes"])&&$_POST["f2mes"]!=0&&isset($_POST["f2anio"])){
+				$t=time();
+				$mes = date("n",$t);
+				if($_POST["f2mes"] > 0 && $_POST["f2mes"] <= 12&& $_POST["f2mes"] <= date("n",$t)){
+					$mes = $_POST["f2mes"];
+				}
+
+				$anio = date("Y",$t);
+
+				if($_POST["f2anio"] > 1900 && $_POST["f2anio"] <= date("Y",$t)){
+					$anio = $_POST["f2anio"];
+				}
+
+				$f = mktime(0,0,0,$mes,1,$anio);
+				$fecha2 = date("Y-m-d H:i:s",$f);
+			}elseif(isset($_POST["f2mes"])&&$_POST["f2mes"]==0){
+				$actualmente = true;
+			}
+
+			$desc = null;
+
+			if(isset($_POST["desc"])){
+				$desc = htmlentities($_POST["desc"]);
+			}	
+
+			$nivel = null;
+
+			if(isset($_POST["nivel"])&&is_numeric($_POST["nivel"])){
+				$nivel = $_POST["nivel"];
+			}
+
+			$params = array();
+			array_push($params,$_SESSION["usuario"]->identificador,$_POST["tituloeduc"],$institucion,
+				$fecha1,$fecha2,$actualmente,$desc,$nivel);
+			//print_r($params);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $consulta->fetch();
+
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Formación insertada correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
+				}
+
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha podido insertar la formación";
+			}
+		}
+	}
+	/** fin FUNCIÓN PARA AÑADIR UNA NUEVA Formacion **/
 
 	/** FUNCIÓN ELIMINAR Educacion **/
 
@@ -1206,7 +1112,6 @@ class estudianteBBDD extends singleton{
 	/** FIN FUNCIÓN LISTAR ETIQUETAS DEL ESTUDIANTE **/
 
 
-
 	/** FUNCIÓN AGREGAR ETIQUETAS **/
 
 	function agregarSkills(){		
@@ -1320,6 +1225,50 @@ class estudianteBBDD extends singleton{
 
 	/** FIN FUNCIÓN LISTAR Idiomas **/
 
+
+	/** Función nuevo idioma **/
+
+	function nuevoIdioma(){
+
+		if(isset($_POST["nuevoidioma"])&&isset($_POST["idioma"])){
+			$sql = "call nuevoIdioma(?,?,?,?)";
+			$consulta = $this->Idb->prepare($sql);		
+			$params = array();
+			$hablado = 1;
+			if(isset($_POST["nvh"])&&is_numeric($_POST["nvh"])){
+				$hablado = $_POST["nvh"];
+			}
+			$escrito = 1;
+
+			if(isset($_POST["nve"])&&is_numeric($_POST["nve"])){
+				$escrito = $_POST["nve"];
+			}
+
+			array_push($params,$_SESSION["usuario"]->identificador,$_POST["idioma"],$hablado,
+				$escrito);
+			//print_r($params);
+			$consulta->execute($params);
+
+			if($consulta->rowCount()>0){
+				$consulta->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $consulta->fetch();
+
+				if($row["resultado"]){
+					$_SESSION["mensajeServidor"] = "Idioma insertado correctamente";
+				}else{
+					$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
+				}
+
+			}else{
+				$_SESSION["mensajeServidor"] = "No se ha podido insertar el idioma";
+			}
+		}
+	}
+
+	/** Fin Función nuevo idioma **/
+
+	
 	/** FUNCIÓN ELIMINAR Idioma **/
 
 	function eliminarIdioma(){
@@ -1460,6 +1409,22 @@ class estudianteBBDD extends singleton{
 
 	/** FIN FUNCION MODIFICAR IDIOMA **/
 
+	/** FUNCIÓN PARA ELIMINAR USUARIO **/
+	function eliminarUsuario(){
+		if(isset($_POST["elusuario"])&&isset($_SESSION["usuario"]->identificador)&&$_SESSION["usuario"]->tipo=="estudiante"){
+
+			$sql = "call eliminarUsuario(?)";
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($_SESSION["usuario"]->identificador));
+			session_destroy();
+			session_start();
+			$_SESSION["mensajeServidor"] = "Usuario eliminado correctamente";
+			header("location:index.php");
+
+		}
+	}
+	/** FUNCIÓN PARA ELIMINAR USUARIO **/
+
 	/** FIN PERFIL ESTUDIANTE **/
 
 	/** Busqueda de puestos **/
@@ -1504,7 +1469,7 @@ class estudianteBBDD extends singleton{
 				$condicion = " where idjornada =".$_POST["jornada"];
 			}
 		}
-		/* select nombre, empresa, publicacion from listarPuestos where publicacion > date_sub(curdate(), interval 1 day); */
+		 // select nombre, empresa, publicacion from listarPuestos where publicacion > date_sub(curdate(), interval 1 day); 
 		if(isset($_POST["antiguedad"])){
 			switch ($_POST["antiguedad"]) {
 				case '1':
@@ -1534,339 +1499,401 @@ class estudianteBBDD extends singleton{
 
 
 
-				/*if(isset($_POST["etiquetas"])){
-					if(strlen($condicion)>0){
-						$condicion .= " and ";
-						for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
-							if($i == 0){
-								$condicion .= " lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
-							}else{
-								$condicion .= " or lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
-							}
-							
-						}
-					}else{
-						$condicion = " ";
-						for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
-							if($i == 0){
-								$condicion .= " lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
-							}else{
-								$condicion .= " or lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
-							}
-							
-						}
-					}
-				}*/
-				
 
-				if(strlen($condicion)>0){
-					$sql = "select * from listarPuestos ".$condicion;
+				// if(isset($_POST["etiquetas"])){
+				// 	if(strlen($condicion)>0){
+				// 		$condicion .= " and ";
+				// 		for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
+				// 			if($i == 0){
+				// 				$condicion .= " lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+				// 			}else{
+				// 				$condicion .= " or lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+				// 			}
+
+				// 		}
+				// 	}else{
+				// 		$condicion = " ";
+				// 		for ($i=0; $i < count($_POST["etiquetas"]); $i++) {
+				// 			if($i == 0){
+				// 				$condicion .= " lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+				// 			}else{
+				// 				$condicion .= " or lower(nombre_etiqueta) = lower('".$_POST["etiquetas"][$i]."') ";
+				// 			}
+
+				// 		}
+				// 	}
+				// }
+
+
+
+		if(strlen($condicion)>0){
+			$sql = "select * from listarPuestos ".$condicion;
 					//echo $sql;
-				}else{
-					$sql = "select * from listarPuestos";
-				}
-				
-				$consulta = $this->Idb->prepare($sql);
-				$consulta->execute();
-				$consulta->setFetchMode(PDO::FETCH_ASSOC);
-				$puestosfilas = array();
-				while ($row = $consulta->fetch()) {
-					$puestosfilas[] = $row;
-				}
+		}else{
+			$sql = "select * from listarPuestos";
+		}
 
-				//$nombres = array();
-				$sql = 'select true as existe from listarPstEtqEst where identificador = ? and lower(nombre_etiqueta) = lower(?)';
-
-
-				$token = $this::generarToken("aplicar");
-				for ($i=0; $i < count($puestosfilas); $i++) { 		
-					/*if(!in_array($puestosfilas[$i]["nombre"], $nombres)){*/
-
-						$id = $puestosfilas[$i]["identificador"];
-						$existe = true;
-						if(isset($_POST["etiquetas"])){
-							$existe = false;
-							for ($o=0; $o < count($_POST["etiquetas"])&&!$existe; $o++) {
-								$consulta = $this->Idb->prepare($sql);
-								$consulta->execute(array($id,$_POST["etiquetas"][$o]));
-								$consulta->setFetchMode(PDO::FETCH_ASSOC);
-								$row = $consulta->fetch();
-								if($row["existe"]){
-									$existe = true;
-								}
-							}
-						}
-
-						$sql = 'select true as aplicado from listarPstEtqEst where identificador = ? and idusuario = ?';
-						$aplicado = false;	
-						$consulta = $this->Idb->prepare($sql);
-						$consulta->execute(array($id,$_SESSION["usuario"]->identificador));
-						$consulta->setFetchMode(PDO::FETCH_ASSOC);
-						$row = $consulta->fetch();
-						if($row["aplicado"]){
-							$aplicado = true;
-						}
-
-						$mostrar = false;
-
-						if(isset($_POST["estadop"])){
-							switch ($_POST["estadop"]) {
-								case 1:
-								if($aplicado){
-									$mostrar = true;
-								}else{
-									$mostrar = false;
-								}
-								break;
-								case 2:
-								if($aplicado){
-									$mostrar = false;
-								}else{
-									$mostrar = true;
-								}
-								break;								
-								default:
-								$mostrar = true;
-								break;
-							}
-						}else{
-							$mostrar = true;
-						}
-
-						if($existe&& $mostrar){
-
-							/*array_push($nombres, $puestosfilas[$i]["nombre"]);*/
-							?>
-							<div class="panel <?php if($aplicado){echo 'panel-success';}else{echo 'panel-default';}?>">
-								<div class="panel-heading " data-toggle="collapse" data-target=".puesto<?php echo $i;?>">
-									<div class="row">
-										<div class="col-md-8"><h4><?php echo $puestosfilas[$i]["nombre"];?><br>
-											<small><b>Empresa: </b> <?php echo $puestosfilas[$i]["empresa"]; ?> -
-												<b>Correo: </b> <?php echo $puestosfilas[$i]["email"]; ?> - 
-												<b>Contacto: </b> <?php echo $puestosfilas[$i]["contacto"]; ?>
-											</small></h4>
-										</div>						
-										<div class="col-md-4">
-											<small class="femp ">Fecha Publicación: <i> <?php 
-
-											$fecha = $puestosfilas[$i]["publicacion"];
-											$mes = date("n",strtotime($fecha));
-											$anio = date("Y",strtotime($fecha));
-											echo $this->meses[$mes].", ".$anio;
-
-											?> </i></small>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body collapse puesto<?php echo $i;?>" >		   
-
-									<p>  
-										<b>Descripción del puesto:</b><br>
-										<?php echo $puestosfilas[$i]["descripcion"];?><br><br>
-										<b>Condiciones:</b><br>
-										<?php
-
-										if($puestosfilas[$i]["idcontrato"] != 0){
-											echo "<i>Contrato: </i> ".$puestosfilas[$i]["contrato"]."<br>";
-										} 
-
-										if($puestosfilas[$i]["idexperiencia"] != 0){
-											echo "<i>Experiencia: </i> ".$puestosfilas[$i]["experiencia"]."<br>";
-										}
-
-										if($puestosfilas[$i]["idjornada"] != 0){
-											echo "<i>Jornada: </i> ".$puestosfilas[$i]["jornada"]."<br>";
-										}
-
-										?> 
-									</p>
-									<?php 
-									$sql = "call listarFuncionesPuesto(?)";
-									$consulta = $this->Idb->prepare($sql);
-
-									$consulta->execute(array($puestosfilas[$i]["identificador"]));
-									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-									$funciones = array();
-									if($consulta->rowCount() > 0){
-										while ($row = $consulta->fetch()) {
-											$funciones[] = $row;
-										}
-										echo "<p> <b>Funciones:</b><br><ul>";
-										for ($o=0; $o < count($funciones); $o++) { 
-											echo "<li>".$funciones[$o]["nombre"]."</li>";
-										}
-										echo "</ul></p>";
-									}
-									?>
-									<p>  
-										<b>Provincia:</b>
-										<?php echo $puestosfilas[$i]["provincia"];?>
-									</p>
-									<?php 
-									$sql = "call listarIdiomasPuesto(?)";
-									$consulta = $this->Idb->prepare($sql);
-
-									$consulta->execute(array($puestosfilas[$i]["identificador"]));
-									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-									$idiomas = array();
-
-									if($consulta->rowCount() > 0){
-
-										while ($row = $consulta->fetch()) {
-											$idiomas[] = $row;
-										}		
-
-
-										echo "<p> <b>Idiomas:</b><br>";
-										for ($o=0; $o < count($idiomas); $o++) { 
-											echo $idiomas[$o]["nombre"]." / ";
-										}
-										echo "</p>";
-
-									}
-
-									$sql = "call listarSkillsPuesto(?)";
-									$consulta = $this->Idb->prepare($sql);
-
-									$consulta->execute(array($puestosfilas[$i]["identificador"]));
-									$consulta->setFetchMode(PDO::FETCH_ASSOC);		
-									$etiquetas = array();
-									if($consulta->rowCount() > 0){
-										while ($row = $consulta->fetch()) {
-											$etiquetas[] = $row;
-										}
-
-										echo "<p> <b>Skills:</b><br>";
-										for ($o=0; $o < count($etiquetas); $o++) { 
-											echo $etiquetas[$o]["nombre"]." / ";
-										}
-										echo "</p>";
-									}
-
-									if($puestosfilas[$i]["carnet"]){
-										echo "<b>Requiere carnet de conducir</b><br>";
-									}
-
-
-
-									?>
-
-
-								</div>
-								<div class="panel-footer collapse puesto<?php echo $i;?>">
-									<div class="row">
-										<div class="col-md-12 pie-acciones">
-											<form method="post" class="aplicarform">
-												<input type="hidden" name="idpuesto" value="<?php echo $puestosfilas[$i]["identificador"];?>">								
-												<?php 
-												if($aplicado){
-													echo '<input type="button" disabled value="Puesto ya aplicado" class="btn btn-success">';
-												}else{
-													?>
-													<input type="hidden" name="token" value="<?php echo $token; ?>">                  
-													<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success"> 
-													<?php
-												}
-												?>
-												
-											</form>
-										</div>
-									</div>
-								</div>
-
-							</div>
-
-							<?php
-					/*if($i<count($puestosfilas)-1){
-						echo "<hr>";
-					}*/
-				}
-			}	
-
-
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$puestosfilas = array();
+		while ($row = $consulta->fetch()) {
+			$puestosfilas[] = $row;
 		}
 
 
-		/** FIN FUNCIÓN LISTAR Puestos **/
+		//$nombres = array();
 
-		/* FUNCION LISTAR ETIQUETAS OFERTAS*/
-		function listarEtiquetasOfer(){
+		$sql = 'select true as existe from listarPstEtqEst where identificador = ? and lower(nombre_etiqueta) = lower(?)';
+
+
+		$token = $this::generarToken("aplicar");
+		for ($i=0; $i < count($puestosfilas); $i++) { 		
+			//if(!in_array($puestosfilas[$i]["nombre"], $nombres)){
+
+			$id = $puestosfilas[$i]["identificador"];
+			$existe = true;
 			if(isset($_POST["etiquetas"])){
-				$n = 0;
-				$etiquetas = array();				
-				for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
-					$id = substr($this->limpiarRuta($_POST["etiquetas"][$i]),0,5).$n;
-					$n++;
-					?>
-					<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
-						<div class="input-group">
-							<span class="input-group-addon">
-								<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
-							</span>
-							<input type="text" class="form-control" id="input<?php echo $id;?>" name="etiquetas[]" value="<?php echo $_POST["etiquetas"][$i];?>" readonly>
+				$existe = false;
+				for ($o=0; $o < count($_POST["etiquetas"])&&!$existe; $o++) {
+					$consulta = $this->Idb->prepare($sql);
+					$consulta->execute(array($id,$_POST["etiquetas"][$o]));
+					$consulta->setFetchMode(PDO::FETCH_ASSOC);
+					$row = $consulta->fetch();
+					if($row["existe"]){
+						$existe = true;
+					}
+				}
+			}
+
+			$sql = 'select true as aplicado from listarPstEtqEst where identificador = ? and idusuario = ?';
+			$aplicado = false;	
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($id,$_SESSION["usuario"]->identificador));
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);
+			$row = $consulta->fetch();
+			if($row["aplicado"]){
+				$aplicado = true;
+			}
+
+			$mostrar = false;
+
+			if(isset($_POST["estadop"])){
+				switch ($_POST["estadop"]) {
+					case 1:
+					if($aplicado){
+						$mostrar = true;
+					}else{
+						$mostrar = false;
+					}
+					break;
+					case 2:
+					if($aplicado){
+						$mostrar = false;
+					}else{
+						$mostrar = true;
+					}
+					break;								
+					default:
+					$mostrar = true;
+					break;
+				}
+			}else{
+				$mostrar = true;
+			}
+
+			$ciclo = false;
+
+			$sql = "select ciclo from cicloUsuario where identificador = ?";
+			$consulta = $this->Idb->prepare($sql);
+			$consulta->execute(array($_SESSION["usuario"]->identificador));
+			$consulta->setFetchMode(PDO::FETCH_ASSOC);
+			$row = $consulta->fetch();
+
+			$ciclos = array();
+			if(isset($puestosfilas[$i]["ciclos"])){
+				$ciclos = explode(",", $puestosfilas[$i]["ciclos"]);
+				// $ciclos = array_flip($ciclos);
+			}
+			// print_r($ciclos);
+			// echo "<br>".$row["ciclo"];
+			if(is_null($puestosfilas[$i]["ciclos"])||in_array($row["ciclo"], $ciclos)){
+				$ciclo = true;
+			}
+
+			if($existe && $mostrar && $ciclo){
+
+				// array_push($nombres, $puestosfilas[$i]["nombre"]);
+				?>
+				<div class="panel <?php if($aplicado){echo 'panel-success';}else{echo 'panel-default';}?>">
+					<div class="panel-heading " data-toggle="collapse" data-target=".puesto<?php echo $i;?>">
+						<div class="row">
+							<div class="col-md-8"><h4><?php echo $puestosfilas[$i]["nombre"];?><br>
+								<small><b>Empresa: </b> <?php echo $puestosfilas[$i]["empresa"]; ?> -
+									<b>Correo: </b> <?php echo $puestosfilas[$i]["email"]; ?> - 
+									<b>Contacto: </b> <?php echo $puestosfilas[$i]["contacto"]; ?>
+								</small></h4>
+							</div>						
+							<div class="col-md-4">
+								<small class="femp ">Fecha Publicación: <i> <?php 
+
+								$fecha = $puestosfilas[$i]["publicacion"];
+								$mes = date("n",strtotime($fecha));
+								$anio = date("Y",strtotime($fecha));
+								echo $this->meses[$mes].", ".$anio;
+
+								?> </i></small>
+							</div>
 						</div>
 					</div>
-					<?php
-					$etiquetas[$i]["nombre"] = $_POST["etiquetas"][$i];
-				}
+					<div class="panel-body collapse puesto<?php echo $i;?>" >		   
 
-				$_SESSION["etiquetas"] = json_encode($etiquetas);
-			}
-		}
-		/* fin FUNCION LISTAR ETIQUETAS OFERTAS*/
+						<p>  
+							<b>Descripción del puesto:</b><br>
+							<?php echo $puestosfilas[$i]["descripcion"];?><br><br>
+							<b>Condiciones:</b><br>
+							<?php
 
-		/* funcion para aplicar a un puesto */
+							if($puestosfilas[$i]["idcontrato"] != 0){
+								echo "<i>Contrato: </i> ".$puestosfilas[$i]["contrato"]."<br>";
+							} 
 
-		function aplicarPuesto(){
-			if(isset($_POST["aplicar"])&&isset($_POST["idpuesto"])){
-				/*include_once("generalF.php");
-				session_start();*/
+							if($puestosfilas[$i]["idexperiencia"] != 0){
+								echo "<i>Experiencia: </i> ".$puestosfilas[$i]["experiencia"]."<br>";
+							}
 
-				if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
-					$token = $_POST["token"];
+							if($puestosfilas[$i]["idjornada"] != 0){
+								echo "<i>Jornada: </i> ".$puestosfilas[$i]["jornada"]."<br>";
+							}
 
-					if($this->comprobarToken("aplicar", $token)){	
-
-						$sql = "call aplicarPuesto(?,?)";
+							?> 
+						</p>
+						<?php 
+						$sql = "call listarFuncionesPuesto(?)";
 						$consulta = $this->Idb->prepare($sql);
 
-				//echo "Usuario: ".$_SESSION["usuario"]->identificador." // Puesto: ".$_POST["idpuesto"];
-						$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idpuesto"]));
-						$consulta->setFetchMode(PDO::FETCH_ASSOC);	
+						$consulta->execute(array($puestosfilas[$i]["identificador"]));
+						$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+						$funciones = array();
+						if($consulta->rowCount() > 0){
+							while ($row = $consulta->fetch()) {
+								$funciones[] = $row;
+							}
+							echo "<p> <b>Funciones:</b><br><ul>";
+							for ($o=0; $o < count($funciones); $o++) { 
+								echo "<li>".$funciones[$o]["nombre"]."</li>";
+							}
+							echo "</ul></p>";
+						}
+						?>
+						<p>  
+							<b>Provincia:</b>
+							<?php echo $puestosfilas[$i]["provincia"];?>
+						</p>
+						<?php 
+						$sql = "call listarIdiomasPuesto(?)";
+						$consulta = $this->Idb->prepare($sql);
+
+						$consulta->execute(array($puestosfilas[$i]["identificador"]));
+						$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+						$idiomas = array();
 
 						if($consulta->rowCount() > 0){
-							$row = $consulta->fetch();
-							if($row["resultado"]){
-								echo "correcto";
-							}else{
-								echo "El resultado no ha sido correcto.";
+
+							while ($row = $consulta->fetch()) {
+								$idiomas[] = $row;
+							}		
+
+
+							echo "<p> <b>Idiomas:</b><br>";
+							for ($o=0; $o < count($idiomas); $o++) { 
+								echo $idiomas[$o]["nombre"]." / ";
 							}
-						}else{
-							echo "No se ha obtenido respuesta de la base de datos.";
+							echo "</p>";
+
 						}
 
-					}else{
-						print_r($_POST);
-						print_r($_SESSION);
-						echo "El tiempo de espera ha caducado o el formulario no es válido.<br>".
-						"Recargue la página y vuelva a intentarlo";
-					}
+						$sql = "call listarSkillsPuesto(?)";
+						$consulta = $this->Idb->prepare($sql);
 
-				}else{
-					echo "No hay tokens almacenados :";
-					print_r($_POST);
-				}
+						$consulta->execute(array($puestosfilas[$i]["identificador"]));
+						$consulta->setFetchMode(PDO::FETCH_ASSOC);		
+						$etiquetas = array();
+						if($consulta->rowCount() > 0){
+							while ($row = $consulta->fetch()) {
+								$etiquetas[] = $row;
+							}
+
+							echo "<p> <b>Skills:</b><br>";
+							for ($o=0; $o < count($etiquetas); $o++) { 
+								echo $etiquetas[$o]["nombre"]." / ";
+							}
+							echo "</p>";
+						}
+
+						if($puestosfilas[$i]["carnet"]){
+							echo "<b>Requiere carnet de conducir</b><br>";
+						}
+
+
+
+						?>
+
+
+					</div>
+					<div class="panel-footer collapse puesto<?php echo $i;?>">
+						<div class="row">
+							<div class="col-md-12 pie-acciones">
+								<form method="post" class="aplicarform">
+									<input type="hidden" name="idpuesto" value="<?php echo $puestosfilas[$i]["identificador"];?>">								
+									<?php 
+									if($aplicado){
+										echo '<input type="button" disabled value="Puesto ya aplicado" class="btn btn-success">';
+									}else{
+										?>
+										<input type="hidden" name="token" value="<?php echo $token; ?>">                  
+										<input type="submit" name="aplicar"  value="Aplicar" class="btn btn-success"> 
+										<?php
+									}
+									?>
+
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<?php
+					// if($i<count($puestosfilas)-1){
+					// 	echo "<hr>";
+					//  }
 			}
-		}
+		}	
 
-		/* fin funcion para aplicar a un puesto */
-
-		/** Fin Busqueda de puestos **/
 
 	}
 
 
+	/* FIN FUNCIÓN LISTAR Puestos */
+
+	/* FUNCION LISTAR ETIQUETAS OFERTAS*/
+	function listarEtiquetasOfer(){
+		if(isset($_POST["etiquetas"])){
+			$n = 0;
+			$etiquetas = array();				
+			for ($i=0; $i < count($_POST["etiquetas"]); $i++) { 
+				$id = substr($this->limpiarRuta($_POST["etiquetas"][$i]),0,5).$n;
+				$n++;
+				?>
+				<div class="col-md-4 col-lg-3 form-group" id="<?php echo $id.'elemento';?>">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" id="check<?php echo $id;?>" name="etiquetasel[]" value="<?php echo $id;?>">
+						</span>
+						<input type="text" class="form-control" id="input<?php echo $id;?>" name="etiquetas[]" value="<?php echo $_POST["etiquetas"][$i];?>" readonly>
+					</div>
+				</div>
+				<?php
+				$etiquetas[$i]["nombre"] = $_POST["etiquetas"][$i];
+			}
+
+			$_SESSION["etiquetas"] = json_encode($etiquetas);
+		}
+	}
+	/* fin FUNCION LISTAR ETIQUETAS OFERTAS*/
+
+	/* funcion para aplicar a un puesto */
+
+	function aplicarPuesto(){
+		if(isset($_POST["aplicar"])&&isset($_POST["idpuesto"])){
+		// include_once("generalF.php");
+		// session_start();
+
+			if(isset($_SESSION["tokens"])&&isset($_POST["token"])){
+				$token = $_POST["token"];
+
+				if($this->comprobarToken("aplicar", $token)){	
+
+					$sql = "call aplicarPuesto(?,?)";
+					$consulta = $this->Idb->prepare($sql);
+
+				//echo "Usuario: ".$_SESSION["usuario"]->identificador." // Puesto: ".$_POST["idpuesto"];
+					$consulta->execute(array($_SESSION["usuario"]->identificador,$_POST["idpuesto"]));
+					$consulta->setFetchMode(PDO::FETCH_ASSOC);	
+
+					if($consulta->rowCount() > 0){
+						$row = $consulta->fetch();
+						if($row["resultado"]){
+							echo "correcto";
+						}else{
+							echo "El resultado no ha sido correcto.";
+						}
+					}else{
+						echo "No se ha obtenido respuesta de la base de datos.";
+					}
+
+				}else{
+					print_r($_POST);
+					print_r($_SESSION);
+					echo "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+					"Recargue la página y vuelva a intentarlo";
+				}
+
+			}else{
+				echo "No hay tokens almacenados :";
+				print_r($_POST);
+			}
+		}
+	}
+
+	/* fin funcion para aplicar a un puesto */
+
+	/** Fin Busqueda de puestos **/
+
 	
+
+	/** FUNCIONES DESUSO **/
+
+	/** FUNCIÓN LISTAR CICLOS **/
+	/*function listarNiveles($seleccion = -1){
+		$sql = "call obtenerEnum('formacion_clasificacion','formacion')";
+		$consulta = $this->Idb->prepare($sql);
+		$consulta->execute();
+		$consulta->setFetchMode(PDO::FETCH_ASSOC);
+		$ciclosSELECT = "";
+
+		$row = $consulta->fetch();
+		if($row["resultado"]){
+			$ciclos = explode(",", $row["resultado"]) ;
+			//print_r($ciclos);
+			$ciclosSELECT = " <option disabled selected value='nada'> -- Selecciona una opción -- </option>";
+			for ($i=0; $i < count($ciclos) ; $i++) { 
+				if($seleccion == $i+1){
+					$ciclosSELECT .= "<option value='".($i+1)."' selected>";
+					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+					$ciclosSELECT .= $nombre."</option>";
+				}else{
+					$ciclosSELECT .= "<option value='".($i+1)."'>";
+					$nombre = preg_replace('/\'/', '', $ciclos[$i]);
+					$ciclosSELECT .= $nombre."</option>";
+				}
+
+			}
+		}		
+
+		return $ciclosSELECT;
+	}*/
+
+	/** FUNCIÓN LISTAR CICLOS **/
+
+
+	/** FIN FUNCIONES DESUSO **/
+
+}
+
+
+
 	/*$estudiantecl = new estudianteBBDD();
 
 	$estudiantecl->aplicarPuesto();*/

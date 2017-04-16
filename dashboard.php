@@ -1,10 +1,12 @@
 ﻿<?php
 $page["nombrePag"] = "Dashboard";
-include_once("funciones/generalF.php");
+include_once("./funciones/generalF.php");
+/*echo session_status();*/
 session_start();
 if(!isset($_SESSION["usuario"])){
     header("location:index.php");
 }
+unset($_SESSION["tokens"]);
 /*print_r($_SESSION);*/
 ob_start();
 ?>

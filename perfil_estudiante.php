@@ -2,20 +2,6 @@
 include_once("funciones/generalF.php");
 
 session_start();
-include_once('funciones/estudianteF.php');
-/*$estudiantecl = new estudianteBBDD;*/
-/*$estudiantecl->eliminarUsuario();*/
-
-if(isset($_POST["elusuario"])&&isset($_POST["token"])&&isset($_SESSION["tokens"])){
-    $token = $_POST["token"];
-    if($estudiantecl->comprobarToken("elusuario", $token)){
-        $estudiantecl->eliminarUsuario();
-    }else{
-        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
-        "Recargue la página y vuelva a intentarlo";
-    }
-
-}
 
 
 if(!isset($_SESSION["usuario"])){
@@ -28,6 +14,22 @@ if(!isset($_SESSION["usuario"])){
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Perfil";
 
+include_once('funciones/estudianteF.php');
+$estudiantecl = new estudianteBBDD;
+/*$estudiantecl->eliminarUsuario();*/
+
+/*echo session_status();*/
+
+if(isset($_POST["elusuario"])&&isset($_POST["token"])&&isset($_SESSION["tokens"])){
+    $token = $_POST["token"];
+    if($estudiantecl->comprobarToken("elusuario", $token)){
+        $estudiantecl->eliminarUsuario();
+    }else{
+        $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
+        "Recargue la página y vuelva a intentarlo";
+    }
+
+}
 
 $generacl = new General;
 
@@ -507,7 +509,7 @@ $informacion = $estudiantecl->listarInformacion();
                     <div class="col-md-6">
                         <div class="form-group">                               
                             <label>Fotografía de perfil (Alto y Ancho de 90px)</label><br>
-                            <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
+                            <input type="button" value="Seleccionar Archivo" class="btn btn-info" onclick="document.getElementById('fotop').click();">
                             <input type="file" id="fotop" name="fotop" style="display:none"> 
                             <input type="hidden" id="dirfotop" value="<?php if(isset($informacion["fotografia"])){echo $informacion["fotografia"];}?>">                       
                             <input type="button" class="btn btn-primary" id="mostrarf"  value="Mostrar fotografía">
@@ -516,7 +518,7 @@ $informacion = $estudiantecl->listarInformacion();
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Currículum Vitae (Sólo pdf hasta 500KB)</label><br>
-                            <input type="button" value="Subir Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
+                            <input type="button" value="Seleccionar Archivo" class="btn btn-info" onclick="document.getElementById('cv').click();">
                             <input type="file" id="cv" name="cv" style="display:none">
                             <?php if(isset($informacion["curriculum"])){?> 
                             <input type="hidden" id="dircv" value="<?php if(isset($informacion["curriculum"])){echo $informacion["curriculum"];}?>">
