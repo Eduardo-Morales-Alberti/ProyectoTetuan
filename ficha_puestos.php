@@ -1,15 +1,16 @@
 <?php
 $page["nombrePag"] = "Ficha de puestos";
-include_once("funciones/generalF.php");
-include_once("funciones/empresaF.php");
+
+include_once('funciones/empresaF.php');
 session_start();
+
 if(!isset($_SESSION["usuario"])){
     header("location:index.php");
 }else if($_SESSION["usuario"]->tipo != "empresa"){
     header("location:dashboard.php");
 }
 
-$generacl = new General;
+
 $empresacl = new empresaBBDD;
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
@@ -50,8 +51,8 @@ ob_start();
                 <div class="form-group">
                     <label>Nombre de la empresa</label>
                     <select class="form-control"   <?php if(isset($puesto["id_emp"])){ echo "disabled";}else{echo 'name="empresa"';}?> >
-                        <?php /*if(isset($puesto["id_emp"])){echo $generacl->listarEmpresasSelect($puesto["id_emp"]);
-                    }else{echo $generacl->listarEmpresasSelect();
+                        <?php /*if(isset($puesto["id_emp"])){echo $empresacl->listarEmpresasSelect($puesto["id_emp"]);
+                    }else{echo $empresacl->listarEmpresasSelect();
                     } */?>
                 </select>
                 <?php /*if(isset($puesto["id_emp"])){ echo '<input type="hidden" name="empresa" value="'.$puesto["id_emp"].'" >';}*/ ?>
@@ -69,8 +70,8 @@ ob_start();
             <div class="form-group">
                 <label for="provincia">Provincia</label>
                 <select class="form-control" name="provincia">
-                    <?php if(isset($puesto["idprov"])){$generacl->listarProvincias($puesto["idprov"]);}?>
-                    <?php echo $generacl->provinciasSELECT;?>
+                    <?php if(isset($puesto["idprov"])){$empresacl->listarProvincias($puesto["idprov"]);}?>
+                    <?php echo $empresacl->provinciasSELECT;?>
                 </select>
             </div>
         </div>
@@ -234,7 +235,7 @@ ob_start();
                     <?php
                     $exp = 1;
                     if(isset($puesto["experiencia"])){$exp = $puesto["experiencia"];}?>
-                    <?php echo $generacl->listarEnum("experiencia","puestos",$exp); ?>
+                    <?php echo $empresacl->listarEnum("experiencia","puestos",$exp); ?>
                 </select>
             </div>
         </div>
@@ -247,7 +248,7 @@ ob_start();
                     <?php
                     $contr = 1;
                     if(isset($puesto["contrato"])){$contr = $puesto["contrato"];}?>
-                    <?php echo $generacl->listarEnum("tipo_contrato","puestos",$contr); ?>
+                    <?php echo $empresacl->listarEnum("tipo_contrato","puestos",$contr); ?>
                 </select>
             </div>
         </div>
@@ -258,7 +259,7 @@ ob_start();
                     <?php
                     $jorn = 1;
                     if(isset($puesto["jornada"])){$jorn = $puesto["jornada"];}?>
-                    <?php echo $generacl->listarEnum("jornada","puestos",$jorn); ?>
+                    <?php echo $empresacl->listarEnum("jornada","puestos",$jorn); ?>
                 </select>
             </div>
         </div>
@@ -272,7 +273,7 @@ ob_start();
                     <?php
                     $tit = 1;
                     if(isset($puesto["titulacion"])){$tit = $puesto["titulacion"];}?>
-                    <?php echo $generacl->listarEnum("titulacion_minima","puestos",$tit); ?>
+                    <?php echo $empresacl->listarEnum("titulacion_minima","puestos",$tit); ?>
                 </select>
 
             </div>

@@ -1,6 +1,8 @@
 <?php
 $page["nombrePag"] = "Interesados";
-include_once("funciones/generalF.php");
+
+include_once("funciones/empresaF.php");
+
 session_start();
 
 if(!isset($_SESSION["usuario"])){
@@ -9,8 +11,8 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
-$generacl = new General;
-include_once("funciones/empresaF.php");
+
+
 $empresacl = new empresaBBDD;
 /*$empresacl->eliminarPuestos();
 $empresacl->modificarPuesto();*/
@@ -38,8 +40,8 @@ ob_start();
                         <?php
                         $prov = null;
                         if(isset($_POST["provincia"])){$prov = $_POST["provincia"];}?>
-                        <?php $generacl->listarProvincias($prov); 
-                        echo $generacl->provinciasSELECT;?>
+                        <?php $empresacl->listarProvincias($prov); 
+                        echo $empresacl->provinciasSELECT;?>
                     </select>
                 </div>
             </div>
@@ -65,7 +67,7 @@ ob_start();
                         <?php
                         $cont = null;
                         if(isset($_POST["formacion"])){$cont = $_POST["formacion"];}
-                        echo $generacl->listarEnum("formacion_clasificacion","formacion",$cont); ?>
+                        echo $empresacl->listarEnum("formacion_clasificacion","formacion",$cont); ?>
                     </select>
                 </div>
             </div>
@@ -79,7 +81,7 @@ ob_start();
                     <?php 
                     $exp = null;
                     if(isset($_POST["experiencia"])){$exp = $_POST["experiencia"];}
-                    echo $generacl->listarEnum("experiencia","puestos",$exp); ?>
+                    echo $empresacl->listarEnum("experiencia","puestos",$exp); ?>
                 </select>
             </div>
         </div>          
@@ -96,7 +98,7 @@ ob_start();
                             <option value="java">java</option>
                             <option value="html">html</option>
                             <option value="css">css</option>-->
-                            <?php echo $generacl->listarTodasEtiquetas(); ?>
+                            <?php echo $empresacl->listarTodasEtiquetas(); ?>
                         </select>
                         <span class="input-group-btn">
                             <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">

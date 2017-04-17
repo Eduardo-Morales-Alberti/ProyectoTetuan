@@ -1,6 +1,8 @@
 <?php
 $page["nombrePag"] = "Filtro de puestos";
-include_once("funciones/generalF.php");
+
+include_once("funciones/empresaF.php");
+
 session_start();
 
 if(!isset($_SESSION["usuario"])){
@@ -9,8 +11,8 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
-$generacl = new General;
-include_once("funciones/empresaF.php");
+
+
 $empresacl = new empresaBBDD;
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){

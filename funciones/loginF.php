@@ -1,7 +1,7 @@
 <?php
 include_once("generalF.php");
-include_once("conexion.php");
-class loginBBDD extends singleton{
+
+class loginBBDD extends General{
 
 	function __construct() {
 		parent::__construct();
@@ -77,7 +77,7 @@ class loginBBDD extends singleton{
 					$mensaje = "Para restablecer su contraseña vaya al siguiente enlace 
 					<a href='http://localhost/proyectofinal/restablecer_password.php?email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
 					Restablecer Contraseña</a>";
-					$enviado = General::enviarEmail($emails,"Restablecer la contraseña", $mensaje);
+					$enviado = $this->enviarEmail($emails,"Restablecer la contraseña", $mensaje);
 
 					if($enviado == "correcto"){
 
@@ -229,7 +229,7 @@ class loginBBDD extends singleton{
 			$mensaje = "Para confirmar su cuenta vaya al siguiente enlace 
 			<a href='http://localhost/proyectofinal/index.php?confirmar=true&email=".urlencode($_POST['mail'])."&clave=".urlencode($result['hashing'])."'>
 			Confirmar</a>";
-			$enviado = General::enviarEmail(array($_POST['mail']),"Confirmar cuenta", $mensaje);
+			$enviado = $this->enviarEmail(array($_POST['mail']),"Confirmar cuenta", $mensaje);
 
 		}else{
 			session_destroy();

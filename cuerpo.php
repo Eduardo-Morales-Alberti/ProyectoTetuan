@@ -37,8 +37,8 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
         <!--<link href="plugins/Notific/jquery.notific8.min.css" rel="stylesheet" />-->
         <!-- DataTables CSS -->
 
-        <link href="css/dataTables.bootstrap.min.css" rel="stylesheet" />
-        <link href="css/dataTables.responsive.bootstrap.min.css" rel="stylesheet" />
+        <link href="plugins/datatables/dataTables.bootstrap.min.css" rel="stylesheet" />
+        <link href="plugins/datatables/dataTables.responsive.bootstrap.min.css" rel="stylesheet" />
 
 
         <!-- Web CSS-->
@@ -301,11 +301,11 @@ if(!isset($page)|| !isset($_SESSION["usuario"])){
                     <script src="plugins/store/storejson2.min.js"></script>
                     <!--<script src="plugins/Notific/jquery.notific8.min.js"></script>-->
                     <!-- Data Table Scripts-->
-                    <script src="js/jquery.dataTables.min.js"></script>
-                    <script src="js/dataTables.bootstrap.min.js"></script>
+                    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+                    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
 
                     <!-- Tabla responsive -->
-                    <script src="js/dataTables.responsive.min.js"></script>
+                    <script src="plugins/datatables/dataTables.responsive.min.js"></script>
 
 
                     <script src="js/app.js"></script> 

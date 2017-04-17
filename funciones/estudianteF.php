@@ -1,7 +1,7 @@
 <?php
-include_once("conexion.php");
+include_once("generalF.php");
 
-class estudianteBBDD extends singleton{
+class estudianteBBDD extends General{
 	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
 
 	function __construct(){
@@ -619,7 +619,7 @@ class estudianteBBDD extends singleton{
 
 	/** FUNCIÓN LISTAR EDUCACIÓN **/
 
-	function listarEducacion(){
+	function listarFormacion(){
 		//$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 		$sql = "select * from listarEducacion where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
@@ -791,7 +791,7 @@ class estudianteBBDD extends singleton{
 
 	/** FUNCIÓN ELIMINAR Educacion **/
 
-	function eliminarEducacion(){
+	function eliminarFormacion(){
 		if(isset($_POST["elimedc"])&&isset($_POST["idedc"])){
 			$sql = "call eliminarEducacion(?,?)";
 			$consulta = $this->Idb->prepare($sql);
@@ -818,7 +818,7 @@ class estudianteBBDD extends singleton{
 
 	/** FUNCION Mostrar modal MODIFICAR Educacion **/
 
-	function modalModificarEducacion(){
+	function modalModificarFormacion(){
 		if(isset($_POST["modedc"])&&isset($_POST["filas"])){			
 			$niveles = ["Fp básica","Grado medio","Bachillerato","Grado superior","Grado Universitario",
 			"Máster","Certificado oficial","otro"];
@@ -1052,7 +1052,7 @@ class estudianteBBDD extends singleton{
 
 	/**Funcion select de skills estudiante **/
 
-	function listarSkillsSelect(){
+	function listarEtiquetasSelect(){
 
 		$sql = "call listarEtiquetasEst(?,true)";
 		$consulta = $this->Idb->prepare($sql);
@@ -1114,8 +1114,8 @@ class estudianteBBDD extends singleton{
 
 	/** FUNCIÓN AGREGAR ETIQUETAS **/
 
-	function agregarSkills(){		
-		if(isset($_POST["guardarskills"])){
+	function agregarEtiquetas(){		
+		if(isset($_POST["guardaretiquetas"])){
 			$correcto = true;
 			$mensaje = "";
 			
@@ -1724,7 +1724,7 @@ class estudianteBBDD extends singleton{
 								$etiquetas[] = $row;
 							}
 
-							echo "<p> <b>Skills:</b><br>";
+							echo "<p> <b>Etiquetas:</b><br>";
 							for ($o=0; $o < count($etiquetas); $o++) { 
 								echo $etiquetas[$o]["nombre"]." / ";
 							}

@@ -3,8 +3,7 @@
 /**$page tendrá el resto del contenido que se mostrará en el cuerpo**/
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Búsqueda de ofertas";
-
-include_once("funciones/generalF.php");
+include_once('funciones/estudianteF.php');
 
 session_start();
 
@@ -15,7 +14,7 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
-include_once('funciones/estudianteF.php');
+
 $estudiantecl = new estudianteBBDD;
 
 /* Con esto limpiamos el formulario*/
@@ -23,7 +22,7 @@ if(isset($_POST["limpiar"])){
     $_POST = array();
 }
 
-$generacl = new General;
+
 
 
 
@@ -46,8 +45,8 @@ ob_start();?>
                         <?php
 
                         if(isset($_POST["provincia"])){$prov = $_POST["provincia"];}?>
-                        <?php $generacl->listarProvincias($prov); 
-                        echo $generacl->provinciasSELECT;?>
+                        <?php $estudiantecl->listarProvincias($prov); 
+                        echo $estudiantecl->provinciasSELECT;?>
                     </select>
                 </div>
             </div>
@@ -58,7 +57,7 @@ ob_start();?>
 
                         <?php 
                         if(isset($_POST["empresa"])){$emp = $_POST["empresa"];}
-                        echo $generacl->listarEmpresasSelect($emp); ?>
+                        echo $estudiantecl->listarEmpresasSelect($emp); ?>
                     </select>
                 </div>
             </div>
@@ -71,7 +70,7 @@ ob_start();?>
                     <select class="form-control" name="contrato">
                         <?php
                         if(isset($_POST["contrato"])){$cont = $_POST["contrato"];}
-                        echo $generacl->listarEnum("tipo_contrato","puestos",$cont); ?>
+                        echo $estudiantecl->listarEnum("tipo_contrato","puestos",$cont); ?>
                     </select>
                 </div>
             </div>
@@ -84,7 +83,7 @@ ob_start();?>
 
                     <?php 
                     if(isset($_POST["experiencia"])){$exp = $_POST["experiencia"];}
-                    echo $generacl->listarEnum("experiencia","puestos",$exp); ?>
+                    echo $estudiantecl->listarEnum("experiencia","puestos",$exp); ?>
                 </select>
             </div>
         </div>			
@@ -101,7 +100,7 @@ ob_start();?>
                             <option value="java">java</option>
                             <option value="html">html</option>
                             <option value="css">css</option>-->
-                            <?php echo $generacl->listarTodasEtiquetas(); ?>
+                            <?php echo $estudiantecl->listarTodasEtiquetas(); ?>
                         </select>
                         <span class="input-group-btn">
                             <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
@@ -147,7 +146,7 @@ ob_start();?>
                 <select class="form-control" name="jornada">
                     <?php 
                     if(isset($_POST["jornada"])){$jorn = $_POST["jornada"];}
-                    echo $generacl->listarEnum("jornada","puestos",$jorn); ?>
+                    echo $estudiantecl->listarEnum("jornada","puestos",$jorn); ?>
                 </select>
             </div>
         </div>

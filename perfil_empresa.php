@@ -1,5 +1,5 @@
 ﻿<?php
-include_once("funciones/generalF.php");
+include_once('funciones/empresaF.php');
 
 session_start();
 
@@ -12,10 +12,10 @@ if(!isset($_SESSION["usuario"])){
 /**Este es el nombre de la página, aparecerá en el title del cuerpo**/
 $page["nombrePag"] = "Perfil";
 
-include_once('funciones/empresaF.php');
+
 $empresacl = new empresaBBDD;
 
-$generacl = new General;
+
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
     $token = $_POST["token"];

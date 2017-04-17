@@ -1,6 +1,8 @@
 <?php
 $page["nombrePag"] = "Filtro de empresas";
-include_once("funciones/generalF.php");
+
+include_once("funciones/adminF.php");
+
 session_start();
 
 if(!isset($_SESSION["usuario"])){
@@ -8,7 +10,7 @@ if(!isset($_SESSION["usuario"])){
 }else if($_SESSION["usuario"]->tipo != "administrador"){
     header("location:dashboard.php");
 }
-include_once("funciones/adminF.php");
+
 $adminclass = new adminBBDD;
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){

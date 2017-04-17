@@ -1,6 +1,9 @@
 ﻿<?php
+
 $page["nombrePag"] = "Dashboard";
-include_once("./funciones/generalF.php");
+
+include_once("funciones/generalF.php");
+
 /*echo session_status();*/
 session_start();
 if(!isset($_SESSION["usuario"])){

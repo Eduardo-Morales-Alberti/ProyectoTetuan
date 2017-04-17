@@ -1,6 +1,9 @@
 ﻿<?php
-include_once("funciones/generalF.php");
 
+/**$page tendrá el resto del contenido que se mostrará en el cuerpo**/
+/**Este es el nombre de la página, aparecerá en el title del cuerpo**/
+$page["nombrePag"] = "Perfil";
+include_once('funciones/estudianteF.php');
 session_start();
 
 
@@ -10,11 +13,9 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
-/**$page tendrá el resto del contenido que se mostrará en el cuerpo**/
-/**Este es el nombre de la página, aparecerá en el title del cuerpo**/
-$page["nombrePag"] = "Perfil";
 
-include_once('funciones/estudianteF.php');
+
+
 $estudiantecl = new estudianteBBDD;
 /*$estudiantecl->eliminarUsuario();*/
 
@@ -31,7 +32,7 @@ if(isset($_POST["elusuario"])&&isset($_POST["token"])&&isset($_SESSION["tokens"]
 
 }
 
-$generacl = new General;
+
 
 /* Tokens para asegurar la integridad de los formularios */
 
@@ -79,9 +80,9 @@ if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
             "Recargue la página y vuelva a intentarlo";
         }
 
-    }elseif(isset($_POST["guardarskills"])){
-        if($estudiantecl->comprobarToken("guardarskills", $token)){
-            $estudiantecl->agregarSkills();
+    }elseif(isset($_POST["guardaretiquetas"])){
+        if($estudiantecl->comprobarToken("guardaretiquetas", $token)){
+            $estudiantecl->agregarEtiquetas();
         }else{
             $_SESSION["mensajeServidor"] = "El tiempo de espera ha caducado o el formulario no es válido.<br>".
             "Recargue la página y vuelva a intentarlo";
@@ -141,7 +142,7 @@ if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
 //print_r($_SESSION["usuario"]);
 
 
-/*print_r($generacl->provincias);*/
+/*print_r($estudiantecl->provincias);*/
 
 
 
@@ -155,7 +156,7 @@ $estudiantecl->modalModificarExperiencia();
 
 $estudiantecl->modalModificarIdioma(); 
 
-$estudiantecl->modalModificarEducacion(); 
+$estudiantecl->modalModificarFormacion(); 
 
 ?>
 
@@ -347,7 +348,7 @@ ob_start();
                                     <option value="6">Máster</option>
                                     <option value="7">Certificado oficial</option>
                                     <option value="8">otro</option>-->
-                                    <?php echo $generacl->listarEnum("formacion_clasificacion","formacion"); ?>
+                                    <?php echo $estudiantecl->listarEnum("formacion_clasificacion","formacion"); ?>
                                 </select>
                             </div>    
                         </div>                     
@@ -398,7 +399,7 @@ ob_start();
                             <div class="form-group">
                                 <label>Idioma</label>
                                 <select name="idioma" class="form-control" required>
-                                    <?php echo $generacl->listarIdiomas(); ?>
+                                    <?php echo $estudiantecl->listarIdiomas(); ?>
                                 </select>
                             </div>    
                         </div>                     
@@ -487,8 +488,8 @@ $informacion = $estudiantecl->listarInformacion();
                             $n = -1;
                             if(isset($informacion["provincia"])&& is_numeric($informacion["provincia"]) && $informacion["provincia"] >0 ){
                                 $n = $informacion["provincia"];}
-                                $generacl->listarProvincias($n);
-                                echo $generacl->provinciasSELECT; ?>
+                                $estudiantecl->listarProvincias($n);
+                                echo $estudiantecl->provinciasSELECT; ?>
                             </select>
                         </div>
                     </div>           
@@ -632,7 +633,7 @@ $informacion = $estudiantecl->listarInformacion();
                 <h4>Educación</h4> 
             </div>
             <div class="panel-body collapse colleduc">
-                <?php echo $estudiantecl->listarEducacion(); ?>
+                <?php echo $estudiantecl->listarFormacion(); ?>
 
             </div>
             <div class="panel-footer collapse colleduc">
@@ -648,7 +649,7 @@ $informacion = $estudiantecl->listarInformacion();
         <form method="POST">
             <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target=".collskills">
-                    <h4>Skills</h4> 
+                    <h4>Etiquetas</h4> 
                 </div>
                 <div class="panel-body collapse collskills">
                     <div class="row">
@@ -658,8 +659,8 @@ $informacion = $estudiantecl->listarInformacion();
                                 <div class="input-group">
                                     <select class="form-control" id="etiquetas" name="etiqueta">
 
-                                        <?php /*echo $generacl->listarEtiquetas();*/
-                                        echo $estudiantecl->listarSkillsSelect(); ?>
+                                        <?php /*echo $estudiantecl->listarEtiquetas();*/
+                                        echo $estudiantecl->listarEtiquetasSelect(); ?>
                                     </select>
                                     <span class="input-group-btn">
                                         <input class="btn btn-success" id="ageex" name="ageex" type="button" value="Agregar etiqueta">
@@ -708,9 +709,9 @@ $informacion = $estudiantecl->listarInformacion();
     <div class="panel-footer collapse collskills">
         <div class="row">
             <div class="col-md-12 text-right">
-                <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('guardarskills');?>">  
+                <input type="hidden" name="token" value="<?php echo $estudiantecl->generarToken('guardaretiquetas');?>">  
                 <input type="button"  class="btn btn-danger" id="eliminarskills" name="eliminarskills" value="Eliminar selección">
-                <input type="submit"  class="btn btn-green" name="guardarskills" value="Guardar Skills">
+                <input type="submit"  class="btn btn-green" name="guardaretiquetas" value="Guardar Skills">
             </div>
         </div>
     </div>

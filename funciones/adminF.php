@@ -1,7 +1,7 @@
 <?php
-include_once("conexion.php");
+include_once("generalF.php");
 
-class adminBBDD extends singleton{
+class adminBBDD extends General{
 	/*private $n = 0;*/
 	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
 	function __construct(){
