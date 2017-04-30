@@ -59,6 +59,29 @@ delimiter ;
 
 /** FIN RUTINA PARA ELIMINAR UN USUARIO **/
 
+/* Función para modificar la contraseña */
+drop PROCEDURE if EXISTS tetuanjobs.cambiarContr;
+
+delimiter //
+
+CREATE PROCEDURE tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv varchar(20)) 
+	BEGIN
+		declare c varchar(41);
+
+		SELECT password into c from tetuanjobs.usuarios where id_usuario = usid and activo = 1;
+		if c = password(contract) then 
+			update tetuanjobs.usuarios set password = password(contrnv) where id_usuario = usid;
+			SELECT true as cambiada;
+		else
+			SELECT false as cambiada;		
+		END IF;
+		
+	END//
+delimiter ;
+/*call tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");*/
+
+/* fin Función para modificar la contraseña */
+
 /** FIN RUTINAS GENERALES **/
 
 
@@ -559,29 +582,6 @@ delimiter ;
 /*call tetuanjobs.modificarUsuario(1,null, null, "625879852",null,null,null,null,null,1,null );*/
 
 /* fin Función para modificar Usuario*/
-
-/* Función para modificar la contraseña */
-drop PROCEDURE if EXISTS tetuanjobs.cambiarContr;
-
-delimiter //
-
-CREATE PROCEDURE tetuanjobs.cambiarContr(usid int,contract varchar(20), contrnv varchar(20)) 
-	BEGIN
-		declare c varchar(41);
-
-		SELECT password into c from tetuanjobs.usuarios where id_usuario = usid;
-		if c = password(contract) then 
-			update tetuanjobs.usuarios set password = password(contrnv) where id_usuario = usid;
-			SELECT true as cambiada;
-		else
-			SELECT false as cambiada;		
-		END IF;
-		
-	END//
-delimiter ;
-/*call tetuanjobs.cambiarContr(4,"admintetuan","nuevacontraseña");*/
-
-/* fin Función para modificar la contraseña */
 
 /** Funcion para crear nuevo experiencia de trabajo **/
 

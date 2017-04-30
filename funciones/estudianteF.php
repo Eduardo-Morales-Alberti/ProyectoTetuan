@@ -1,8 +1,8 @@
 <?php
 include_once("generalF.php");
 
-class estudianteBBDD extends General{
-	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
+class EstudianteBBDD extends General{
+	
 
 	function __construct(){
 		parent::__construct();
@@ -291,8 +291,6 @@ class estudianteBBDD extends General{
 				echo "<hr>";
 			}
 		}
-
-
 	}
 
 	/** FIN FUNCIÓN LISTAR EXPERIENCIA **/
@@ -690,8 +688,6 @@ class estudianteBBDD extends General{
 				echo "<hr>";
 			}
 		}
-
-
 	}
 
 
@@ -1074,7 +1070,6 @@ class estudianteBBDD extends General{
 
 		}
 		return $etiquetasSELECT;
-
 	}
 
 	/** fin Funcion select de skills estudiante**/
@@ -1106,7 +1101,6 @@ class estudianteBBDD extends General{
 			</div>
 			<?php
 		}
-
 	}
 
 	/** FIN FUNCIÓN LISTAR ETIQUETAS DEL ESTUDIANTE **/
@@ -1218,8 +1212,6 @@ class estudianteBBDD extends General{
 
 			<?php
 		}
-
-
 	}
 
 
@@ -1423,7 +1415,7 @@ class estudianteBBDD extends General{
 
 		}
 	}
-	/** FUNCIÓN PARA ELIMINAR USUARIO **/
+	/** FIN FUNCIÓN PARA ELIMINAR USUARIO **/
 
 	/** FIN PERFIL ESTUDIANTE **/
 
@@ -1770,8 +1762,6 @@ class estudianteBBDD extends General{
 					//  }
 			}
 		}	
-
-
 	}
 
 
@@ -1894,9 +1884,9 @@ class estudianteBBDD extends General{
 
 
 
-	/*$estudiantecl = new estudianteBBDD();
+	/*$estudiantecl = new EstudianteBBDD();
 
 	$estudiantecl->aplicarPuesto();*/
 	
 
-	?>
+?>

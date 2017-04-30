@@ -1,9 +1,8 @@
 <?php
 include_once("generalF.php");
 
-class adminBBDD extends General{
-	/*private $n = 0;*/
-	/*public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");*/
+class AdminBBDD extends General{
+	
 	function __construct(){
 		parent::__construct();		
 	}
@@ -11,6 +10,7 @@ class adminBBDD extends General{
 
 	/** GESTION USUARIOS **/
 
+	/** Función listar usuarios **/
 	function listarUsuarios(){
 		$html = "";
 		$sql = "select identificador,email,estado, nombre, apellidos, ciclo  from listarUsuarios";
@@ -36,8 +36,9 @@ class adminBBDD extends General{
 			}
 			echo "</tr>";
 		}	
-
 	}
+
+	/** Fin función listar usuarios **/
 
 	/** Cambiar el estado Estudiantes **/
 
@@ -68,13 +69,12 @@ class adminBBDD extends General{
 		}
 	}
 
-	/** Eliminar usuarios **/
+	/** Fin Eliminar usuarios **/
 
 	/** FIN GESTION USUARIOS **/
 
 	/** GESTION EMPRESAS **/
 
-	/** FILTRO EMPRESAS **/
 
 	/** funcion para listar las empresas **/
 
@@ -104,7 +104,6 @@ class adminBBDD extends General{
 			}
 			echo "</tr>";
 		}	
-
 	}
 
 	/** fin funcion para listar las empresas **/
@@ -154,10 +153,9 @@ class adminBBDD extends General{
 
 			}	
 		}
-
 	}
 
-	/** funcion para eliminar las empresas **/
+	/** fin funcion para eliminar las empresas **/
 
 
 	/** FIN GESTION EMPRESAS **/
@@ -190,7 +188,6 @@ class adminBBDD extends General{
 			</div>
 			<?php
 		}
-
 	}
 
 	/** FIN FUNCIÓN LISTAR ETIQUETAS **/
@@ -297,7 +294,6 @@ class adminBBDD extends General{
 			</div>
 			<?php
 		}
-
 	}
 
 	/** FIN FUNCIÓN LISTAR Idiomas **/
@@ -336,10 +332,6 @@ class adminBBDD extends General{
 				}
 			}
 		}
-
-
-
-
 	}
 
 	/* Fin función agregar nuevo idioma */
@@ -467,7 +459,7 @@ class adminBBDD extends General{
 
 }
 
-/*$adminclass = new adminBBDD;
+/*$adminclass = new AdminBBDD;
 $adminclass->agregarEtiqueta();
 $adminclass->agregarIdioma();*/
 

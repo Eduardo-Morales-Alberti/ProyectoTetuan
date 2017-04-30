@@ -22,14 +22,16 @@ class Usuario{
 
 class General {
 	protected $Idb; private static $instancia; 
-	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+	public $meses = array("actualmente","Enero","Febrero","Marzo","Abril",
+		"Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 
 	public $provincias = array();
 	public $provinciasSELECT = "";
 
 	// un constructor privado evita crear nuevos objetos desde fuera de la clase
 	protected function __construct(){
-		$this->Idb = new PDO( "mysql:host=localhost; dbname=tetuanjobs;charset=utf8", 'usertetuan','tetuanjobs'); 
+		$this->Idb = new PDO( "mysql:host=localhost; dbname=tetuanjobs;charset=utf8", 
+			'usertetuan','tetuanjobs'); 
 		$this->listarProvincias();
 	}
 
@@ -49,8 +51,7 @@ class General {
 	// Evita que el objeto se pueda clonar
 	public function __clone(){ 
 
-		trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR); 
-		
+		trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR); 		
 	}
 
 	/** funcion limpiar caracteres **/
@@ -97,19 +98,19 @@ class General {
 
 	function comprobarToken($form, $token, $delta_time=60) {
 
-   // comprueba si hay un token registrado en sesión para el formulario
+   		// comprueba si hay un token registrado en sesión para el formulario
 		if(!isset($_SESSION['tokens'][$form.'_token'])) {
 			return false;
 		}
 
-   // compara el token recibido con el registrado en sesión
+   		// compara el token recibido con el registrado en sesión
 		if ($_SESSION['tokens'][$form.'_token']['token'] !== $token) {
 			unset($_SESSION['tokens'][$form.'_token']);
 			return false;
 		}
 
-   // si se indica un tiempo máximo de validez del ticket se compara la
-   // fecha actual con la de generación del ticket
+   		// si se indica un tiempo máximo de validez del ticket se compara la
+   		// fecha actual con la de generación del ticket
 		if($delta_time > 0){
 			$token_age = time() - $_SESSION['tokens'][$form.'_token']['time'];
 			if($token_age >= ($delta_time*60)){
@@ -117,10 +118,10 @@ class General {
 				return false;
 			}
 		}
-		unset($_SESSION['tokens'][$form.'_token']);
+		
 		return true;
 	}
-
+	/* fin funcion comprobar token*/
 
 	//Función para enviar email
 	public function enviarEmail($emails, $asunto, $cuerpo){
@@ -195,7 +196,6 @@ class General {
 			
 		}
 		$this->provinciasSELECT .= "";
-
 	}
 
 	/** fin funcion listar provincias**/
@@ -221,7 +221,6 @@ class General {
 			
 		}
 		return $etiquetasSELECT;
-
 	}
 
 	/** fin función listar etiquetas **/
@@ -248,7 +247,6 @@ class General {
 			
 		}
 		return $idiomasSELECT;
-
 	}
 
 	/** fin función listar Idiomas **/
@@ -278,7 +276,6 @@ class General {
 		}
 		$empresasSELECT .= "";
 		return $empresasSELECT;
-
 	}
 
 	/** fin función select listar empresas **/
@@ -313,7 +310,7 @@ class General {
 		return $ciclosSELECT;
 	}
 
-	/** FUNCIÓN LISTAR ENUM **/
+	/** fin FUNCIÓN LISTAR ENUM **/
 
 	
 }

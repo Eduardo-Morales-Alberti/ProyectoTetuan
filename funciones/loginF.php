@@ -1,7 +1,7 @@
 <?php
 include_once("generalF.php");
 
-class loginBBDD extends General{
+class LoginBBDD extends General{
 
 	function __construct() {
 		parent::__construct();
@@ -198,7 +198,6 @@ class loginBBDD extends General{
 			header("location:index.php");			
 
 		}
-
 	}
 
 	/** Fin función restContr **/
@@ -324,8 +323,7 @@ class loginBBDD extends General{
 	public function logOut(){
 		if(isset($_REQUEST["logout"])){
 			session_destroy();
-		}
-		
+		}		
 	}
 
 	/** Fin funcion salir **/

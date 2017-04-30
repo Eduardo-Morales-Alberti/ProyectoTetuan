@@ -171,6 +171,9 @@ function crearId(cadena){
 
 }
 /** Fin Next sibling **/
+
+/** Previous sibling **/
+
 function anteriorHermano(x){
   if(x.previousElementSibling){
     var e = x.previousElementSibling;
@@ -181,8 +184,6 @@ function anteriorHermano(x){
   }
 
 }
-/** Previous sibling **/
-
 
 
 /** Fin Previous sibling **/
@@ -199,7 +200,7 @@ function agregarEtiquetas(etq,elementos){
     var elment = etq[i].nombre.trim();
     //var id = elment;
 
-    var id = crearId(elment).substring(0,5)+n;
+    var id = crearId(elment)+n;
     n++;
 
     elementos[id] = elment; 
@@ -212,7 +213,7 @@ function agregarTag(selctid,divid,elementos,col,name){
   /** Obtengo el select con las etiquetas**/
   var x = document.getElementById(selctid);
   //x.value = getCleanedString(x.value);
-  var id = crearId(x.value).substring(0,5)+n;
+  var id = crearId(x.value)+n;
   n++;
   /** Compruebo que la etiqueta no existe **/
   var existe = false;
@@ -456,9 +457,6 @@ function restablecer(){
     }
 
     
-
-
-
     if(!valido){
       mensajeModal(mensaje);
     }
@@ -472,9 +470,119 @@ function restablecer(){
 
 /* fin restablecer contraseña*/
 
+/** ADMINISTRADOR **/
+
+/**Filtro de usuarios**/
+
+function filtrous(){
+
+  var table = cargarTabla('#resultado');
+  
+}
+
+/**Filtro de usuarios**/
+
+/**Filtro de empresas**/
+
+function filtroem(){
+
+  var table = cargarTabla('#resempresas');
+
+}
+
+/**Fin filtro de empresas**/
+
+
+/* etiquetas idiomas */
+
+function etiquetasIdiomas(){
+
+  // Agregar una etiqueta 
+  $("#agreet").click(function(){
+    $(this).prop( "disabled", true );
+    var etiqueta = $("#inputetiq").val();
+    var valtoken = $("#tokenetq").val();
+    $("#inputetiq").val("");
+
+    var xhr = $.post( "ajax.php", 
+      { agreet: "agregar", 
+      inputetiq:  etiqueta,
+      token: valtoken } );
+
+    xhr.done(function( data ) {
+        //alert(data);
+        $("#agreet").removeAttr("disabled");
+        //console.log(data);
+        var obj = JSON.parse(data);
+        //console.log(obj);
+        mensajeModal(obj.mensaje);
+
+        if(obj.resultado){
+
+          $("#divetiquetas").append(
+            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
+            +'<input type="checkbox" name="etiquetasel[]" value="'+etiqueta+'">'
+            +'</span><input type="text" class="form-control" value="'+etiqueta+'" readonly></div></div>'
+            );
+        }
+
+
+      }).fail(function() {
+        $("#inputetiq").removeAttr("disabled");
+        mensajeModal("Error: No ha podido agregar la etiqueta "+etiqueta);
+      });
+
+    });
+
+  // fin Agregar una etiqueta 
+
+  // Agregar un idioma 
+  $("#agreidm").click(function(){
+    $(this).prop( "disabled", true );
+    var idioma = $("#inputidm").val();
+    var valtoken = $("#tokenidm").val();
+    $("#inputidm").val("");
+
+    var xhr = $.post( "ajax.php", 
+      { agreidm: "agregar", 
+      inputidm:  idioma,
+      token:valtoken } );
+
+    xhr.done(function( data ) {
+        //alert(data);
+        $("#agreidm").removeAttr("disabled");
+        //console.log(data);
+        var obj = JSON.parse(data);
+        //console.log(obj);
+        mensajeModal(obj.mensaje);
+
+        if(obj.resultado){
+
+          $("#dividiomas").append(
+            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
+            +'<input type="checkbox" name="idiomasel[]" value="'+idioma+'">'
+            +'</span><input type="text" class="form-control" value="'+idioma+'" readonly></div></div>'
+            );
+        }
+
+
+      }).fail(function() {
+        $("#inputetiq").removeAttr("disabled");
+        mensajeModal("Error: No ha podido agregar el idioma "+idioma);
+      });
+
+    });
+
+  // fin Agregar un idioma 
+}
+
+/* fin etiquetas e idiomas*/
+
+/** FIN ADMINISTRADOR **/
+
+/** ESTUDIANTE **/
 
 /**Perfil Estudiante **/
-
 
 
 function perfilEstudiante(){
@@ -547,48 +655,47 @@ function perfilEstudiante(){
   /** Fin agregar etiquetas **/
 
   /** Modificar valores experiencia, educación e idiomas**/
-  var spns = document.getElementsByClassName("spn");
-  var npts = document.getElementsByClassName("npt");
-  for (var i = 0; i < spns.length; i++) {
-    spns[i].addEventListener("click",function(x){
-      /*if(x.target.nextElementSibling.nodeName == "INPUT"
-        || x.target.nextElementSibling.nodeName == "TEXTAREA"){*/
-      siguienteHermano(x.target).value = x.target.innerHTML;
-      /*}*/        
-      siguienteHermano(x.target).style.display = "initial";
-      siguienteHermano(x.target).focus();
-      siguienteHermano(x.target).addEventListener("focusout", function(y){
-        anteriorHermano(y.target).innerHTML = y.target.value;
-        anteriorHermano(y.target).style.display = "initial";
-        y.target.style.display = "none";
-      });
-      x.target.style.display = "none";
+  // var spns = document.getElementsByClassName("spn");
+  // var npts = document.getElementsByClassName("npt");
+  // for (var i = 0; i < spns.length; i++) {
+  //   spns[i].addEventListener("click",function(x){
 
-    });
-  };
+  //     siguienteHermano(x.target).value = x.target.innerHTML;
+
+  //     siguienteHermano(x.target).style.display = "initial";
+  //     siguienteHermano(x.target).focus();
+  //     siguienteHermano(x.target).addEventListener("focusout", function(y){
+  //       anteriorHermano(y.target).innerHTML = y.target.value;
+  //       anteriorHermano(y.target).style.display = "initial";
+  //       y.target.style.display = "none";
+  //     });
+  //     x.target.style.display = "none";
+
+  //   });
+  // };
 
   /** Fin Modificar valores experiencia, educación e idiomas**/
 
   /** Modificar actualmente **/
-  var divactual = document.getElementsByClassName("mod1");
+  // var divactual = document.getElementsByClassName("mod1");
 
-  for (var i = 0; i < divactual.length; i++) {
-    divactual[i].addEventListener("click", function(x){      
-      var mes = x.target.firstChild.innerHTML;
-      var anio =  x.target.lastChild.innerHTML;
-      x.target.style.display = "none";
-      var mod2 = siguienteHermano(x.target);
-      mod2.style.display = "initial";
-      mod2.firstChild.value = mes;
-      mod2.lastChild.value = anio;
-      mod2.addEventListener("focusout", function(y){
-        siguienteHermano(x.target).style.display = "none";
-        var html = "<span class='oculto'>"+mod2.firstChild.value+"</span>"+mod2.firstChild.value+", "+mod2.lastChild.value+"<span class='oculto'>"+mod2.lastChild.value+"</span>";
-        x.target.innerHTML = html;
-        x.target.style.display = "initial";
-      });
-    });
-  };
+  // for (var i = 0; i < divactual.length; i++) {
+  //   divactual[i].addEventListener("click", function(x){      
+  //     var mes = x.target.firstChild.innerHTML;
+  //     var anio =  x.target.lastChild.innerHTML;
+  //     x.target.style.display = "none";
+  //     var mod2 = siguienteHermano(x.target);
+  //     mod2.style.display = "initial";
+  //     mod2.firstChild.value = mes;
+  //     mod2.lastChild.value = anio;
+  //     mod2.addEventListener("focusout", function(y){
+  //       siguienteHermano(x.target).style.display = "none";
+  //       var html = "<span class='oculto'>"+mod2.firstChild.value+"</span>"+mod2.firstChild.value+", "+mod2.lastChild.value+"<span class='oculto'>"+mod2.lastChild.value+"</span>";
+  //       x.target.innerHTML = html;
+  //       x.target.style.display = "initial";
+  //     });
+  //   });
+  // };
   /** fin Modificar actualmente**/
 
   /** Ayuda código postal **/
@@ -651,6 +758,7 @@ function modificarModal(){
 /**Fin Perfil **/
 
 /** Búsqueda de ofertas **/
+
 function busquedaofer(){
   /** Opcion requisitos **/
   //var elementosreq = new Array();
@@ -715,192 +823,16 @@ function busquedaofer(){
 
 }
 
-
-
 /**Fin Búsqueda de ofertas **/
-/**Filtro de usuarios**/
 
-function filtrous(){
-  var table = cargarTabla('#resultado');
+/** FIN ESTUDIANTE **/
 
-  /* Agregar una etiqueta */
-  $("#agreet").click(function(){
-    $(this).prop( "disabled", true );
-    var etiqueta = $("#inputetiq").val();
-    var valtoken = $("#tokenetq").val();
-    $("#inputetiq").val("");
-
-    var xhr = $.post( "ajax.php", 
-      { agreet: "agregar", 
-      inputetiq:  etiqueta,
-      token: valtoken } );
-
-    xhr.done(function( data ) {
-        //alert(data);
-        $("#agreet").removeAttr("disabled");
-        //console.log(data);
-        var obj = JSON.parse(data);
-        //console.log(obj);
-        mensajeModal(obj.mensaje);
-
-        if(obj.resultado){
-
-          $("#divetiquetas").append(
-            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
-            +'<input type="checkbox" name="etiquetasel[]" value="'+etiqueta+'">'
-            +'</span><input type="text" class="form-control" value="'+etiqueta+'" readonly></div></div>'
-            );
-        }
-
-
-      }).fail(function() {
-        $("#inputetiq").removeAttr("disabled");
-        mensajeModal("Error: No ha podido agregar la etiqueta "+etiqueta);
-      });
-
-    });
-
-/* fin Agregar una etiqueta */
-
-/* Agregar un idioma */
-$("#agreidm").click(function(){
-  $(this).prop( "disabled", true );
-  var idioma = $("#inputidm").val();
-  var valtoken = $("#tokenidm").val();
-  $("#inputidm").val("");
-
-  var xhr = $.post( "ajax.php", 
-    { agreidm: "agregar", 
-    inputidm:  idioma,
-    token:valtoken } );
-
-  xhr.done(function( data ) {
-        //alert(data);
-        $("#agreidm").removeAttr("disabled");
-        //console.log(data);
-        var obj = JSON.parse(data);
-        //console.log(obj);
-        mensajeModal(obj.mensaje);
-
-        if(obj.resultado){
-
-          $("#dividiomas").append(
-            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
-            +'<input type="checkbox" name="idiomasel[]" value="'+idioma+'">'
-            +'</span><input type="text" class="form-control" value="'+idioma+'" readonly></div></div>'
-            );
-        }
-
-
-      }).fail(function() {
-        $("#inputetiq").removeAttr("disabled");
-        mensajeModal("Error: No ha podido agregar el idioma "+idioma);
-      });
-
-    });
-
-/* fin Agregar un idioma */
-}
-
-/**Filtro de usuarios**/
-
-/* etiquetas idiomas */
-
-function etiquetasIdiomas(){
-  
-  /* Agregar una etiqueta */
-  $("#agreet").click(function(){
-    $(this).prop( "disabled", true );
-    var etiqueta = $("#inputetiq").val();
-    var valtoken = $("#tokenetq").val();
-    $("#inputetiq").val("");
-
-    var xhr = $.post( "ajax.php", 
-      { agreet: "agregar", 
-      inputetiq:  etiqueta,
-      token: valtoken } );
-
-    xhr.done(function( data ) {
-        //alert(data);
-        $("#agreet").removeAttr("disabled");
-        //console.log(data);
-        var obj = JSON.parse(data);
-        //console.log(obj);
-        mensajeModal(obj.mensaje);
-
-        if(obj.resultado){
-
-          $("#divetiquetas").append(
-            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
-            +'<input type="checkbox" name="etiquetasel[]" value="'+etiqueta+'">'
-            +'</span><input type="text" class="form-control" value="'+etiqueta+'" readonly></div></div>'
-            );
-        }
-
-
-      }).fail(function() {
-        $("#inputetiq").removeAttr("disabled");
-        mensajeModal("Error: No ha podido agregar la etiqueta "+etiqueta);
-      });
-
-    });
-
-/* fin Agregar una etiqueta */
-
-/* Agregar un idioma */
-$("#agreidm").click(function(){
-  $(this).prop( "disabled", true );
-  var idioma = $("#inputidm").val();
-  var valtoken = $("#tokenidm").val();
-  $("#inputidm").val("");
-
-  var xhr = $.post( "ajax.php", 
-    { agreidm: "agregar", 
-    inputidm:  idioma,
-    token:valtoken } );
-
-  xhr.done(function( data ) {
-        //alert(data);
-        $("#agreidm").removeAttr("disabled");
-        //console.log(data);
-        var obj = JSON.parse(data);
-        //console.log(obj);
-        mensajeModal(obj.mensaje);
-
-        if(obj.resultado){
-
-          $("#dividiomas").append(
-            '<div class="col-md-4 col-lg-3 form-group" ><div class="input-group"><span class="input-group-addon">'
-            +'<input type="checkbox" name="idiomasel[]" value="'+idioma+'">'
-            +'</span><input type="text" class="form-control" value="'+idioma+'" readonly></div></div>'
-            );
-        }
-
-
-      }).fail(function() {
-        $("#inputetiq").removeAttr("disabled");
-        mensajeModal("Error: No ha podido agregar el idioma "+idioma);
-      });
-
-    });
-
-/* fin Agregar un idioma */
-}
-/* fin etiquetas e idiomas*/
+/** EMPRESA **/
 
 /* perfil empresa */
 
-function perfilempresa(){
-  /** Función eliminar cuenta **/
+function perfilEmpresa(){
 
-  $("#eliminarcuenta").click(function(event){
-    var eliminar = confirm("¿Seguro que desea eliminar la cuenta?");
-    if(!eliminar){
-      event.preventDefault();
-    }
-  });
-
-  /** Fin Función eliminar cuenta **/
 
   /* Validación de formulario */
 
@@ -966,36 +898,27 @@ function perfilempresa(){
   
 
   /* fin validación de formulario */
+
+  /** Función eliminar cuenta **/
+
+  $("#eliminarcuenta").click(function(event){
+    var eliminar = confirm("¿Seguro que desea eliminar la cuenta?");
+    if(!eliminar){
+      event.preventDefault();
+    }
+  });
+
+  /** Fin Función eliminar cuenta **/
+
 }
 
 /* fin perfil empresa */
-
-/** Filtro Puestos**/
-function filtropuestos(){
-  /** Opcion requisitos **/
-  /*var elementosreq = new Array();
-
-  var btnex = document.getElementById("ageex");
-  btnex.addEventListener("click", function(){
-    elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
-  });
-
-  var btnelimex = document.getElementById("elimrequisito");
-  btnelimex.addEventListener("click", function(){
-    elementosreq = eliminarTag("etiquetas", "divetiquetas",elementosreq)
-  });*/
-/** Fin Opcion requisitos **/
-/* Cargar tabla*/
-var table = cargarTabla('#respuestos');
-}
-
-/** Fin Filtro Puestos**/
 
 /** Ficha Puestos **/
 
 var elementosidm = new Array();
 var elementosfunc = new Array();
-function fichapuestos(){
+function fichaPuestos(){
 
   /* validar formularios */
   $("#guardarpuesto").on("click",function(){
@@ -1066,26 +989,32 @@ function fichapuestos(){
     elementosfunc = eliminarTag("funciones", "divfunciones",elementosfunc)
   });
   /** Fin opción funciones**/
-
   
 }
 
 
 /** Fin Ficha Puestos**/
 
-/**Filtro de empresas**/
+/** Filtro Puestos**/
+function filtroPuestos(){
+  // Opcion requisitos 
+  // var elementosreq = new Array();
 
-function filtroem(){
-  var table = cargarTabla('#resempresas');
+  // var btnex = document.getElementById("ageex");
+  // btnex.addEventListener("click", function(){
+  //   elementosreq = agregarTag("etiquetas", "divetiquetas",elementosreq,"col-md-4 col-lg-3",'etiquetas')
+  // });
+
+  // var btnelimex = document.getElementById("elimrequisito");
+  // btnelimex.addEventListener("click", function(){
+  //   elementosreq = eliminarTag("etiquetas", "divetiquetas",elementosreq)
+  // });
+  // Fin Opcion requisitos 
+  /* Cargar tabla*/
+  var table = cargarTabla('#respuestos');
 }
 
-/**Fin filtro de empresas**/
-
-/** Ficha Empresa**/
-function fichaem(){
-
-}
-/** Fin Ficha Empresa**/
+/** Fin Filtro Puestos**/
 
 /* interesados */
 function interesados(){
@@ -1110,4 +1039,6 @@ function interesados(){
 }
 
 /* fin interesados */
+
+/** FIN EMPRESA **/
 
