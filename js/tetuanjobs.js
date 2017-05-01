@@ -47,7 +47,6 @@ function mensajeModal(mensaje){
       $("#modalmensaje").modal("hide");
     },4000);
   });
-
 }
 
 /** Fin Modal mensaje **/
@@ -109,58 +108,57 @@ function crearId(cadena){
   // Quito los espacios extras y lo dejo a uno
   cadena = cadena.trim();
   cadena = cadena.replace(/\s+/gi,' ');
-   // Definimos los caracteres que queremos eliminar
-   //var specialChars = "\'\"!@#$^&%*()+=-[]\/{}|:<>?,.";
+  // Definimos los caracteres que queremos eliminar
+  //var specialChars = "\'\"!@#$^&%*()+=-[]\/{}|:<>?,.";
 
 
-   // Los eliminamos todos
-   /*for (var i = 0; i < specialChars.length; i++) {
-     cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-   }   */
-   
+  // Los eliminamos todos
+ /*
+ for (var i = 0; i < specialChars.length; i++) {
+  cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+  }   
+  */
 
-   // Lo queremos devolver limpio en minusculas
-   cadena = cadena.toLowerCase();
 
-   // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
-   cadena = cadena.replace(/ /g,"_");
+ // Lo queremos devolver limpio en minusculas
+ cadena = cadena.toLowerCase();
 
-   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
-   cadena = cadena.replace(/á/gi,"a");
-   cadena = cadena.replace(/é/gi,"e");
-   cadena = cadena.replace(/í/gi,"i");
-   cadena = cadena.replace(/ó/gi,"o");
-   cadena = cadena.replace(/ú/gi,"u");
-   cadena = cadena.replace(/ñ/gi,"n");
-   cadena = cadena.replace(/\W/g,'');
-   return cadena.substring(0,5);
- }
- /** fin crear id**/
+ // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
+ cadena = cadena.replace(/ /g,"_");
 
- /** limpiar cadena **/
- function limpiarCadena(cadena){
+ // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+ cadena = cadena.replace(/á/gi,"a");
+ cadena = cadena.replace(/é/gi,"e");
+ cadena = cadena.replace(/í/gi,"i");
+ cadena = cadena.replace(/ó/gi,"o");
+ cadena = cadena.replace(/ú/gi,"u");
+ cadena = cadena.replace(/ñ/gi,"n");
+ cadena = cadena.replace(/\W/g,'');
+ return cadena.substring(0,5);
+}
+/** fin crear id**/
+
+/** limpiar cadena **/
+function limpiarCadena(cadena){
+
   // Quitamos caracteres raros
   var specialChars = "\'\"¿¡!@#$^&%*()+=-[]\/{}|:<>?,.";
 
+  // Los eliminamos todos
+  for (var i = 0; i < specialChars.length; i++) {
+   cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+ }   
 
-   // Los eliminamos todos
-   for (var i = 0; i < specialChars.length; i++) {
-     cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-   }   
   // Quito los espacios extras y lo dejo a uno
-
   cadena = cadena.trim();
-  cadena = cadena.replace(/\s+/gi,' ');
+  cadena = cadena.replace(/\s+/gi,' ');  
 
-   // Lo queremos devolver limpio en minusculas
-   //cadena = cadena.substring(0,1).toUpperCase()+cadena.substring(1,cadena.length).toLowerCase();
-   
-   return cadena;
- }
- /** fin limpiar cadena**/
+  return cadena;
+}
+/** fin limpiar cadena**/
 
- /** Next sibling **/
- function siguienteHermano(x){
+/** Next sibling **/
+function siguienteHermano(x){
   if(x.nextElementSibling){
     var e = x.nextElementSibling;
     while(e.nodeName == "#text"){
@@ -168,7 +166,6 @@ function crearId(cadena){
     };
     return e;
   }
-
 }
 /** Fin Next sibling **/
 
@@ -182,7 +179,6 @@ function anteriorHermano(x){
     };
     return e;
   }
-
 }
 
 
@@ -197,14 +193,10 @@ var n = 0;
 /** Agregar skills para borrarlas **/
 function agregarEtiquetas(etq,elementos){ 
   for (var i = 0; i < etq.length; i++) {
-    var elment = etq[i].nombre.trim();
-    //var id = elment;
-
+    var elment = etq[i].nombre.trim();    
     var id = crearId(elment)+n;
     n++;
-
-    elementos[id] = elment; 
-    
+    elementos[id] = elment;     
   }
 }
 
@@ -254,19 +246,19 @@ function agregarTag(selctid,divid,elementos,col,name){
     if(x.type == "select-one"){
       x.remove(x.selectedIndex);
     }else if(x.nodeName == "INPUT"){
+      /** Si es un input lo dejo vacío**/ 
+      x.value = "";
+    }
+
+  }else{
+    mensajeModal("No se ha podido añadir la etiqueta");
+    if(x.nodeName == "INPUT"){
      /** Si es un input lo dejo vacío**/ 
      x.value = "";
    }
-
- }else{
-  mensajeModal("No se ha podido añadir la etiqueta");
-  if(x.nodeName == "INPUT"){
-   /** Si es un input lo dejo vacío**/ 
-   x.value = "";
  }
-}
-/** Retorno el array de elementos **/
-return elementos;
+ /** Retorno el array de elementos **/
+ return elementos;
 }
 
 /** Fin agregar tag**/
@@ -412,30 +404,30 @@ function login(){
 
   });
 
-/* fin validación registrarse */
+  // fin validación registrarse 
 
-/* Fin validaciones */
+  /* Fin validaciones */
 
-$(document).ready(function(){
-  setTimeout(function() { $("#mail").focus() }, 500);
+  $(document).ready(function(){
+    setTimeout(function() { $("#mail").focus() }, 500);
 
-});
+  });
 
-$("#tipo").change( function(){
+  $("#tipo").change( function(){
 
-  if($(this).val() == "empresa"){
-    $(".elEmp").show();
-    $(".inputEmp").attr("required","required");
-    $(".elEst").hide();
-    $(".inputEst").removeAttr("required");
-  }else{
-    $(".elEst").show();
-    $(".inputEst").attr("required","required");
-    $(".elEmp").hide();
-    $(".inputEmp").removeAttr("required");
-  }
+    if($(this).val() == "empresa"){
+      $(".elEmp").show();
+      $(".inputEmp").attr("required","required");
+      $(".elEst").hide();
+      $(".inputEst").removeAttr("required");
+    }else{
+      $(".elEst").show();
+      $(".inputEst").attr("required","required");
+      $(".elEmp").hide();
+      $(".inputEmp").removeAttr("required");
+    }
 
-});
+  });
 }
 
 /**Fin Login**/
@@ -475,9 +467,7 @@ function restablecer(){
 /**Filtro de usuarios**/
 
 function filtrous(){
-
-  var table = cargarTabla('#resultado');
-  
+  var table = cargarTabla('#resultado');  
 }
 
 /**Filtro de usuarios**/
@@ -485,9 +475,7 @@ function filtrous(){
 /**Filtro de empresas**/
 
 function filtroem(){
-
   var table = cargarTabla('#resempresas');
-
 }
 
 /**Fin filtro de empresas**/
@@ -738,7 +726,6 @@ function perfilEstudiante(){
   });
 
   /** fin función mostrar cv**/
-
 }
 
 
@@ -749,7 +736,6 @@ function modificarModal(){
   $(document).ready(function(){
     $("#modificarmodal").modal("show");  
   });
-
 }
 
 /** Modificar modal**/
@@ -819,8 +805,7 @@ function busquedaofer(){
 
 
 
-  /* Fin Aplicar a un puesto */
-
+  // Fin Aplicar a un puesto 
 }
 
 /**Fin Búsqueda de ofertas **/
@@ -909,7 +894,6 @@ function perfilEmpresa(){
   });
 
   /** Fin Función eliminar cuenta **/
-
 }
 
 /* fin perfil empresa */
@@ -988,8 +972,7 @@ function fichaPuestos(){
   btnelimfunc.addEventListener("click", function(){
     elementosfunc = eliminarTag("funciones", "divfunciones",elementosfunc)
   });
-  /** Fin opción funciones**/
-  
+  /** Fin opción funciones**/  
 }
 
 
@@ -1035,7 +1018,6 @@ function interesados(){
   };  
 
   /* fin Eliminar elementos repetidos del select de etiquetas*/
-
 }
 
 /* fin interesados */
