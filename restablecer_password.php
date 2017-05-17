@@ -3,7 +3,7 @@ include_once('funciones/loginF.php');
 
 session_start();
 
-$logincl = new loginBBDD;
+$logincl = new LoginBBDD;
 $modal = $logincl->restContr();
 
 ?>

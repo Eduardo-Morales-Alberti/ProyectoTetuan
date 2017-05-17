@@ -13,7 +13,7 @@ if(!isset($_SESSION["usuario"])){
 
 
 
-$empresacl = new empresaBBDD;
+$empresacl = new EmpresaBBDD;
 /*$empresacl->eliminarPuestos();
 $empresacl->modificarPuesto();*/
 if(isset($_POST["limpiar"])){

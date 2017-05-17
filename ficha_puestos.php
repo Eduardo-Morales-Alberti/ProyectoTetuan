@@ -11,7 +11,7 @@ if(!isset($_SESSION["usuario"])){
 }
 
 
-$empresacl = new empresaBBDD;
+$empresacl = new EmpresaBBDD;
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
     $token = $_POST["token"];
@@ -378,7 +378,7 @@ $page["cuerpo"] = ob_get_clean();
 
 ob_start();?>
 <script type="text/javascript">
-fichapuestos();
+fichaPuestos();
 <?php 
 if(isset($_SESSION["funciones"])){
     echo 'agregarEtiquetas('.$_SESSION["funciones"].',elementosfunc);';

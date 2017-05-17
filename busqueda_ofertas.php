@@ -15,7 +15,7 @@ if(!isset($_SESSION["usuario"])){
 }
 
 
-$estudiantecl = new estudianteBBDD;
+$estudiantecl = new EstudianteBBDD;
 
 /* Con esto limpiamos el formulario*/
 if(isset($_POST["limpiar"])){

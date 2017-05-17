@@ -7,12 +7,12 @@ if(!isset($_SESSION["usuario"])){
 }else if($_SESSION["usuario"]->tipo == "estudiante"){
 
 	include_once('funciones/estudianteF.php');
-	$estudiantecl = new estudianteBBDD;
+	$estudiantecl = new EstudianteBBDD;
 	$estudiantecl->aplicarPuesto();
 
 }else if($_SESSION["usuario"]->tipo == "administrador"){
 	include_once('funciones/adminF.php');
-	$adminclass = new adminBBDD;
+	$adminclass = new AdminBBDD;
 	$adminclass->agregarEtiqueta();
 	$adminclass->agregarIdioma();
 

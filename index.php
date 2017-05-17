@@ -5,7 +5,7 @@ include_once('funciones/loginF.php');
 
 session_start();
 
-$logincl = new loginBBDD;
+$logincl = new LoginBBDD;
 $logincl->logOut();
 
 if(isset($_SESSION["usuario"])){

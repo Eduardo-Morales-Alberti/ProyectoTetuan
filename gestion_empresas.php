@@ -11,7 +11,7 @@ if(!isset($_SESSION["usuario"])){
     header("location:dashboard.php");
 }
 
-$adminclass = new adminBBDD;
+$adminclass = new AdminBBDD;
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
     $token = $_POST["token"];

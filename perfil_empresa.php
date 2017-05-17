@@ -13,7 +13,7 @@ if(!isset($_SESSION["usuario"])){
 $page["nombrePag"] = "Perfil";
 
 
-$empresacl = new empresaBBDD;
+$empresacl = new EmpresaBBDD;
 
 
 
@@ -168,7 +168,7 @@ $page["cuerpo"] = ob_get_clean();
 Se le llama en el cuerpo en las últimas líneas**/
 ob_start();?>
 <script type="text/javascript">
-perfilempresa();
+perfilEmpresa();
 <?php 
 
 ?>

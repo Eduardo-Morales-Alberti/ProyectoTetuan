@@ -13,7 +13,7 @@ if(!isset($_SESSION["usuario"])){
 
 
 
-$empresacl = new empresaBBDD;
+$empresacl = new EmpresaBBDD;
 
 if(isset($_POST["token"])&&isset($_SESSION["tokens"])){
     $token = $_POST["token"];
@@ -89,7 +89,7 @@ ob_start();
 
 ob_start();?>
 <script type="text/javascript">
-filtropuestos();
+filtroPuestos();
 <?php 
 if(isset($_SESSION["etiquetas"])){
     echo 'agregarEtiquetas('.$_SESSION["etiquetas"].');';

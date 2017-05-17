@@ -16,7 +16,7 @@ if(!isset($_SESSION["usuario"])){
 
 
 
-$estudiantecl = new estudianteBBDD;
+$estudiantecl = new EstudianteBBDD;
 /*$estudiantecl->eliminarUsuario();*/
 
 /*echo session_status();*/
