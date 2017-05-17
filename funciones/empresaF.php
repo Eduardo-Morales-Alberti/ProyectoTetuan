@@ -563,6 +563,7 @@ class EmpresaBBDD extends General{
 			$consulta = $this->Idb->prepare($sql);
 
 			$consulta->execute(array($_SESSION["idpst"]));
+		}
 	}
 
 	/** FIN FUNCIÓN LISTAR Idiomas DEL puesto **/
@@ -685,7 +686,7 @@ class EmpresaBBDD extends General{
 				$selectPuesto .= "<option value='".$puestos[$i]['identificador']."'>";
 				$selectPuesto .= $puestos[$i]['nombre']."</option>";
 			}
-			
+
 		}
 
 		return $selectPuesto;
@@ -724,7 +725,7 @@ class EmpresaBBDD extends General{
 	/* Función para listar los estudiantes*/
 	function listarInteresados(){
 
-		
+
 		?>
 		<div class="panel panel-default">
 			<div class="panel-heading" ><h4>Lista de interesados</h4></div>
@@ -733,21 +734,21 @@ class EmpresaBBDD extends General{
 				<?php
 				$condicion = "";
 				if(isset($_POST["provincia"])){
-					
+
 					$condicion .= " and idprovincia = ".$_POST["provincia"];
 
 				}
 
 				if(isset($_POST["puesto"])){
-					
+
 					$condicion .= " and idpuesto = ".$_POST["puesto"];
-					
+
 				}
 
 				if(isset($_POST["formacion"])){
-					
+
 					$condicion .= " and idtitulacion = ".$_POST["formacion"];
-					
+
 				}
 
 
@@ -757,14 +758,14 @@ class EmpresaBBDD extends General{
 						case '1':
 
 						$condicion .= " and f_seleccion > date_sub(curdate(), interval 1 day)";
-						
+
 						break;
 						case '2':
 
 						$condicion .= " and f_seleccion > date_sub(curdate(), interval 1 week)";
 
 						break;
-						
+
 						$condicion .= " and f_seleccion > date_sub(curdate(), interval 1 month)";
 
 						break;
@@ -785,9 +786,9 @@ class EmpresaBBDD extends General{
 				//print_r($usuario);
 				//$usuarios[] = $row;
 
-				
 
-				
+
+
 
 				for ($u=0; $u < count($usuarios); $u++) { 
 
@@ -844,8 +845,8 @@ class EmpresaBBDD extends General{
 
 							break;
 						}
-						
-						
+
+
 
 					}
 
@@ -959,7 +960,7 @@ class EmpresaBBDD extends General{
 												$mes = date("n",strtotime($fechafin));
 												$anio = date("Y",strtotime($fechafin));
 												echo $this->meses[$mes].", ".$anio;
-												
+
 											}else{
 												echo $fechafin;
 											}
@@ -1143,7 +1144,7 @@ class EmpresaBBDD extends General{
 
 						$identificador = $usuarios[$u]["identificador"];
 						?>
-						
+
 
 						<div class="panel panel-default">
 							<div class="panel-heading" data-toggle="collapse" data-target=".est<?php echo $cont;?>">
@@ -1167,7 +1168,7 @@ class EmpresaBBDD extends General{
 							</div>
 							<div class="panel-body collapse out est<?php echo $cont; $cont++;?>" >          
 								<?php
-								
+
 								?>
 
 								<p>  
@@ -1189,7 +1190,7 @@ class EmpresaBBDD extends General{
 									?>
 								</p>
 								<?php
-								
+
 
 
 								// experiencia 
@@ -1202,11 +1203,11 @@ class EmpresaBBDD extends General{
 								while ($row = $consulta->fetch()) {
 									$experienciafilas[] = $row;
 								}
-								
+
 								for ($i=0; $i < count($experienciafilas); $i++) { 
 									echo "<hr>";			
 									if($i == 0){
-										
+
 										echo "<h4>Experiencia:</h4>";
 									}
 									?>
@@ -1302,7 +1303,7 @@ class EmpresaBBDD extends General{
 									</div>
 
 									<?php
-									
+
 								}
 
 								// fin educación 
@@ -1381,6 +1382,7 @@ class EmpresaBBDD extends General{
 	/* fin Función para listar los estudiantes que tiene un puesto*/
 
 	/** Fin funciones en desuso **/
+
 
 }
 
