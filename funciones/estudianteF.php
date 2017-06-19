@@ -1162,7 +1162,7 @@ class EstudianteBBDD extends General{
 
 	/** FUNCIÓN LISTAR Idiomas **/
 
-	function listarIdiomas(){
+	function listarIdiomas($select = false){
 
 		$sql = "select * from listarIdiomasEst where estudiante = ?";
 		$consulta = $this->Idb->prepare($sql);
@@ -1174,9 +1174,9 @@ class EstudianteBBDD extends General{
 		}
 		//print_r($experienciafilas);
 		for ($i=0; $i < count($idiomasfilas); $i++) { 			
-
+			if(!$select){
 			?>
-
+			
 			<div class="row idiomas">                        
 				<div class="col-xs-4">
 					<?php echo $idiomasfilas[$i]["nombre"];?>
@@ -1211,6 +1211,11 @@ class EstudianteBBDD extends General{
 
 
 			<?php
+			}else{
+							echo "<option value='".$idiomasfilas[$i]["nombre"]."'>".$idiomasfilas[$i]["nombre"]."</option>";
+						
+
+			}
 		}
 	}
 
