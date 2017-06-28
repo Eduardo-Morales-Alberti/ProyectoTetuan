@@ -399,7 +399,7 @@ ob_start();
                             <div class="form-group">
                                 <label>Idioma</label>
                                 <select name="idioma" class="form-control" required>
-                                    <?php echo $estudiantecl->listarIdiomas(); ?>
+                                    <?php echo $estudiantecl->listarIdiomas(true); ?>
                                 </select>
                             </div>    
                         </div>                     
